@@ -49,20 +49,20 @@
 }
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;overflow-x:hidden;width:100%}
+html{background:#fff}
 body{
   margin:0;
   font-family:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   color:var(--ink);
-  background:var(--paper);
   font-size:15.5px;
   line-height:1.6;
   -webkit-font-smoothing:antialiased;
   overflow-x:hidden;
-}
-/* page-wide pink dot texture with a built-in twinkle — one continuous
-   background rather than isolated per-section accents */
-body::before{
-  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+  /* page-wide pink dot texture, painted directly as the body's own
+     background (not a positioned pseudo-element) so it is guaranteed to
+     sit under every section regardless of stacking context, and tiles
+     the full document height naturally since it scrolls with content */
+  background-color:#fff;
   background-image:
     radial-gradient(2.2px 2.2px at 6% 18%, rgba(209,74,97,.8), transparent),
     radial-gradient(1.8px 1.8px at 18% 62%, rgba(209,74,97,.65), transparent),
@@ -75,11 +75,11 @@ body::before{
     radial-gradient(1.9px 1.9px at 92% 82%, rgba(209,74,97,.7), transparent),
     radial-gradient(1.6px 1.6px at 40% 42%, rgba(209,74,97,.55), transparent),
     radial-gradient(1.8px 1.8px at 68% 90%, rgba(209,74,97,.6), transparent);
-  background-size:190px 190px;
-  animation:dotTwinkle 3.4s ease-in-out infinite;
+  background-size:170px 170px;
+  animation:dotDrift 50s linear infinite;
 }
-@keyframes dotTwinkle{0%,100%{opacity:.55}50%{opacity:1}}
-@media(prefers-reduced-motion:reduce){body::before{animation:none;opacity:.8}}
+@keyframes dotDrift{from{background-position:0 0}to{background-position:1700px 1700px}}
+@media(prefers-reduced-motion:reduce){body{animation:none}}
 body.locked{overflow:hidden}
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
@@ -100,7 +100,9 @@ h1,h2,h3,h4{margin:0;font-family:'Fraunces',Georgia,serif;font-weight:600;letter
    padding + this) — the finder's bottom padding stays the default 60px */
 #finder{padding-top:15px}
 @media(min-width:900px){#finder{padding-top:10px}}
-.band-cream{background:var(--cream)}
+/* no longer tints its own background — every light section now shows
+   the same white+dot body background instead of alternating colours */
+.band-cream{background:transparent}
 .band-line-top{border-top:1px solid var(--line)}
 .band-line{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:28px;flex-wrap:wrap}
@@ -177,7 +179,7 @@ h1,h2,h3,h4{margin:0;font-family:'Fraunces',Georgia,serif;font-weight:600;letter
 @media(min-width:1024px){.mobile-menu{display:none}}
 
 /* ============ hero — lighter, less pink ============ */
-.hero{position:relative;background:var(--paper);padding:15px 0}
+.hero{position:relative;background:transparent;padding:15px 0}
 @media(min-width:900px){.hero{padding:20px 0}}
 .hero .container{max-width:none;padding:0 15px}
 @media(min-width:900px){.hero .container{padding:0 20px}}
@@ -290,6 +292,10 @@ h1,h2,h3,h4{margin:0;font-family:'Fraunces',Georgia,serif;font-weight:600;letter
    breaks out of .container to the true viewport edge, no side gutter */
 #rec-grid{
   display:flex;gap:14px;align-items:stretch;
+  /* centers the row when it fits (e.g. filtered to one category with
+     few results); falls back to left-start + scroll the moment it
+     overflows, so a full "All Gifts" row still bleeds and scrolls */
+  justify-content:safe center;
   width:100vw;position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;
   padding:2px 0 10px;overflow-x:auto;-webkit-overflow-scrolling:touch;
   scroll-snap-type:x proximity;scroll-padding-left:0;
@@ -322,7 +328,7 @@ h1,h2,h3,h4{margin:0;font-family:'Fraunces',Georgia,serif;font-weight:600;letter
 .pcard:hover .padd{background:var(--pink-hover)}
 
 /* ============ trust marker strip — its own clearly separated band ============ */
-.trust-strip{background:var(--cream);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.trust-strip{background:transparent;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .trust-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
 @media(min-width:760px){.trust-grid{grid-template-columns:repeat(4,1fr)}}
 .trust-item{display:flex;align-items:center;gap:12px}

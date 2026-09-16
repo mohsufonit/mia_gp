@@ -159,54 +159,84 @@ h1,h2,h3,h4{margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:60
 @media(min-width:1024px){.mobile-menu{display:none}}
 
 /* ============ hero — lighter, less pink ============ */
-.hero{position:relative;background:var(--paper)}
-.hero-grid{display:grid;grid-template-columns:1fr;align-items:center;gap:36px;padding-top:20px;padding-bottom:36px;position:relative;z-index:2}
-@media(min-width:900px){.hero-grid{grid-template-columns:1.05fr .95fr;gap:24px;padding-top:32px;padding-bottom:50px}}
+.hero{position:relative;background:var(--cream);padding:24px 0}
+@media(min-width:900px){.hero{padding:28px 0}}
+/* the spotlight card — pulled from index.html's .spotlight--fiora gradient
+   + its glitter-dot overlay texture, as a contained rounded card (not
+   full-bleed) with equal breathing room above and below */
+.hero-card{position:relative;overflow:hidden;border-radius:20px;background:radial-gradient(130% 150% at 50% -10%,#D14A61 0%,#B23A52 45%,#6E2531 100%);box-shadow:0 24px 54px rgba(110,37,49,.28)}
+.hero-card::before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.9;
+  background-image:
+    radial-gradient(1.6px 1.6px at 8% 22%, rgba(255,255,255,.95), transparent),
+    radial-gradient(1.2px 1.2px at 22% 68%, rgba(255,255,255,.7), transparent),
+    radial-gradient(1.4px 1.4px at 38% 12%, rgba(255,255,255,.85), transparent),
+    radial-gradient(1px 1px at 52% 78%, rgba(255,255,255,.6), transparent),
+    radial-gradient(1.6px 1.6px at 68% 32%, rgba(255,255,255,.9), transparent),
+    radial-gradient(1.1px 1.1px at 81% 60%, rgba(255,255,255,.65), transparent),
+    radial-gradient(1.4px 1.4px at 92% 18%, rgba(255,255,255,.8), transparent),
+    radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,.55), transparent),
+    radial-gradient(1.3px 1.3px at 60% 95%, rgba(255,255,255,.7), transparent);
+  background-size:220px 220px;
+}
+.hero-grid{display:grid;grid-template-columns:1fr;align-items:center;gap:32px;position:relative;z-index:2;padding:40px 24px}
+@media(min-width:900px){.hero-grid{grid-template-columns:1.05fr .95fr;gap:24px;padding:56px 48px}}
 .hero-copy{max-width:500px;order:2}
 .hero-visual{order:1}
 @media(min-width:900px){.hero-copy{order:1}.hero-visual{order:2}}
-.hero-copy .eyebrow{margin-bottom:16px}
-.hero-copy h1{font-size:clamp(32px,5vw,52px);color:var(--ink);margin:0 0 14px}
-.hero-copy h1 em{font-style:italic;color:var(--pink-deep)}
-.hero-tagline{font-size:16px;color:var(--muted);max-width:420px;margin:0 0 28px;line-height:1.65}
+.hero-copy .eyebrow{margin-bottom:16px;background:#fff;color:#832729;padding:7px 16px;border-radius:100px;width:fit-content}
+.hero-copy .eyebrow::before{display:none}
+.hero-copy h1{font-size:clamp(32px,5vw,52px);color:#fff;margin:0 0 14px}
+.hero-copy h1 em{font-style:italic;color:#F0C987}
+.hero-tagline{font-size:16px;color:rgba(255,255,255,.85);max-width:420px;margin:0 0 28px;line-height:1.65}
 .hero-ctas{display:flex;flex-wrap:wrap;gap:12px}
-.hero-visual{position:relative;display:flex;align-items:center;justify-content:center;min-height:360px}
-@media(min-width:900px){.hero-visual{min-height:520px}}
-/* Direction C — Layered Depth Stack: photos scattered at gentle angles like
-   an unwrapped gift table, tied together with a dotted ribbon line */
-.gift-scene{position:relative;width:100%;max-width:640px;aspect-ratio:1.15/1}
+.hero-card .btn-outline{border-color:rgba(255,255,255,.7);color:#fff}
+.btn-gold{background:#F0C987;color:#6E2531;box-shadow:0 10px 24px rgba(0,0,0,.18)}
+.btn-gold:hover{background:#ecbd72}
+.hero-visual{position:relative;display:flex;align-items:center;justify-content:center;min-height:340px}
+@media(min-width:900px){.hero-visual{min-height:480px}}
+/* Direction C — Layered Depth Stack, with a size hierarchy: one anchor,
+   one clear second-tier accent, three smaller — not one big + four equal */
+.gift-scene{position:relative;width:100%;max-width:600px;aspect-ratio:1.1/1}
 .gift-ribbon-line{position:absolute;inset:0;width:100%;height:100%;z-index:0;overflow:visible}
-.gwin{position:absolute;border-radius:16px;overflow:hidden;box-shadow:0 18px 38px rgba(27,27,31,.16),0 2px 8px rgba(0,0,0,.06);border:5px solid #fff;z-index:1}
+.gwin{position:absolute;border-radius:16px;overflow:hidden;box-shadow:0 18px 38px rgba(0,0,0,.28);border:5px solid #fff;z-index:1}
 .gwin img{width:100%;height:100%;object-fit:cover;display:block}
-.gwin-1{width:44%;height:64%;left:4%;top:3%;box-shadow:0 22px 44px rgba(131,39,41,.20),0 2px 8px rgba(0,0,0,.06);z-index:2;--base:-6deg;transform:rotate(var(--base));animation:floatA 7s ease-in-out infinite}
-.gwin-2{width:28%;height:36%;left:44%;top:0%;--base:-4deg;transform:rotate(var(--base));animation:floatB 6.4s ease-in-out infinite;animation-delay:.3s}
-.gwin-3{width:32%;height:38%;left:66%;top:30%;--base:5deg;transform:rotate(var(--base));animation:floatC 6s ease-in-out infinite;animation-delay:.9s}
-.gwin-4{width:30%;height:36%;left:2%;top:62%;--base:4deg;transform:rotate(var(--base));animation:floatD 6.8s ease-in-out infinite;animation-delay:1.4s}
-.gwin-5{width:32%;height:38%;left:40%;top:56%;--base:-3deg;transform:rotate(var(--base));animation:floatE 6.2s ease-in-out infinite;animation-delay:.6s}
+.gwin-1{width:48%;height:68%;left:3%;top:2%;box-shadow:0 24px 48px rgba(0,0,0,.34);z-index:2;--base:-6deg;transform:rotate(var(--base));animation:floatA 7s ease-in-out infinite}
+.gwin-2{width:24%;height:30%;left:52%;top:0%;--base:-4deg;transform:rotate(var(--base));animation:floatB 6.4s ease-in-out infinite;animation-delay:.3s}
+.gwin-3{width:36%;height:44%;left:60%;top:24%;z-index:2;--base:5deg;transform:rotate(var(--base));animation:floatC 6s ease-in-out infinite;animation-delay:.9s}
+.gwin-4{width:24%;height:30%;left:4%;top:68%;--base:4deg;transform:rotate(var(--base));animation:floatD 6.8s ease-in-out infinite;animation-delay:1.4s}
+.gwin-5{width:26%;height:32%;left:40%;top:62%;--base:-3deg;transform:rotate(var(--base));animation:floatE 6.2s ease-in-out infinite;animation-delay:.6s}
 @keyframes floatA{0%,100%{transform:translateY(0) rotate(var(--base))}50%{transform:translateY(-8px) rotate(calc(var(--base) - 1deg))}}
 @keyframes floatB{0%,100%{transform:translateY(0) rotate(var(--base))}50%{transform:translateY(9px) rotate(calc(var(--base) + 1deg))}}
 @keyframes floatC{0%,100%{transform:translateY(0) rotate(var(--base))}50%{transform:translateY(-7px) rotate(calc(var(--base) - 1.2deg))}}
 @keyframes floatD{0%,100%{transform:translateY(0) rotate(var(--base))}50%{transform:translateY(8px) rotate(calc(var(--base) + 1.4deg))}}
 @keyframes floatE{0%,100%{transform:translateY(0) rotate(var(--base))}50%{transform:translateY(-9px) rotate(calc(var(--base) - 1deg))}}
 @media(prefers-reduced-motion:reduce){.gwin-1,.gwin-2,.gwin-3,.gwin-4,.gwin-5,.sparkle{animation:none!important}}
-/* mobile: the anchor photo moves to center-right and grows; the four
-   smaller photos ring it instead of stacking to its left */
+/* mobile: the anchor photo moves to center-right and grows; the hoops stay
+   the clear second-tier accent; the rest ring both at a smaller scale */
 @media(max-width:639px){
   .gift-scene{aspect-ratio:.92/1}
-  .gwin-1{left:30%;top:8%;width:60%;height:82%}
-  .gwin-2{left:0%;top:0%;width:32%;height:34%}
-  .gwin-3{left:0%;top:60%;width:32%;height:34%}
-  .gwin-4{left:76%;top:62%;width:24%;height:30%}
-  .gwin-5{left:72%;top:0%;width:26%;height:32%}
+  .gwin-1{left:28%;top:6%;width:62%;height:80%}
+  .gwin-2{left:0%;top:0%;width:26%;height:28%}
+  .gwin-3{left:0%;top:54%;width:36%;height:38%}
+  .gwin-4{left:76%;top:64%;width:22%;height:26%}
+  .gwin-5{left:74%;top:0%;width:24%;height:28%}
 }
-.sparkle{position:absolute;color:var(--pink);opacity:.9;animation:sparkle 2.6s ease-in-out infinite;filter:drop-shadow(0 1px 3px rgba(0,0,0,.35));z-index:3}
+.sparkle{position:absolute;color:#F0C987;opacity:.9;animation:sparkle 2.6s ease-in-out infinite;filter:drop-shadow(0 1px 3px rgba(0,0,0,.35));z-index:3}
 .sparkle.s2{animation-delay:.9s}
 .sparkle.s3{animation-delay:1.7s}
 @keyframes sparkle{0%,100%{opacity:.2;transform:scale(.8) rotate(0)}50%{opacity:1;transform:scale(1.05) rotate(8deg)}}
-.hero-tag{position:absolute;top:6%;right:0%;background:#fff;border:1px solid var(--line);border-radius:100px;padding:9px 16px;box-shadow:var(--shadow-1);font-size:11.5px;font-weight:700;display:flex;align-items:center;gap:8px;color:var(--pink-deep);white-space:nowrap}
-@media(max-width:899px){
-  .hero-visual{flex-direction:column;gap:14px}
-  .hero-tag{position:static;order:2}
+/* value pills live on the collage itself, not as extra copy text */
+.tag{position:absolute;z-index:3;display:inline-flex;align-items:center;gap:6px;background:#fff;border-radius:100px;padding:6px 13px;font-size:10.5px;font-weight:700;color:#832729;white-space:nowrap;box-shadow:0 8px 18px rgba(0,0,0,.18)}
+.tag svg{flex-shrink:0}
+.tag-wrap{left:1%;top:-4%}
+.tag-note{right:-2%;top:20%}
+.tag-deliver{left:14%;bottom:-4%}
+@media(max-width:639px){
+  .tag{font-size:9.5px;padding:5px 11px}
+  .tag-wrap{left:0%;top:-3%}
+  .tag-note{right:0%;top:-3%;left:auto}
+  .tag-deliver{left:18%;bottom:-3%}
 }
 
 /* ============ category + recommender — tightened, one view ============ */
@@ -525,32 +555,35 @@ footer .socials svg{width:14px;height:14px}
 
 <!-- ============ HERO ============ -->
 <section class="hero">
-  <div class="container hero-grid">
-    <div class="hero-copy rv">
-      <p class="eyebrow">The Art of Gifting</p>
-      <h1>Gifts They'll <em>Never</em> Take Off.</h1>
-      <p class="hero-tagline">Find theirs in a few taps — wrapped in Mia's signature box, finished with a handwritten note, and at their door in days.</p>
-      <div class="hero-ctas">
-        <a href="#catrec" class="btn btn-primary">Shop The Edit</a>
-        <a href="#finder" class="btn btn-outline">Help Me Choose</a>
-      </div>
-    </div>
-    <div class="hero-visual rv">
-      <div class="gift-scene" aria-hidden="false">
-        <svg class="gift-ribbon-line" viewBox="0 0 640 556" fill="none" aria-hidden="true">
-          <path d="M40 380 C 180 300, 340 480, 600 260" stroke="#D14A61" stroke-width="2" stroke-dasharray="1 10" stroke-linecap="round" opacity=".55"/>
-        </svg>
-        <div class="gwin gwin-1"><img src="assets/editorial/hero-gift-frame.webp" alt="A ribboned Mia jewellery gift unwrapped, with a handwritten note that reads 'For my love'"></div>
-        <div class="gwin gwin-2"><img src="assets/products/M5I2GDY.webp" alt="Mia elegant cluster diamond gold necklace"></div>
-        <div class="gwin gwin-3"><img src="assets/products/3026HDW.webp" alt="Mia solar radiance diamond hoop earrings"></div>
-        <div class="gwin gwin-4"><img src="assets/products/M5I2FDW.webp" alt="Mia sculpted distinct tsavorite gold ring"></div>
-        <div class="gwin gwin-5"><img src="assets/products/IKD5BDG.webp" alt="Mia little sunshine gold bracelet"></div>
-        <svg class="sparkle s1" style="top:0%;left:0%" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
-        <svg class="sparkle s2" style="bottom:0%;right:2%" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
-      </div>
-      <div class="hero-tag">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V8H6a2 2 0 0 0-2 2v10h16v-4"/><path d="M2 12h20"/></svg>
-        Free gift wrap &amp; note
+  <div class="container">
+    <div class="hero-card">
+      <div class="hero-grid">
+        <div class="hero-copy rv">
+          <p class="eyebrow">The Art of Gifting</p>
+          <h1>Gifts They'll <em>Never</em> Take Off.</h1>
+          <p class="hero-tagline">Find theirs in a few taps — wrapped in Mia's signature box, finished with a handwritten note, and at their door in days.</p>
+          <div class="hero-ctas">
+            <a href="#finder" class="btn btn-outline">Help Me Choose</a>
+            <a href="#catrec" class="btn btn-gold">Shop Gold Coins</a>
+          </div>
+        </div>
+        <div class="hero-visual rv">
+          <div class="gift-scene" aria-hidden="false">
+            <svg class="gift-ribbon-line" viewBox="0 0 640 556" fill="none" aria-hidden="true">
+              <path d="M40 380 C 180 300, 340 480, 600 260" stroke="#fff" stroke-width="2" stroke-dasharray="1 10" stroke-linecap="round" opacity=".3"/>
+            </svg>
+            <div class="gwin gwin-1"><img src="assets/editorial/hero-gift-frame.webp" alt="A ribboned Mia jewellery gift unwrapped, with a handwritten note that reads 'For my love'"></div>
+            <div class="gwin gwin-2"><img src="assets/products/M5I2GDY.webp" alt="Mia elegant cluster diamond gold necklace"></div>
+            <div class="gwin gwin-3"><img src="assets/products/3026HDW.webp" alt="Mia solar radiance diamond hoop earrings"></div>
+            <div class="gwin gwin-4"><img src="assets/products/M5I2FDW.webp" alt="Mia sculpted distinct tsavorite gold ring"></div>
+            <div class="gwin gwin-5"><img src="assets/products/IKD5BDG.webp" alt="Mia little sunshine gold bracelet"></div>
+            <span class="tag tag-wrap"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V8H6a2 2 0 0 0-2 2v10h16v-4"/><path d="M2 12h20"/></svg>Free Gift Wrap</span>
+            <span class="tag tag-note"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M14 3v5h5M8 13h8M8 17h5"/></svg>Handwritten Note</span>
+            <span class="tag tag-deliver"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="14" height="11" rx="2"/><path d="M17 10h2.5a1 1 0 0 1 .9.55L22 13v4h-5"/><circle cx="7.5" cy="18.5" r="1.5"/><circle cx="16.5" cy="18.5" r="1.5"/></svg>Delivered On Your Chosen Day</span>
+            <svg class="sparkle s1" style="top:0%;left:0%" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
+            <svg class="sparkle s2" style="bottom:0%;right:2%" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
+          </div>
+        </div>
       </div>
     </div>
   </div>

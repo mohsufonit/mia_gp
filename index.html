@@ -94,13 +94,6 @@ h1,h2,h3,h4{margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:60
 .btn-sm{padding:9px 18px;font-size:11.5px}
 .btn-block{width:100%}
 
-/* ============ utility bar — thin, quiet ============ */
-.util-bar{background:var(--paper);border-bottom:1px solid var(--line);font-size:12px;color:var(--ink-2)}
-.util-inner{display:flex;align-items:center;justify-content:center;gap:26px;max-width:var(--max);margin:0 auto;padding:8px 24px;flex-wrap:wrap;font-weight:600}
-.util-item{display:flex;align-items:center;gap:7px;white-space:nowrap;color:var(--muted)}
-.util-item svg{color:var(--pink)}
-@media(max-width:640px){.util-item.hide-mob{display:none}}
-
 /* ============ header ============ */
 .site-header{background:#fff;position:sticky;top:0;z-index:90}
 .icon-btn{width:22px;height:22px;display:flex;align-items:center;justify-content:center;color:var(--ink-2);position:relative}
@@ -113,7 +106,7 @@ h1,h2,h3,h4{margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:60
 .header-top{background:#fff;border-bottom:1px solid var(--line)}
 .header-top-inner{display:flex;align-items:center;gap:20px;padding:14px 24px;max-width:var(--max);margin:0 auto}
 @media(min-width:1024px){.header-top-inner{padding:14px 48px}}
-.logo-mia{flex-shrink:0;width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#f0879c 0%,var(--pink) 55%,var(--pink-deep) 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(131,39,41,.2),inset 0 1px 0 rgba(255,255,255,.35);position:relative;overflow:hidden;text-decoration:none}
+.logo-mia{flex-shrink:0;width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#ff9ab3 0%,#d14a61 55%,#a3384b 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(163,56,75,.18),inset 0 1px 0 rgba(255,255,255,.35);position:relative;overflow:hidden;text-decoration:none}
 .logo-mia::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 25% 25%,rgba(255,255,255,.3) 0%,transparent 45%);pointer-events:none}
 .logo-mia-text{font-family:'Playfair Display',serif;font-style:italic;font-weight:600;font-size:22px;color:#fff;line-height:1;position:relative;z-index:2;text-shadow:0 2px 6px rgba(0,0,0,.18)}
 .header-search{display:none;flex:1;max-width:560px;align-items:center;background:#fff;border:1.5px solid var(--line-2);border-radius:100px;padding:4px 6px 4px 18px;transition:border-color .2s,box-shadow .2s}
@@ -142,7 +135,7 @@ h1,h2,h3,h4{margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:60
 .login-text{font-family:'Inter',sans-serif;font-size:13.5px;font-weight:600}
 
 /* ---- header nav: coral bar, category links ---- */
-.header-nav{display:none;background:linear-gradient(90deg,var(--pink) 0%,var(--pink-deep) 100%);color:#fff;overflow-x:auto}
+.header-nav{display:none;background:linear-gradient(90deg,#c44d67 0%,#b8425c 100%);color:#fff;overflow-x:auto}
 @media(min-width:1024px){.header-nav{display:block}}
 .header-nav::-webkit-scrollbar{display:none}
 .header-nav-inner{display:flex;align-items:center;justify-content:center;gap:30px;padding:12px 24px;max-width:var(--max);margin:0 auto;white-space:nowrap}
@@ -463,14 +456,6 @@ footer .socials svg{width:14px;height:14px}
 </style>
 </head>
 <body>
-
-<div class="util-bar">
-  <div class="util-inner">
-    <span class="util-item"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V8H6a2 2 0 0 0-2 2v10h16v-4"/><path d="M2 12h20"/></svg> Complimentary gift-wrap on every order</span>
-    <span class="util-item hide-mob"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4.5 8-11V5l-8-3-8 3v6c0 6.5 8 11 8 11Z"/></svg> Lifetime exchange, BIS hallmarked</span>
-    <span class="util-item">Free delivery in 3–5 days</span>
-  </div>
-</div>
 
 <header class="site-header">
   <div class="header-top">

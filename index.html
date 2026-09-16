@@ -53,7 +53,7 @@ body{
   margin:0;
   font-family:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   color:var(--ink);
-  background:var(--paper);
+  background:var(--cream);
   font-size:15.5px;
   line-height:1.6;
   -webkit-font-smoothing:antialiased;
@@ -304,8 +304,8 @@ h1,h2,h3,h4{margin:0;font-family:'Fraunces',Georgia,serif;font-weight:600;letter
 /* product card — follows the format from index-gifting-page.html:
    ribbon tag, wishlist heart, rating pill on image; price + tax note,
    name, karat/material pills, full-width Add to Bag button below */
-.pcard{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:box-shadow .25s var(--ease),transform .25s var(--ease);cursor:pointer;text-align:left;display:flex;flex-direction:column}
-.pcard:hover{box-shadow:0 16px 36px rgba(131,39,41,.12);transform:translateY(-3px)}
+.pcard{background:#fff;border:1px solid transparent;border-radius:16px;overflow:hidden;transition:box-shadow .25s var(--ease),transform .25s var(--ease),border-color .25s var(--ease);cursor:pointer;text-align:left;display:flex;flex-direction:column;box-shadow:0 1px 3px rgba(27,27,31,.06)}
+.pcard:hover{box-shadow:0 16px 36px rgba(131,39,41,.14);transform:translateY(-3px);border-color:var(--gold-line)}
 .pcard .pthumb{width:100%;aspect-ratio:1/1;background:var(--cream);position:relative;overflow:hidden}
 .pcard .pthumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s var(--ease)}
 .pcard:hover .pthumb img{transform:scale(1.05)}
@@ -432,15 +432,18 @@ h1,h2,h3,h4{margin:0;font-family:'Fraunces',Georgia,serif;font-weight:600;letter
 .cselect-opt:hover{background:var(--blush-2);color:var(--pink-deep)}
 .cselect-opt.selected{background:var(--blush);color:var(--pink-deep);font-weight:700}
 /* consistent 20px rhythm: divider -> title -> chips -> grid -> restart */
-.finder-result{display:none;margin-top:20px;padding-top:20px;border-top:1px dashed var(--line-2);text-align:left}
+.finder-result{display:none;margin-top:20px;padding-top:20px;border-top:1px dashed var(--line-2);text-align:center}
 .finder-result.show{display:block}
 .finder-result-title{font-family:'Fraunces',serif;font-size:18px;color:var(--pink-deep);margin-bottom:20px}
-.finder-cats{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.finder-cats{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:20px}
 .finder-cat-chip{padding:7px 15px;border-radius:100px;border:1.5px solid var(--line-2);font-size:12px;font-weight:700;color:var(--ink-2);transition:all .2s}
 .finder-cat-chip:hover{border-color:var(--pink)}
 .finder-cat-chip.active{background:var(--pink);border-color:var(--pink);color:#fff}
-#fr-grid{grid-template-columns:repeat(2,1fr)}
-@media(min-width:640px){#fr-grid{grid-template-columns:repeat(3,1fr)}}
+/* flex instead of grid so fewer-than-a-full-row results stay centered
+   as a group rather than left-packing into empty grid tracks */
+#fr-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}
+#fr-grid .pcard{width:calc(50% - 8px)}
+@media(min-width:640px){#fr-grid .pcard{width:calc(33.333% - 11px)}}
 .finder-restart-wrap{margin-top:20px;text-align:center}
 .finder-restart{display:inline-flex;align-items:center;gap:8px;padding:12px 26px;border-radius:100px;border:1.5px solid var(--line-2);font-size:12.5px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:var(--ink-2);transition:all .2s}
 .finder-restart:hover{border-color:var(--pink);color:var(--pink-deep);background:var(--blush-2)}
@@ -748,11 +751,11 @@ footer .socials svg{width:14px;height:14px}
 <!-- CRO: fallback path for visitors who skip the finder above — category chips
      keep the choice visual and low-effort, and the recommender sits in the same
      view so the "browse" path costs one glance, not a second page. -->
-<section class="band catrec sparkle-bg" id="catrec">
+<section class="band catrec" id="catrec">
   <div class="container">
     <div class="section-head rv">
       <div>
-        <p class="eyebrow">Shop By Category</p>
+        <p class="eyebrow eyebrow-spark">Shop By Category</p>
         <h2>Picked For Gifting</h2>
       </div>
       <a href="#" class="section-link">View All <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -794,7 +797,7 @@ footer .socials svg{width:14px;height:14px}
      same finder above, for visitors who already know "who" and don't want to
      fill a form. Clicking a tile pre-fills the finder and runs it instantly,
      so recipient/occasion/budget stay the single source of truth. -->
-<section class="band sparkle-bg" id="recipient">
+<section class="band" id="recipient">
   <div class="container">
     <div class="section-head rv">
       <div>
@@ -815,11 +818,11 @@ footer .socials svg{width:14px;height:14px}
      intent is captured, before price/occasion narrows it further) — birthstone
      and rashi jewellery carry a personalisation premium buyers rarely seek out
      on their own, so it needs to be surfaced, not just filterable. -->
-<section class="band meaning-section sparkle-bg sparkle-bg-dark">
+<section class="band meaning-section">
   <div class="container">
     <div class="section-head rv">
       <div>
-        <p class="eyebrow">Gifts With Meaning</p>
+        <p class="eyebrow eyebrow-spark">Gifts With Meaning</p>
         <h2>Made To Say Something</h2>
       </div>
     </div>
@@ -854,7 +857,7 @@ footer .socials svg{width:14px;height:14px}
      specifically (vs. a regular PLP) — surfaced after recipient/meaning so it
      narrows an already-warm visitor instead of front-loading a decision most
      visitors haven't made yet. -->
-<section class="band sparkle-bg">
+<section class="band">
   <div class="container">
     <div class="section-head rv">
       <div>
@@ -876,7 +879,7 @@ footer .socials svg{width:14px;height:14px}
      (finder, recipient, meaning, occasion) has had a chance to convert, so it
      only intercepts genuinely undecided visitors instead of short-circuiting
      product discovery too early. -->
-<section class="band sparkle-bg" id="giftcard">
+<section class="band" id="giftcard">
   <div class="container gcard-wrap">
     <div class="gcard-visual rv">
       <div class="gift-card-mock">
@@ -917,7 +920,7 @@ footer .socials svg{width:14px;height:14px}
       <img src="assets/editorial/hero-gift-frame.webp" alt="A Mia jewellery gift unwrapped with a handwritten note">
     </div>
     <div class="story-copy rv">
-      <p class="eyebrow">Our Philosophy</p>
+      <p class="eyebrow eyebrow-spark">Our Philosophy</p>
       <h2>Jewellery For The Everyday, And The Ones Worth Remembering.</h2>
       <p>Mia was built on a simple belief — fine jewellery shouldn't wait for a milestone. Every piece is designed for the modern, independent woman who buys for herself as readily as she buys for someone else, backed by the craft and certification of the House of Tanishq.</p>
       <div class="story-ctas">
@@ -931,10 +934,10 @@ footer .socials svg{width:14px;height:14px}
 <!-- CRO: social proof works as a final-mile trust signal, not a discovery tool —
      it sits after the shopping paths and right before the newsletter ask,
      reassuring visitors who are close to converting or about to leave. -->
-<section class="band band-cream band-line-top sparkle-bg">
+<section class="band band-cream band-line-top">
   <div class="container">
     <div class="section-head rv">
-      <div><p class="eyebrow">Loved By Gifters</p><h2>What 12,400 Gifters Said About Mia</h2></div>
+      <div><p class="eyebrow eyebrow-spark">Loved By Gifters</p><h2>What 12,400 Gifters Said About Mia</h2></div>
     </div>
     <div class="testi-grid rv">
       <div class="testi-card">
@@ -957,8 +960,8 @@ footer .socials svg{width:14px;height:14px}
 </section>
 
 <!-- ============ NEWSLETTER ============ -->
-<section class="newsletter sparkle-bg sparkle-bg-dark">
-  <p class="eyebrow" style="color:#e9a9b6;margin-bottom:14px">Join The World Of Mia</p>
+<section class="newsletter">
+  <p class="eyebrow eyebrow-spark" style="color:#e9a9b6;margin-bottom:14px">Join The World Of Mia</p>
   <h2>Gifting ideas, delivered.</h2>
   <p>Sign up for early access to new collections and gift edits picked for the occasions on your calendar.</p>
   <form class="nl-form" id="nl-form">

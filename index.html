@@ -102,24 +102,61 @@ h1,h2,h3,h4{margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:60
 @media(max-width:640px){.util-item.hide-mob{display:none}}
 
 /* ============ header ============ */
-.site-header{background:#fff;position:sticky;top:0;z-index:90;border-bottom:1px solid var(--line)}
-.header-inner{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:15px 24px;max-width:var(--max);margin:0 auto}
-@media(min-width:1024px){.header-inner{padding:16px 48px}}
-.logo{display:flex;flex-direction:column;align-items:center;line-height:1;flex-shrink:0}
-.logo-mark{font-family:'Playfair Display',serif;font-size:25px;font-weight:600;letter-spacing:.02em;color:var(--ink)}
-.logo-sub{font-size:8.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--pink);margin-top:2px;font-weight:700}
-.nav-main{display:none;align-items:center;gap:32px;font-size:13.5px;font-weight:600}
-@media(min-width:1024px){.nav-main{display:flex}}
-.nav-main a{position:relative;padding:6px 0;color:var(--ink-2)}
-.nav-main a:hover{color:var(--pink)}
-.nav-main a.active{color:var(--pink-deep)}
-.nav-main a.active::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:2px;background:var(--pink)}
-.header-actions{display:flex;align-items:center;gap:16px}
+.site-header{background:#fff;position:sticky;top:0;z-index:90}
 .icon-btn{width:22px;height:22px;display:flex;align-items:center;justify-content:center;color:var(--ink-2);position:relative}
 .icon-btn:hover{color:var(--pink)}
-.badge{position:absolute;top:-7px;right:-8px;background:var(--pink);color:#fff;font-size:9.5px;font-weight:800;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center}
 .burger{display:flex}
 @media(min-width:1024px){.burger{display:none}}
+.logo-mark{font-family:'Playfair Display',serif;font-size:25px;font-weight:600;letter-spacing:.02em;color:var(--ink)}
+
+/* ---- header top: logo + search + actions (structure from index-gifting-page.html) ---- */
+.header-top{background:#fff;border-bottom:1px solid var(--line)}
+.header-top-inner{display:flex;align-items:center;gap:20px;padding:14px 24px;max-width:var(--max);margin:0 auto}
+@media(min-width:1024px){.header-top-inner{padding:14px 48px}}
+.logo-mia{flex-shrink:0;width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#f0879c 0%,var(--pink) 55%,var(--pink-deep) 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(131,39,41,.2),inset 0 1px 0 rgba(255,255,255,.35);position:relative;overflow:hidden;text-decoration:none}
+.logo-mia::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 25% 25%,rgba(255,255,255,.3) 0%,transparent 45%);pointer-events:none}
+.logo-mia-text{font-family:'Playfair Display',serif;font-style:italic;font-weight:600;font-size:22px;color:#fff;line-height:1;position:relative;z-index:2;text-shadow:0 2px 6px rgba(0,0,0,.18)}
+.header-search{display:none;flex:1;max-width:560px;align-items:center;background:#fff;border:1.5px solid var(--line-2);border-radius:100px;padding:4px 6px 4px 18px;transition:border-color .2s,box-shadow .2s}
+@media(min-width:760px){.header-search{display:flex}}
+.header-search:focus-within{border-color:var(--pink);box-shadow:0 0 0 4px rgba(209,74,97,.08)}
+.header-search-btn,.header-cam-btn{background:transparent;border:none;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--pink-deep);flex-shrink:0}
+.header-search-btn svg,.header-cam-btn svg{width:18px;height:18px}
+.header-search-input{flex:1;border:none;outline:none;background:transparent;font-family:'Inter',sans-serif;font-size:13.5px;color:var(--ink);padding:8px 4px;width:100%;min-width:0}
+.header-search-input::placeholder{color:var(--muted-2)}
+.header-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:auto}
+.gold-price-pill{display:none;align-items:center;gap:8px;background:linear-gradient(135deg,#fff9e6 0%,#fff2b8 100%);border:1px solid #e6c964;color:#3a2a10;padding:7px 6px 7px 14px;border-radius:100px;font-size:12.5px;font-weight:600;text-decoration:none}
+@media(min-width:1150px){.gold-price-pill{display:inline-flex}}
+.gold-price-icon{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#ffe089 0%,#d4a72a 55%,#8b6914 100%);color:#fff}
+.gold-price-icon svg{width:13px;height:13px}
+.icon-btn-round{background:transparent;border:none;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:50%;cursor:pointer;color:var(--ink);position:relative}
+.icon-btn-round:hover{background:var(--blush-2)}
+.icon-btn-round svg{width:20px;height:20px}
+.icon-bag .bag-badge{position:absolute;top:2px;right:2px;background:var(--pink);color:#fff;font-size:10px;font-weight:700;min-width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;padding:0 3px}
+.header-divider{display:none;width:1px;height:26px;background:var(--line);margin:0 2px}
+@media(min-width:900px){.header-divider{display:block}}
+.header-login{display:none;align-items:center;gap:7px;text-decoration:none;color:var(--ink);padding:6px 10px;border-radius:100px}
+@media(min-width:900px){.header-login{display:inline-flex}}
+.header-login:hover{background:var(--blush-2)}
+.login-avatar{display:flex;align-items:center;justify-content:center;color:var(--ink)}
+.login-avatar svg{width:20px;height:20px}
+.login-text{font-family:'Inter',sans-serif;font-size:13.5px;font-weight:600}
+
+/* ---- header nav: coral bar, category links ---- */
+.header-nav{display:none;background:linear-gradient(90deg,var(--pink) 0%,var(--pink-deep) 100%);color:#fff;overflow-x:auto}
+@media(min-width:1024px){.header-nav{display:block}}
+.header-nav::-webkit-scrollbar{display:none}
+.header-nav-inner{display:flex;align-items:center;justify-content:center;gap:30px;padding:12px 24px;max-width:var(--max);margin:0 auto;white-space:nowrap}
+.header-nav a{color:#fff;text-decoration:none;font-family:'Inter',sans-serif;font-size:13.5px;font-weight:500;position:relative}
+.header-nav a:hover{opacity:.85}
+.header-nav a.active{font-weight:700}
+.header-nav a.active::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:2px;background:#fff;border-radius:2px}
+
+/* ---- crumb rail: quick-jump chips into this page's own sections ---- */
+.crumb-rail{display:flex;gap:10px;overflow-x:auto;padding:10px 24px;border-top:1px solid var(--line);-webkit-overflow-scrolling:touch}
+.crumb-rail::-webkit-scrollbar{display:none}
+@media(min-width:1024px){.crumb-rail{padding:10px 48px;justify-content:center}}
+.crumb{flex-shrink:0;padding:7px 16px;border-radius:100px;border:1px solid var(--line-2);font-size:12px;font-weight:700;color:var(--ink-2);white-space:nowrap;transition:all .2s}
+.crumb:hover{background:var(--pink);border-color:var(--pink);color:#fff}
 
 .mobile-menu{position:fixed;top:0;left:0;bottom:0;width:min(300px,82vw);background:#fff;z-index:220;box-shadow:16px 0 40px rgba(0,0,0,.18);transform:translateX(-100%);transition:transform .3s var(--ease);display:flex;flex-direction:column;padding:8px 8px 24px}
 .mobile-menu.show{transform:translateX(0)}
@@ -130,28 +167,54 @@ h1,h2,h3,h4{margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:60
 
 /* ============ hero — lighter, less pink ============ */
 .hero{position:relative;background:var(--paper)}
-.hero-grid{display:grid;grid-template-columns:1fr;align-items:center;gap:36px;padding:48px 0 40px;position:relative;z-index:2}
-@media(min-width:900px){.hero-grid{grid-template-columns:1.05fr .95fr;gap:24px;padding:60px 0 50px}}
-.hero-copy{max-width:500px}
+.hero-grid{display:grid;grid-template-columns:1fr;align-items:center;gap:36px;padding-top:20px;padding-bottom:36px;position:relative;z-index:2}
+@media(min-width:900px){.hero-grid{grid-template-columns:1.05fr .95fr;gap:24px;padding-top:32px;padding-bottom:50px}}
+.hero-copy{max-width:500px;order:2}
+.hero-visual{order:1}
+@media(min-width:900px){.hero-copy{order:1}.hero-visual{order:2}}
 .hero-copy .eyebrow{margin-bottom:16px}
 .hero-copy h1{font-size:clamp(32px,5vw,52px);color:var(--ink);margin:0 0 14px}
 .hero-copy h1 em{font-style:italic;color:var(--pink-deep)}
 .hero-tagline{font-size:16px;color:var(--muted);max-width:420px;margin:0 0 28px;line-height:1.65}
 .hero-ctas{display:flex;flex-wrap:wrap;gap:12px}
-.hero-visual{position:relative;display:flex;align-items:center;justify-content:center;min-height:320px}
-@media(min-width:900px){.hero-visual{min-height:420px}}
-.gift-scene{position:relative;width:100%;max-width:480px;aspect-ratio:1/1}
-.gwin{position:absolute;border-radius:14px;overflow:hidden;box-shadow:0 16px 34px rgba(27,27,31,.16),0 2px 8px rgba(0,0,0,.05);background-size:cover;background-position:center}
+.hero-visual{position:relative;display:flex;align-items:center;justify-content:center;min-height:360px}
+@media(min-width:900px){.hero-visual{min-height:520px}}
+/* Direction C — Layered Depth Stack: photos scattered at gentle angles like
+   an unwrapped gift table, tied together with a dotted ribbon line */
+.gift-scene{position:relative;width:100%;max-width:640px;aspect-ratio:1.15/1}
+.gift-ribbon-line{position:absolute;inset:0;width:100%;height:100%;z-index:0;overflow:visible}
+.gwin{position:absolute;border-radius:16px;overflow:hidden;box-shadow:0 18px 38px rgba(27,27,31,.16),0 2px 8px rgba(0,0,0,.06);border:5px solid #fff;z-index:1}
 .gwin img{width:100%;height:100%;object-fit:cover;display:block}
-.gwin-1{width:90%;height:69%;left:2%;bottom:2%;box-shadow:0 20px 40px rgba(131,39,41,.18),0 2px 8px rgba(0,0,0,.06);z-index:1}
-.gwin-2{width:38%;height:30%;right:0;bottom:26%;border:4px solid #fff;z-index:2}
-.gwin-3{width:32%;height:25%;left:18%;top:2%;border:4px solid #fff;z-index:2}
+.gwin-1{width:44%;height:64%;left:4%;top:3%;box-shadow:0 22px 44px rgba(131,39,41,.20),0 2px 8px rgba(0,0,0,.06);z-index:2;--base:-6deg;transform:rotate(var(--base));animation:floatA 7s ease-in-out infinite}
+.gwin-2{width:28%;height:36%;left:44%;top:0%;--base:-4deg;transform:rotate(var(--base));animation:floatB 6.4s ease-in-out infinite;animation-delay:.3s}
+.gwin-3{width:32%;height:38%;left:66%;top:30%;--base:5deg;transform:rotate(var(--base));animation:floatC 6s ease-in-out infinite;animation-delay:.9s}
+.gwin-4{width:30%;height:36%;left:2%;top:62%;--base:4deg;transform:rotate(var(--base));animation:floatD 6.8s ease-in-out infinite;animation-delay:1.4s}
+.gwin-5{width:32%;height:38%;left:40%;top:56%;--base:-3deg;transform:rotate(var(--base));animation:floatE 6.2s ease-in-out infinite;animation-delay:.6s}
+@keyframes floatA{0%,100%{transform:translateY(0) rotate(var(--base))}50%{transform:translateY(-8px) rotate(calc(var(--base) - 1deg))}}
+@keyframes floatB{0%,100%{transform:translateY(0) rotate(var(--base))}50%{transform:translateY(9px) rotate(calc(var(--base) + 1deg))}}
+@keyframes floatC{0%,100%{transform:translateY(0) rotate(var(--base))}50%{transform:translateY(-7px) rotate(calc(var(--base) - 1.2deg))}}
+@keyframes floatD{0%,100%{transform:translateY(0) rotate(var(--base))}50%{transform:translateY(8px) rotate(calc(var(--base) + 1.4deg))}}
+@keyframes floatE{0%,100%{transform:translateY(0) rotate(var(--base))}50%{transform:translateY(-9px) rotate(calc(var(--base) - 1deg))}}
+@media(prefers-reduced-motion:reduce){.gwin-1,.gwin-2,.gwin-3,.gwin-4,.gwin-5,.sparkle{animation:none!important}}
+/* mobile: the anchor photo moves to center-right and grows; the four
+   smaller photos ring it instead of stacking to its left */
+@media(max-width:639px){
+  .gift-scene{aspect-ratio:.92/1}
+  .gwin-1{left:30%;top:8%;width:60%;height:82%}
+  .gwin-2{left:0%;top:0%;width:32%;height:34%}
+  .gwin-3{left:0%;top:60%;width:32%;height:34%}
+  .gwin-4{left:76%;top:62%;width:24%;height:30%}
+  .gwin-5{left:72%;top:0%;width:26%;height:32%}
+}
 .sparkle{position:absolute;color:var(--pink);opacity:.9;animation:sparkle 2.6s ease-in-out infinite;filter:drop-shadow(0 1px 3px rgba(0,0,0,.35));z-index:3}
 .sparkle.s2{animation-delay:.9s}
 .sparkle.s3{animation-delay:1.7s}
 @keyframes sparkle{0%,100%{opacity:.2;transform:scale(.8) rotate(0)}50%{opacity:1;transform:scale(1.05) rotate(8deg)}}
-.hero-tag{position:absolute;top:6%;right:0%;background:#fff;border:1px solid var(--line);border-radius:100px;padding:9px 16px;box-shadow:var(--shadow-1);font-size:11.5px;font-weight:700;display:flex;align-items:center;gap:8px;color:var(--pink-deep)}
-@media(max-width:900px){.hero-tag{right:2%}}
+.hero-tag{position:absolute;top:6%;right:0%;background:#fff;border:1px solid var(--line);border-radius:100px;padding:9px 16px;box-shadow:var(--shadow-1);font-size:11.5px;font-weight:700;display:flex;align-items:center;gap:8px;color:var(--pink-deep);white-space:nowrap}
+@media(max-width:899px){
+  .hero-visual{flex-direction:column;gap:14px}
+  .hero-tag{position:static;order:2}
+}
 
 /* ============ category + recommender — tightened, one view ============ */
 .catrec{padding-top:8px}
@@ -165,7 +228,7 @@ h1,h2,h3,h4{margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:60
 .cat-chip span{font-size:12px;font-weight:600;color:var(--ink-2);white-space:nowrap}
 .cat-chip.active span{color:var(--pink-deep)}
 
-.rec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.rec-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;align-items:start}
 @media(min-width:640px){.rec-grid{grid-template-columns:repeat(3,1fr)}}
 @media(min-width:960px){.rec-grid{grid-template-columns:repeat(4,1fr)}}
 /* product card — follows the format from index-gifting-page.html:
@@ -182,13 +245,13 @@ h1,h2,h3,h4{margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:60
 .pcard .prating{position:absolute;bottom:10px;left:10px;background:#fff;padding:4px 9px;border-radius:100px;font-size:11px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(0,0,0,.08);z-index:2}
 .pcard .prating .star{color:#f2a01c;font-size:11px;line-height:1}
 .pcard .prating .sep{color:#d8d8d8;margin:0 1px}
-.pcard .pbody{padding:13px 14px 15px;display:flex;flex-direction:column;flex:1}
+.pcard .pbody{padding:12px 13px 13px;display:flex;flex-direction:column}
 .pcard .pprice{font-size:17px;font-weight:700;color:var(--ink);line-height:1.1}
-.pcard .ptax{font-size:10.5px;color:var(--muted);margin:3px 0 8px}
-.pcard h4{font-family:'Inter',sans-serif;font-weight:600;font-size:12.5px;margin-bottom:9px;color:var(--ink-2);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:32px}
-.pcard .ppills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:11px}
+.pcard .ptax{font-size:10.5px;color:var(--muted);margin:2px 0 7px}
+.pcard h4{font-family:'Inter',sans-serif;font-weight:600;font-size:12.5px;margin-bottom:8px;color:var(--ink-2);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pcard .ppills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
 .pcard .ppill{background:var(--blush-2);color:var(--pink-deep);padding:4px 9px;border-radius:6px;font-size:10px;font-weight:700;white-space:nowrap}
-.pcard .padd{margin-top:auto;width:100%;background:var(--pink);color:#fff;padding:10px 14px;border-radius:100px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;text-align:center;transition:background .2s}
+.pcard .padd{width:100%;background:var(--pink);color:#fff;padding:10px 14px;border-radius:100px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;text-align:center;transition:background .2s}
 .pcard:hover .padd{background:var(--pink-hover)}
 
 /* ============ trust marker strip — its own clearly separated band ============ */
@@ -262,6 +325,14 @@ h1,h2,h3,h4{margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:60
 .gc-form textarea{resize:vertical;min-height:60px}
 .gc-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
+/* ============ our philosophy — DY-style editorial spread ============ */
+.story-wrap{display:grid;grid-template-columns:1fr;gap:32px;align-items:center}
+@media(min-width:900px){.story-wrap{grid-template-columns:1fr 1fr;gap:56px}}
+.story-visual img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:var(--radius-lg);box-shadow:var(--shadow-2)}
+.story-copy h2{font-size:clamp(24px,3.2vw,34px);margin:14px 0 16px}
+.story-copy p{color:var(--muted);font-size:14.5px;line-height:1.7;max-width:460px;margin-bottom:26px}
+.story-ctas{display:flex;flex-wrap:wrap;gap:12px}
+
 /* ============ testimonials ============ */
 .testi-grid{display:grid;grid-template-columns:1fr;gap:14px}
 @media(min-width:760px){.testi-grid{grid-template-columns:repeat(3,1fr)}}
@@ -279,14 +350,29 @@ h1,h2,h3,h4{margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:60
 .nl-form input::placeholder{color:rgba(255,255,255,.45)}
 .nl-form button{padding:13px 22px;background:var(--pink);color:#fff;font-weight:700;font-size:12px;letter-spacing:.03em;text-transform:uppercase}
 
-/* ============ footer ============ */
-footer{background:#fff;border-top:1px solid var(--line);padding:48px 0 22px;font-size:13px;color:var(--muted)}
-.foot-grid{display:grid;grid-template-columns:1fr;gap:28px;margin-bottom:34px}
-@media(min-width:760px){.foot-grid{grid-template-columns:1.4fr repeat(3,1fr)}}
-.foot-grid h5{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink);margin-bottom:14px}
-.foot-grid ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
-.foot-grid a:hover{color:var(--pink-deep)}
-.foot-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding-top:20px;border-top:1px solid var(--line);font-size:12px}
+/* ============ footer — structure + tone from index-gifting-page.html ============ */
+footer{position:relative;overflow:hidden;background:var(--pink);color:#fff;padding:56px 0 26px}
+footer::after{content:"Mia";position:absolute;right:-2%;bottom:-34%;font-family:'Playfair Display',serif;font-style:italic;font-weight:600;font-size:min(40vw,520px);line-height:1;color:rgba(255,255,255,.08);pointer-events:none}
+.foot-grid{position:relative;z-index:2;display:grid;grid-template-columns:repeat(2,1fr);gap:32px 24px;margin-bottom:34px}
+@media(min-width:760px){.foot-grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1100px){.foot-grid{grid-template-columns:repeat(4,1fr) 1.2fr;gap:28px}}
+.foot-h{font-family:'Playfair Display',serif;font-size:16px;font-weight:600;color:#fff;margin-bottom:15px}
+.foot-h-gap{margin-top:26px}
+.foot-links{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px}
+.foot-links a{font-size:13.5px;color:rgba(255,255,255,.88)}
+.foot-links a:hover{color:#fff;text-decoration:underline;text-underline-offset:3px}
+.foot-app .foot-h{max-width:260px;line-height:1.3}
+.foot-qr{width:96px;height:96px;background:#fff;padding:0;margin-bottom:22px;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.foot-qr::before{content:"";width:72px;height:72px;background-image:repeating-linear-gradient(90deg,#1B1B1F 0 4px,#fff 4px 8px),repeating-linear-gradient(#1B1B1F 0 4px,#fff 4px 8px);background-blend-mode:multiply}
+.foot-social-row,.foot-currency-row{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.foot-social-label{font-family:'Inter',sans-serif;font-size:13px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.04em}
+footer .socials{display:flex;gap:9px}
+footer .socials a{width:28px;height:28px;border-radius:50%;background:#fff;color:var(--pink);display:flex;align-items:center;justify-content:center}
+footer .socials svg{width:14px;height:14px}
+.foot-currency{display:flex;align-items:center;border:1px solid #fff;border-radius:100px;padding:3px}
+.foot-cur{background:transparent;color:#fff;border:none;border-radius:100px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer}
+.foot-cur.active{background:#fff;color:var(--pink)}
+.foot-bottom{position:relative;z-index:2;padding-top:22px;border-top:1px solid rgba(255,255,255,.25);font-size:12.5px;color:rgba(255,255,255,.9)}
 
 /* ============ toast ============ */
 .toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:13px 24px;border-radius:100px;font-size:13px;font-weight:600;box-shadow:var(--shadow-2);opacity:0;pointer-events:none;transition:all .35s var(--ease);z-index:400}
@@ -387,30 +473,55 @@ footer{background:#fff;border-top:1px solid var(--line);padding:48px 0 22px;font
 </div>
 
 <header class="site-header">
-  <div class="header-inner">
-    <button class="burger icon-btn" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-    </button>
-    <a href="#" class="logo">
-      <span class="logo-mark">Mia</span>
-      <span class="logo-sub">by Tanishq</span>
-    </a>
-    <nav class="nav-main">
+  <div class="header-top">
+    <div class="header-top-inner">
+      <button class="burger icon-btn" id="menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <a href="#" class="logo-mia" aria-label="Mia by Tanishq">
+        <span class="logo-mia-text">Mia</span>
+      </a>
+      <div class="header-search">
+        <button class="header-search-btn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5" stroke-linecap="round"/></svg></button>
+        <input type="text" placeholder="Search for gifts, rings, necklaces…" class="header-search-input">
+        <button class="header-cam-btn" aria-label="Visual search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l2-3h4l2 3" stroke-linejoin="round"/><circle cx="12" cy="13" r="3"/></svg></button>
+      </div>
+      <div class="header-actions">
+        <a href="#" class="gold-price-pill">
+          <span>Gold Price</span>
+          <span class="gold-price-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.5C7.3 3.5 3.5 7.3 3.5 12S7.3 20.5 12 20.5s8.5-3.8 8.5-8.5S16.7 3.5 12 3.5zm2.8 5.8h-3.4l-.6 2.1h4l-.5 1.6h-3.9l1.2 4.2h-1.9l-1.1-4.2H7.4l.5-1.6h1.7l.6-2.1H7.4L8 7.8h8.4l-.6 1.5z"/></svg></span>
+        </a>
+        <button class="icon-btn-round" aria-label="Store locator"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l1-4h16l1 4M4 9v11h7v-5h2v5h7V9M4 9h16M8 9v3M12 9v3M16 9v3" stroke-linejoin="round"/></svg></button>
+        <button class="icon-btn-round" aria-label="Wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.5-9.5-9c-1.5-2.7 0-6.5 3.5-7s6 3 6 3 2.5-3.5 6-3 5 4.3 3.5 7c-2.5 4.5-9.5 9-9.5 9z" stroke-linejoin="round"/></svg></button>
+        <button class="icon-btn-round icon-bag" id="bag-open" aria-label="Bag">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2l1.5 3M18 2l-1.5 3M4 6h16l-1.5 15H5.5L4 6zM9 10a3 3 0 006 0" stroke-linejoin="round" stroke-linecap="round"/></svg>
+          <span class="bag-badge" id="bag-count" style="display:none">0</span>
+        </button>
+        <div class="header-divider"></div>
+        <a href="#" class="header-login">
+          <span class="login-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></span>
+          <span class="login-text">Login</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <nav class="header-nav">
+    <div class="header-nav-inner">
       <a href="#">Rings</a>
       <a href="#">Earrings</a>
       <a href="#">Necklaces</a>
-      <a href="#">Bracelets</a>
-      <a href="#" class="active">Gifting</a>
+      <a href="#">Bracelets &amp; Bangles</a>
+      <a href="#">Mangalsutra</a>
       <a href="#">Collections</a>
-    </nav>
-    <div class="header-actions">
-      <button class="icon-btn" aria-label="Search"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
-      <button class="icon-btn" aria-label="Wishlist"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg></button>
-      <button class="icon-btn" id="bag-open" aria-label="Bag">
-        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/></svg>
-        <span class="badge" id="bag-count" style="display:none">0</span>
-      </button>
+      <a href="#" class="active">Gifting</a>
     </div>
+  </nav>
+  <div class="crumb-rail">
+    <a href="#finder" class="crumb">Gift Finder</a>
+    <a href="#recipient" class="crumb">Shop By Recipient</a>
+    <a href="#catrec" class="crumb">Best Sellers</a>
+    <a href="#giftcard" class="crumb">Mia Gift Card</a>
+    <a href="#story" class="crumb">Our Story</a>
   </div>
 </header>
 
@@ -441,11 +552,16 @@ footer{background:#fff;border-top:1px solid var(--line);padding:48px 0 22px;font
     </div>
     <div class="hero-visual rv">
       <div class="gift-scene" aria-hidden="false">
+        <svg class="gift-ribbon-line" viewBox="0 0 640 556" fill="none" aria-hidden="true">
+          <path d="M40 380 C 180 300, 340 480, 600 260" stroke="#D14A61" stroke-width="2" stroke-dasharray="1 10" stroke-linecap="round" opacity=".55"/>
+        </svg>
         <div class="gwin gwin-1"><img src="assets/editorial/hero-gift-frame.webp" alt="A ribboned Mia jewellery gift unwrapped, with a handwritten note that reads 'For my love'"></div>
-        <div class="gwin gwin-2"><img src="assets/products/3026HDW.webp" alt="Mia solar radiance diamond hoop earrings"></div>
-        <div class="gwin gwin-3"><img src="assets/products/M5I2GDY.webp" alt="Mia elegant cluster diamond gold necklace"></div>
-        <svg class="sparkle s1" style="top:2%;left:0%" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
-        <svg class="sparkle s2" style="bottom:2%;right:0%" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
+        <div class="gwin gwin-2"><img src="assets/products/M5I2GDY.webp" alt="Mia elegant cluster diamond gold necklace"></div>
+        <div class="gwin gwin-3"><img src="assets/products/3026HDW.webp" alt="Mia solar radiance diamond hoop earrings"></div>
+        <div class="gwin gwin-4"><img src="assets/products/M5I2FDW.webp" alt="Mia sculpted distinct tsavorite gold ring"></div>
+        <div class="gwin gwin-5"><img src="assets/products/IKD5BDG.webp" alt="Mia little sunshine gold bracelet"></div>
+        <svg class="sparkle s1" style="top:0%;left:0%" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
+        <svg class="sparkle s2" style="bottom:0%;right:2%" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5z"/></svg>
       </div>
       <div class="hero-tag">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V8H6a2 2 0 0 0-2 2v10h16v-4"/><path d="M2 12h20"/></svg>
@@ -455,7 +571,55 @@ footer{background:#fff;border-top:1px solid var(--line);padding:48px 0 22px;font
   </div>
 </section>
 
-<!-- ============ CATEGORY + RECOMMENDER — tightened into one view ============ -->
+<!-- CRO: a gifting-page visitor rarely knows what to buy — a 3-question finder
+     placed directly after the hero converts that uncertainty into a shortlist
+     before they have to self-navigate categories. This is the primary path;
+     category browsing below is the fallback for visitors who skip it. -->
+<section class="band band-cream band-line" id="finder">
+  <div class="container" style="display:grid;grid-template-columns:1fr;gap:32px">
+    <div class="rv" style="max-width:560px">
+      <p class="eyebrow">Start Here</p>
+      <h2 style="font-size:clamp(22px,3vw,30px);margin-bottom:10px">Tell Us Three Things. We'll Curate The Rest.</h2>
+      <p style="color:var(--muted);font-size:14px">A 30-second finder that turns "I have no idea what to get them" into a shortlist worth wrapping — no scrolling required.</p>
+    </div>
+    <div class="rv" style="background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);padding:26px;max-width:900px">
+      <form id="finder-form" style="display:grid;grid-template-columns:1fr;gap:14px">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px">
+          <div>
+            <label style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:7px">Who's it for</label>
+            <select id="f-relation" required style="width:100%;padding:12px 13px;border:1.5px solid var(--line-2);border-radius:8px;font-size:13.5px">
+              <option value="" disabled selected>Select</option>
+              <option>Her</option><option>Him</option><option>Parent</option><option>Bestie</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:7px">The occasion</label>
+            <select id="f-occasion" required style="width:100%;padding:12px 13px;border:1.5px solid var(--line-2);border-radius:8px;font-size:13.5px">
+              <option value="" disabled selected>Select</option>
+              <option>Birthday</option><option>Anniversary</option><option>Wedding</option><option>Just Because</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:7px">Your budget</label>
+            <select id="f-budget" required style="width:100%;padding:12px 13px;border:1.5px solid var(--line-2);border-radius:8px;font-size:13.5px">
+              <option value="" disabled selected>Select</option>
+              <option>Under ₹15,000</option><option>₹15,000 – ₹35,000</option><option>₹35,000+</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Find Their Gift</button>
+      </form>
+      <div id="finder-result" style="display:none;margin-top:20px;padding-top:20px;border-top:1px dashed var(--line-2)">
+        <p style="font-family:'Playfair Display',serif;font-size:18px;color:var(--pink-deep);margin-bottom:14px" id="fr-title"></p>
+        <div class="rec-grid" id="fr-grid"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CRO: fallback path for visitors who skip the finder above — category chips
+     keep the choice visual and low-effort, and the recommender sits in the same
+     view so the "browse" path costs one glance, not a second page. -->
 <section class="band catrec band-line-top" id="catrec">
   <div class="container">
     <div class="section-head rv">
@@ -474,7 +638,9 @@ footer{background:#fff;border-top:1px solid var(--line);padding:48px 0 22px;font
   </div>
 </section>
 
-<!-- ============ TRUST STRIP — its own clearly separated band ============ -->
+<!-- CRO: reassurance sits right after the first product exposure, not buried in
+     the footer — purity/exchange/delivery doubts are what stall an add-to-bag
+     on a gifting purchase, so they're answered the moment products appear. -->
 <section class="trust-strip band-tight">
   <div class="container trust-grid">
     <div class="trust-item">
@@ -496,25 +662,31 @@ footer{background:#fff;border-top:1px solid var(--line);padding:48px 0 22px;font
   </div>
 </section>
 
-<!-- ============ GIFT BY RECIPIENT ============ -->
+<!-- CRO: NOT a second decision surface — this is a one-tap shortcut into the
+     same finder above, for visitors who already know "who" and don't want to
+     fill a form. Clicking a tile pre-fills the finder and runs it instantly,
+     so recipient/occasion/budget stay the single source of truth. -->
 <section class="band" id="recipient">
   <div class="container">
     <div class="section-head rv">
       <div>
-        <p class="eyebrow">Who's It For</p>
-        <h2>Gifts By Recipient</h2>
+        <p class="eyebrow">Already Know Who?</p>
+        <h2>Skip Straight To Their Picks</h2>
       </div>
     </div>
     <div class="recipient-grid rv">
-      <a href="#catrec" class="recipient-card rc-1"><h4>For Her</h4><span>Shop Now <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-      <a href="#catrec" class="recipient-card rc-2"><h4>For Him</h4><span>Shop Now <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-      <a href="#catrec" class="recipient-card rc-3"><h4>For Parents</h4><span>Shop Now <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-      <a href="#catrec" class="recipient-card rc-4"><h4>For Bestie</h4><span>Shop Now <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+      <a href="#finder" class="recipient-card rc-1" data-relation="Her"><h4>For Her</h4><span>Get Picks <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+      <a href="#finder" class="recipient-card rc-2" data-relation="Him"><h4>For Him</h4><span>Get Picks <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+      <a href="#finder" class="recipient-card rc-3" data-relation="Parent"><h4>For Parents</h4><span>Get Picks <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+      <a href="#finder" class="recipient-card rc-4" data-relation="Bestie"><h4>For Bestie</h4><span>Get Picks <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
     </div>
   </div>
 </section>
 
-<!-- ============ GIFTS WITH MEANING ============ -->
+<!-- CRO: an emotional, high-margin upsell moment placed mid-page (after basic
+     intent is captured, before price/occasion narrows it further) — birthstone
+     and rashi jewellery carry a personalisation premium buyers rarely seek out
+     on their own, so it needs to be surfaced, not just filterable. -->
 <section class="band meaning-section">
   <div class="container">
     <div class="section-head rv">
@@ -550,7 +722,10 @@ footer{background:#fff;border-top:1px solid var(--line);padding:48px 0 22px;font
   </div>
 </section>
 
-<!-- ============ GIFT BY OCCASION ============ -->
+<!-- CRO: occasion is the strongest purchase trigger for a gifting page
+     specifically (vs. a regular PLP) — surfaced after recipient/meaning so it
+     narrows an already-warm visitor instead of front-loading a decision most
+     visitors haven't made yet. -->
 <section class="band">
   <div class="container">
     <div class="section-head rv">
@@ -569,52 +744,11 @@ footer{background:#fff;border-top:1px solid var(--line);padding:48px 0 22px;font
   </div>
 </section>
 
-<!-- ============ GIFT FINDER ============ -->
-<section class="band band-cream band-line" id="finder">
-  <div class="container" style="display:grid;grid-template-columns:1fr;gap:32px">
-    <div class="rv" style="max-width:560px">
-      <p class="eyebrow">Not Sure Where To Start?</p>
-      <h2 style="font-size:clamp(22px,3vw,30px);margin-bottom:10px">Tell Us Three Things. We'll Curate The Rest.</h2>
-      <p style="color:var(--muted);font-size:14px">A 30-second finder that turns "I have no idea what to get them" into a shortlist worth wrapping.</p>
-    </div>
-    <div class="rv" style="background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);padding:26px;max-width:640px">
-      <form id="finder-form" style="display:grid;grid-template-columns:1fr;gap:14px">
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px">
-          <div>
-            <label style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:7px">Who's it for</label>
-            <select id="f-relation" required style="width:100%;padding:12px 13px;border:1.5px solid var(--line-2);border-radius:8px;font-size:13.5px">
-              <option value="" disabled selected>Select</option>
-              <option>Her</option><option>Him</option><option>Parent</option><option>Bestie</option>
-            </select>
-          </div>
-          <div>
-            <label style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:7px">The occasion</label>
-            <select id="f-occasion" required style="width:100%;padding:12px 13px;border:1.5px solid var(--line-2);border-radius:8px;font-size:13.5px">
-              <option value="" disabled selected>Select</option>
-              <option>Birthday</option><option>Anniversary</option><option>Wedding</option><option>Just Because</option>
-            </select>
-          </div>
-          <div>
-            <label style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:7px">Your budget</label>
-            <select id="f-budget" required style="width:100%;padding:12px 13px;border:1.5px solid var(--line-2);border-radius:8px;font-size:13.5px">
-              <option value="" disabled selected>Select</option>
-              <option>Under ₹15,000</option><option>₹15,000 – ₹35,000</option><option>₹35,000+</option>
-            </select>
-          </div>
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">Find Their Gift</button>
-      </form>
-      <div id="finder-result" style="display:none;margin-top:18px;padding-top:18px;border-top:1px dashed var(--line-2)">
-        <p style="font-family:'Playfair Display',serif;font-size:18px;color:var(--pink-deep);margin-bottom:4px" id="fr-title"></p>
-        <p style="font-size:12.5px;color:var(--muted);margin-bottom:14px" id="fr-sub"></p>
-        <div style="display:flex;gap:8px;flex-wrap:wrap" id="fr-chips"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ GIFT CARD ============ -->
-<section class="band">
+<!-- CRO: the "can't decide" escape hatch — placed after every browse path
+     (finder, recipient, meaning, occasion) has had a chance to convert, so it
+     only intercepts genuinely undecided visitors instead of short-circuiting
+     product discovery too early. -->
+<section class="band" id="giftcard">
   <div class="container gcard-wrap">
     <div class="gcard-visual rv">
       <div class="gift-card-mock">
@@ -643,7 +777,32 @@ footer{background:#fff;border-top:1px solid var(--line);padding:48px 0 22px;font
   </div>
 </section>
 
-<!-- ============ TESTIMONIALS ============ -->
+<!-- ============ OUR PHILOSOPHY — editorial brand-story spread, structurally
+     cloned from David Yurman's "Sybil and David Yurman: Artists and Jewelers"
+     monograph section (asymmetric image + eyebrow + headline + copy + two CTAs) -->
+<!-- CRO: a brand-trust close before the final testimonial/newsletter push —
+     visitors this deep are evaluating the brand, not just a product; this
+     converts that evaluation into confidence rather than adding new choices. -->
+<section class="band story-section" id="story">
+  <div class="container story-wrap">
+    <div class="story-visual rv">
+      <img src="assets/editorial/hero-gift-frame.webp" alt="A Mia jewellery gift unwrapped with a handwritten note">
+    </div>
+    <div class="story-copy rv">
+      <p class="eyebrow">Our Philosophy</p>
+      <h2>Jewellery For The Everyday, And The Ones Worth Remembering.</h2>
+      <p>Mia was built on a simple belief — fine jewellery shouldn't wait for a milestone. Every piece is designed for the modern, independent woman who buys for herself as readily as she buys for someone else, backed by the craft and certification of the House of Tanishq.</p>
+      <div class="story-ctas">
+        <a href="#" class="btn btn-outline">Our Story</a>
+        <a href="#catrec" class="btn btn-primary">Shop New Arrivals</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CRO: social proof works as a final-mile trust signal, not a discovery tool —
+     it sits after the shopping paths and right before the newsletter ask,
+     reassuring visitors who are close to converting or about to leave. -->
 <section class="band band-cream band-line-top">
   <div class="container">
     <div class="section-head rv">
@@ -683,27 +842,65 @@ footer{background:#fff;border-top:1px solid var(--line);padding:48px 0 22px;font
 <footer>
   <div class="container">
     <div class="foot-grid">
-      <div>
-        <span class="logo-mark" style="font-size:21px">Mia</span>
-        <p style="margin-top:12px;max-width:260px;font-size:13px">Fine jewellery for the everyday, and the ones worth remembering. A Tata Enterprise.</p>
+      <div class="foot-col">
+        <div class="foot-h">Jewellery</div>
+        <ul class="foot-links">
+          <li><a href="#">Rings</a></li><li><a href="#">Necklaces</a></li><li><a href="#">Earrings</a></li>
+          <li><a href="#">Bracelets</a></li><li><a href="#">Bangles</a></li><li><a href="#">Chains</a></li>
+          <li><a href="#">Mangalsutra</a></li><li><a href="#">Pendants</a></li><li><a href="#">Gold</a></li>
+        </ul>
       </div>
-      <div>
-        <h5>Need Help</h5>
-        <ul><li><a href="#">FAQs</a></li><li><a href="#">Shipping &amp; Returns</a></li><li><a href="#">Gift Cards</a></li><li><a href="#">Store Locator</a></li></ul>
+      <div class="foot-col">
+        <div class="foot-h">Gifting</div>
+        <ul class="foot-links">
+          <li><a href="#finder">Gift Finder</a></li><li><a href="#recipient">Shop By Recipient</a></li>
+          <li><a href="#giftcard">Mia Gift Card</a></li><li><a href="#story">Our Story</a></li>
+          <li><a href="#catrec">Best Sellers</a></li>
+        </ul>
       </div>
-      <div>
-        <h5>Services</h5>
-        <ul><li><a href="#">Book An Appointment</a></li><li><a href="#">Lifetime Exchange</a></li><li><a href="#">BIS Hallmark</a></li></ul>
+      <div class="foot-col">
+        <div class="foot-h">Trending</div>
+        <ul class="foot-links">
+          <li><a href="#">Gifting Range</a></li><li><a href="#giftcard">Gift Cards</a></li><li><a href="#">Gold Exchange Program</a></li>
+        </ul>
+        <div class="foot-h foot-h-gap">Information</div>
+        <ul class="foot-links">
+          <li><a href="#">About Us</a></li><li><a href="#">Blog</a></li><li><a href="#">Help &amp; FAQs</a></li>
+          <li><a href="#">Legal Policies</a></li><li><a href="#">Privacy Notice</a></li>
+        </ul>
       </div>
-      <div>
-        <h5>Company</h5>
-        <ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li><li><a href="#">Contact Us</a></li></ul>
+      <div class="foot-col">
+        <div class="foot-h">Customer Service</div>
+        <ul class="foot-links">
+          <li><a href="#">Delivery Information</a></li><li><a href="#">Track Your Order</a></li>
+          <li><a href="#">Returns</a></li><li><a href="#">Find A Store</a></li><li><a href="#">Lifetime Exchange Policy</a></li>
+        </ul>
+        <div class="foot-h foot-h-gap">Contact Us</div>
+        <ul class="foot-links">
+          <li><a href="#">1800-266-0123</a></li><li><a href="#">Write To Us</a></li><li><a href="#">Chat With Us</a></li>
+        </ul>
+      </div>
+      <div class="foot-col foot-app">
+        <div class="foot-h">Download the Mia app for exclusive offers!</div>
+        <div class="foot-qr" aria-label="App download QR code"></div>
+        <div class="foot-social-row">
+          <span class="foot-social-label">Social</span>
+          <div class="socials">
+            <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="3.6"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+            <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M4 4h3.6l4.3 5.9L16.7 4H20l-6.3 8.1L20.4 20h-3.6l-4.6-6.2L7 20H3.7l6.6-8.4z"/></svg></a>
+            <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.3-1.5 1.6-1.5h1.6V3.6c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1v2.3H7.6V13h2.7v8z"/></svg></a>
+          </div>
+        </div>
+        <div class="foot-currency-row">
+          <span class="foot-social-label">Currency</span>
+          <div class="foot-currency">
+            <button class="foot-cur active" type="button">INR(₹)</button>
+            <button class="foot-cur" type="button">USD($)</button>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="foot-bottom">
-      <span>© 2026 Mia by Tanishq. All rights reserved.</span>
-      <span>Privacy Policy · Terms Of Use</span>
-    </div>
+    <div class="foot-bottom">© 2026 Titan Company Limited. All Rights Reserved. Mia by Tanishq — A Tata Enterprise.</div>
   </div>
 </footer>
 
@@ -850,10 +1047,10 @@ footer{background:#fff;border-top:1px solid var(--line);padding:48px 0 22px;font
       <span>${c.label}</span>
     </button>`).join('');
 
-  const recGrid = document.getElementById('rec-grid');
-  function renderRec(catKey){
-    const items = catKey==='all' ? PRODUCTS : PRODUCTS.filter(p=>p.cat===catKey);
-    recGrid.innerHTML = items.map(p=>`
+  // shared card renderer — used by the recommender grid AND the gift finder
+  // results, so both surfaces are always visually and behaviourally identical
+  function productCardHTML(p){
+    return `
       <button class="pcard" data-code="${p.code}">
         <div class="pthumb">
           <span class="pribbon">${p.tag}</span>
@@ -870,10 +1067,19 @@ footer{background:#fff;border-top:1px solid var(--line);padding:48px 0 22px;font
           <div class="ppills"><span class="ppill">${p.kt}</span><span class="ppill">${p.metal}</span></div>
           <span class="padd">Add To Bag</span>
         </div>
-      </button>`).join('');
-    recGrid.querySelectorAll('.pcard').forEach(card=>{
+      </button>`;
+  }
+  function wireCards(container){
+    container.querySelectorAll('.pcard').forEach(card=>{
       card.addEventListener('click', ()=> openQuickView(card.dataset.code));
     });
+  }
+
+  const recGrid = document.getElementById('rec-grid');
+  function renderRec(catKey){
+    const items = catKey==='all' ? PRODUCTS : PRODUCTS.filter(p=>p.cat===catKey);
+    recGrid.innerHTML = items.map(productCardHTML).join('');
+    wireCards(recGrid);
   }
   renderRec('all');
 
@@ -1024,23 +1230,74 @@ footer{background:#fff;border-top:1px solid var(--line);padding:48px 0 22px;font
     });
   });
 
-  // ---- gift finder ----
-  document.getElementById('finder-form').addEventListener('submit', (e)=>{
-    e.preventDefault();
-    const rel = document.getElementById('f-relation').value;
-    const occ = document.getElementById('f-occasion').value;
-    const bud = document.getElementById('f-budget').value;
+  // ---- gift finder — genuinely filters the real catalogue, not just display copy ----
+  // recipient = hard filter (which categories are even relevant to them)
+  const RELATION_CATS = {
+    Her:['necklaces','earrings','rings'],
+    Him:['chains','rings'],
+    Parent:['chains','bracelets'],
+    Bestie:['bracelets','earrings']
+  };
+  // occasion = soft preference (ranks matching categories first, never excludes)
+  const OCCASION_CATS = {
+    Birthday:['earrings','bracelets'],
+    Anniversary:['necklaces','rings'],
+    Wedding:['rings','necklaces'],
+    'Just Because':['bracelets','chains']
+  };
+  // budget = hard filter on real price
+  const BUDGET_RANGE = {
+    'Under ₹15,000':[0,15000],
+    '₹15,000 – ₹35,000':[15000,35000],
+    '₹35,000+':[35000,Infinity]
+  };
+
+  function runFinder(rel, occ, bud){
     const result = document.getElementById('finder-result');
-    document.getElementById('fr-title').textContent = `For ${rel}, this ${occ.toLowerCase()} — start here.`;
-    document.getElementById('fr-sub').textContent = `Curated within ${bud}, picked for the occasion.`;
-    const chipSets = {
-      Her:['Necklaces','Studs','Bracelets'], Him:['Chains','Rings','Bracelets'],
-      Parent:['Chains','Classic Studs','Bracelets'], Bestie:['Bracelets','Studs','Necklaces']
-    };
-    const chips = chipSets[rel] || ['Necklaces','Rings','Bracelets'];
-    document.getElementById('fr-chips').innerHTML = chips.map(c=>`<span style="padding:8px 16px;border-radius:100px;background:var(--blush);color:var(--pink-deep);font-size:12.5px;font-weight:700">${c}</span>`).join('');
+    const grid = document.getElementById('fr-grid');
+    const cats = RELATION_CATS[rel] || null;
+    const range = BUDGET_RANGE[bud] || null;
+    const occPref = OCCASION_CATS[occ] || [];
+
+    let pool = PRODUCTS.filter(p => !cats || cats.includes(p.cat));
+    let priced = range ? pool.filter(p => p.price >= range[0] && p.price < range[1]) : pool;
+    // relax budget first if it kills the result, then relax recipient — always show something
+    let final = priced.length ? priced : pool;
+    if(!final.length) final = PRODUCTS;
+
+    final = final.slice().sort((a,b)=>{
+      const aPref = occPref.includes(a.cat) ? 0 : 1;
+      const bPref = occPref.includes(b.cat) ? 0 : 1;
+      if(aPref !== bPref) return aPref - bPref;
+      return b.r - a.r;
+    }).slice(0, 6);
+
+    document.getElementById('fr-title').textContent = `Curated for ${rel.toLowerCase()}, this ${occ.toLowerCase()}, ${priced.length ? 'within ' + bud.toLowerCase() : 'closest to ' + bud.toLowerCase()}`;
+    grid.innerHTML = final.map(productCardHTML).join('');
+    wireCards(grid);
     result.style.display = 'block';
     result.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+
+  document.getElementById('finder-form').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    runFinder(
+      document.getElementById('f-relation').value,
+      document.getElementById('f-occasion').value,
+      document.getElementById('f-budget').value
+    );
+  });
+
+  // recipient tiles are a quick-entry into the SAME finder, not a separate
+  // decision surface — they pre-fill the form and run it immediately
+  document.querySelectorAll('.recipient-card[data-relation]').forEach(card=>{
+    card.addEventListener('click', (e)=>{
+      e.preventDefault();
+      document.getElementById('f-relation').value = card.dataset.relation;
+      document.getElementById('f-occasion').value = 'Birthday';
+      document.getElementById('f-budget').value = '₹15,000 – ₹35,000';
+      runFinder(card.dataset.relation, 'Birthday', '₹15,000 – ₹35,000');
+    });
   });
 
   // ---- gift card live preview ----

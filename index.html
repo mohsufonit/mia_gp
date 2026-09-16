@@ -144,13 +144,6 @@ h1,h2,h3,h4{margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:60
 .header-nav a.active{font-weight:700}
 .header-nav a.active::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:2px;background:#fff;border-radius:2px}
 
-/* ---- crumb rail: quick-jump chips into this page's own sections ---- */
-.crumb-rail{display:flex;gap:10px;overflow-x:auto;padding:10px 24px;border-top:1px solid var(--line);-webkit-overflow-scrolling:touch}
-.crumb-rail::-webkit-scrollbar{display:none}
-@media(min-width:1024px){.crumb-rail{padding:10px 48px;justify-content:center}}
-.crumb{flex-shrink:0;padding:7px 16px;border-radius:100px;border:1px solid var(--line-2);font-size:12px;font-weight:700;color:var(--ink-2);white-space:nowrap;transition:all .2s}
-.crumb:hover{background:var(--pink);border-color:var(--pink);color:#fff}
-
 .mobile-menu{position:fixed;top:0;left:0;bottom:0;width:min(300px,82vw);background:#fff;z-index:220;box-shadow:16px 0 40px rgba(0,0,0,.18);transform:translateX(-100%);transition:transform .3s var(--ease);display:flex;flex-direction:column;padding:8px 8px 24px}
 .mobile-menu.show{transform:translateX(0)}
 .mobile-menu-head{display:flex;align-items:center;justify-content:space-between;padding:14px 14px 18px}
@@ -159,8 +152,9 @@ h1,h2,h3,h4{margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:60
 @media(min-width:1024px){.mobile-menu{display:none}}
 
 /* ============ hero — lighter, less pink ============ */
-.hero{position:relative;background:var(--cream);padding:24px 0}
-@media(min-width:900px){.hero{padding:28px 0}}
+.hero{position:relative;background:var(--cream);padding:18px 0}
+@media(min-width:900px){.hero{padding:20px 0}}
+.hero .container{padding:0 40px}
 /* the spotlight card — pulled from index.html's .spotlight--fiora gradient
    + its glitter-dot overlay texture, as a contained rounded card (not
    full-bleed) with equal breathing room above and below */
@@ -179,25 +173,25 @@ h1,h2,h3,h4{margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:60
     radial-gradient(1.3px 1.3px at 60% 95%, rgba(255,255,255,.7), transparent);
   background-size:220px 220px;
 }
-.hero-grid{display:grid;grid-template-columns:1fr;align-items:center;gap:32px;position:relative;z-index:2;padding:40px 24px}
-@media(min-width:900px){.hero-grid{grid-template-columns:1.05fr .95fr;gap:24px;padding:56px 48px}}
+.hero-grid{display:grid;grid-template-columns:1fr;align-items:center;gap:32px;position:relative;z-index:2;padding:32px 24px}
+@media(min-width:900px){.hero-grid{grid-template-columns:1.05fr .95fr;gap:36px;padding:36px 44px}}
 .hero-copy{max-width:500px;order:2}
 .hero-visual{order:1}
 @media(min-width:900px){.hero-copy{order:1}.hero-visual{order:2}}
-.hero-copy .eyebrow{margin-bottom:16px;background:#fff;color:#832729;padding:7px 16px;border-radius:100px;width:fit-content}
+.hero-copy .eyebrow{margin-bottom:20px;background:#fff;color:#832729;padding:7px 16px;border-radius:100px;width:fit-content}
 .hero-copy .eyebrow::before{display:none}
-.hero-copy h1{font-size:clamp(32px,5vw,52px);color:#fff;margin:0 0 14px}
+.hero-copy h1{font-size:clamp(32px,5vw,52px);color:#fff;margin:0 0 20px}
 .hero-copy h1 em{font-style:italic;color:#F0C987}
-.hero-tagline{font-size:16px;color:rgba(255,255,255,.85);max-width:420px;margin:0 0 28px;line-height:1.65}
-.hero-ctas{display:flex;flex-wrap:wrap;gap:12px}
+.hero-tagline{font-size:16px;color:rgba(255,255,255,.85);max-width:420px;margin:0 0 34px;line-height:1.65}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:16px}
 .hero-card .btn-outline{border-color:rgba(255,255,255,.7);color:#fff}
 .btn-gold{background:#F0C987;color:#6E2531;box-shadow:0 10px 24px rgba(0,0,0,.18)}
 .btn-gold:hover{background:#ecbd72}
-.hero-visual{position:relative;display:flex;align-items:center;justify-content:center;min-height:340px}
-@media(min-width:900px){.hero-visual{min-height:480px}}
+.hero-visual{position:relative;display:flex;align-items:center;justify-content:center;min-height:300px}
+@media(min-width:900px){.hero-visual{min-height:400px}}
 /* Direction C — Layered Depth Stack, with a size hierarchy: one anchor,
    one clear second-tier accent, three smaller — not one big + four equal */
-.gift-scene{position:relative;width:100%;max-width:600px;aspect-ratio:1.1/1}
+.gift-scene{position:relative;width:100%;max-width:500px;aspect-ratio:1.1/1}
 .gift-ribbon-line{position:absolute;inset:0;width:100%;height:100%;z-index:0;overflow:visible}
 .gwin{position:absolute;border-radius:16px;overflow:hidden;box-shadow:0 18px 38px rgba(0,0,0,.28);border:5px solid #fff;z-index:1}
 .gwin img{width:100%;height:100%;object-fit:cover;display:block}
@@ -531,13 +525,6 @@ footer .socials svg{width:14px;height:14px}
       <a href="#" class="active">Gifting</a>
     </div>
   </nav>
-  <div class="crumb-rail">
-    <a href="#finder" class="crumb">Gift Finder</a>
-    <a href="#recipient" class="crumb">Shop By Recipient</a>
-    <a href="#catrec" class="crumb">Best Sellers</a>
-    <a href="#giftcard" class="crumb">Mia Gift Card</a>
-    <a href="#story" class="crumb">Our Story</a>
-  </div>
 </header>
 
 <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">
@@ -593,7 +580,7 @@ footer .socials svg{width:14px;height:14px}
      placed directly after the hero converts that uncertainty into a shortlist
      before they have to self-navigate categories. This is the primary path;
      category browsing below is the fallback for visitors who skip it. -->
-<section class="band band-cream band-line" id="finder">
+<section class="band band-cream" id="finder">
   <div class="container" style="display:grid;grid-template-columns:1fr;gap:32px">
     <div class="rv" style="max-width:560px">
       <p class="eyebrow">Start Here</p>

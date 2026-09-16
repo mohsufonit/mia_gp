@@ -76,10 +76,7 @@ body{
     radial-gradient(1.6px 1.6px at 40% 42%, rgba(209,74,97,.55), transparent),
     radial-gradient(1.8px 1.8px at 68% 90%, rgba(209,74,97,.6), transparent);
   background-size:170px 170px;
-  animation:dotDrift 50s linear infinite;
 }
-@keyframes dotDrift{from{background-position:0 0}to{background-position:1700px 1700px}}
-@media(prefers-reduced-motion:reduce){body{animation:none}}
 body.locked{overflow:hidden}
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
@@ -290,20 +287,30 @@ h1,h2,h3,h4{margin:0;font-family:'Fraunces',Georgia,serif;font-weight:600;letter
 @media(min-width:960px){.rec-grid{grid-template-columns:repeat(4,1fr)}}
 /* the main recommender is a full-bleed carousel, not a wrapping grid —
    breaks out of .container to the true viewport edge, no side gutter */
+.rec-rail{position:relative}
 #rec-grid{
-  display:flex;gap:14px;align-items:stretch;
-  /* centers the row when it fits (e.g. filtered to one category with
-     few results); falls back to left-start + scroll the moment it
-     overflows, so a full "All Gifts" row still bleeds and scrolls */
-  justify-content:safe center;
+  display:flex;gap:14px;align-items:stretch;justify-content:flex-start;
   width:100vw;position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;
-  padding:2px 0 10px;overflow-x:auto;-webkit-overflow-scrolling:touch;
-  scroll-snap-type:x proximity;scroll-padding-left:0;
+  padding:2px 15px 10px;overflow-x:auto;-webkit-overflow-scrolling:touch;
+  scroll-snap-type:x proximity;scroll-padding-left:15px;
 }
+/* centers the row when it fits (e.g. filtered to one category with few
+   results) — set by JS after render, since CSS justify-content:center
+   on an overflowing scroll container breaks start-padding/scroll-to-start */
+#rec-grid.centered{justify-content:center}
 #rec-grid::-webkit-scrollbar{display:none}
 #rec-grid .pcard{flex:0 0 200px;scroll-snap-align:start}
 @media(min-width:640px){#rec-grid .pcard{flex-basis:230px}}
 @media(min-width:1024px){#rec-grid .pcard{flex-basis:250px}}
+/* minimal prev/next arrows, desktop only */
+.rec-arrow{display:none;position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;background:#fff;border:1px solid var(--line-2);align-items:center;justify-content:center;color:var(--pink-deep);box-shadow:var(--shadow-2);z-index:5;transition:all .2s}
+.rec-arrow:hover{border-color:var(--pink);background:var(--blush-2)}
+.rec-arrow-prev{left:4px}
+.rec-arrow-next{right:4px}
+@media(min-width:1024px){.rec-arrow{display:flex}}
+/* scroll progress indicator, matches the page's coral palette */
+.rec-track{width:100%;max-width:160px;height:4px;background:var(--line-2);border-radius:100px;margin:4px auto 0;overflow:hidden}
+.rec-track-fill{width:20%;height:100%;background:linear-gradient(90deg,var(--pink-deep),var(--pink));border-radius:100px;transition:width .2s,transform .2s}
 /* product card — follows the format from index-gifting-page.html:
    ribbon tag, wishlist heart, rating pill on image; price + tax note,
    name, karat/material pills, full-width Add to Bag button below */
@@ -328,13 +335,14 @@ h1,h2,h3,h4{margin:0;font-family:'Fraunces',Georgia,serif;font-weight:600;letter
 .pcard:hover .padd{background:var(--pink-hover)}
 
 /* ============ trust marker strip — its own clearly separated band ============ */
-.trust-strip{background:transparent;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.trust-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
-@media(min-width:760px){.trust-grid{grid-template-columns:repeat(4,1fr)}}
-.trust-item{display:flex;align-items:center;gap:12px}
-.trust-item .ti-ic{width:40px;height:40px;border-radius:50%;background:#fff;border:1px solid var(--line-2);display:flex;align-items:center;justify-content:center;color:var(--pink-deep);flex-shrink:0}
-.trust-item h5{font-size:13px;font-weight:700;margin-bottom:2px}
-.trust-item p{font-size:12px;color:var(--muted);margin:0}
+/* trust ticker — thin coral-hairline bar, matches the real site's strip */
+.trust-ticker{background:#fff;border-top:2px solid transparent;border-image:linear-gradient(90deg,#832729,#D14A61,#832729) 1;position:relative}
+.trust-ticker-inner{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;max-width:var(--max);margin:0 auto;padding:14px 20px;overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none}
+.trust-ticker-inner::-webkit-scrollbar{display:none}
+@media(max-width:900px){.trust-ticker-inner{flex-wrap:nowrap;justify-content:flex-start}}
+.trust-tick{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--pink-deep);white-space:nowrap;flex-shrink:0}
+.trust-tick svg{flex-shrink:0;color:var(--pink)}
+.trust-sep{color:var(--line-2);font-size:13px;flex-shrink:0}
 
 /* ============ recipient grid ============ */
 .recipient-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
@@ -768,31 +776,31 @@ footer .socials svg{width:14px;height:14px}
     <div class="cat-strip rv" id="cat-strip"></div>
 
     <!-- recommender grid, filtered by the category chip above -->
-    <div class="rec-grid rv" id="rec-grid"></div>
+    <div class="rec-rail">
+      <button type="button" class="rec-arrow rec-arrow-prev" id="rec-prev" aria-label="Scroll left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="rec-grid rv" id="rec-grid"></div>
+      <button type="button" class="rec-arrow rec-arrow-next" id="rec-next" aria-label="Scroll right"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+    <div class="rec-track"><div class="rec-track-fill" id="rec-track-fill"></div></div>
   </div>
 </section>
 
 <!-- CRO: reassurance sits right after the first product exposure, not buried in
      the footer — purity/exchange/delivery doubts are what stall an add-to-bag
      on a gifting purchase, so they're answered the moment products appear. -->
-<section class="trust-strip band-tight">
-  <div class="container trust-grid">
-    <div class="trust-item">
-      <div class="ti-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 12V8H6a2 2 0 0 0-2 2v10h16v-4"/><path d="M2 12h20"/></svg></div>
-      <div><h5>Free Gift Wrap</h5><p>Signature box, every order</p></div>
-    </div>
-    <div class="trust-item">
-      <div class="ti-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4.5 8-11V5l-8-3-8 3v6c0 6.5 8 11 8 11Z"/></svg></div>
-      <div><h5>BIS Hallmarked</h5><p>Certified purity, always</p></div>
-    </div>
-    <div class="trust-item">
-      <div class="ti-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></div>
-      <div><h5>Lifetime Exchange</h5><p>On every piece, forever</p></div>
-    </div>
-    <div class="trust-item">
-      <div class="ti-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="15" height="11" rx="2"/><path d="M18 10h2.5a1 1 0 0 1 .9.55L23 14v4h-5"/><circle cx="7.5" cy="18.5" r="1.5"/><circle cx="17.5" cy="18.5" r="1.5"/></svg></div>
-      <div><h5>Free Delivery</h5><p>3–5 days, tracked</p></div>
-    </div>
+<section class="trust-ticker">
+  <div class="trust-ticker-inner">
+    <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="5"/><path d="M8.5 12.5 7 21l5-2.5 5 2.5-1.5-8.5"/></svg>BIS Hallmarked</span>
+    <span class="trust-sep">|</span>
+    <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="7" width="14" height="10" rx="1.5"/><path d="M15 10h4.5a1 1 0 0 1 .9.55L22 14v3h-3.5"/><circle cx="6.5" cy="18.5" r="1.6"/><circle cx="17" cy="18.5" r="1.6"/></svg>Free Shipping</span>
+    <span class="trust-sep">|</span>
+    <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg>A Tata Product</span>
+    <span class="trust-sep">|</span>
+    <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12l3 5-9 13L3 8Z"/><path d="M3 8h18M9 3l-2 5 5 13 5-13-2-5"/></svg>Certified Natural Diamonds</span>
+    <span class="trust-sep">|</span>
+    <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>1 Year Warranty</span>
+    <span class="trust-sep">|</span>
+    <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 16v-4h4"/></svg>30 Day Return</span>
   </div>
 </section>
 
@@ -1210,10 +1218,32 @@ footer .socials svg{width:14px;height:14px}
   }
 
   const recGrid = document.getElementById('rec-grid');
+  // ---- carousel arrows + scroll progress indicator ----
+  const recTrackFill = document.getElementById('rec-track-fill');
+  function updateRecTrack(){
+    const max = recGrid.scrollWidth - recGrid.clientWidth;
+    const pct = max > 0 ? Math.min(100, (recGrid.scrollLeft / max) * 100) : 100;
+    const fillWidth = max > 0 ? Math.max(15, recGrid.clientWidth / recGrid.scrollWidth * 100) : 100;
+    recTrackFill.style.width = fillWidth + '%';
+    recTrackFill.style.transform = `translateX(${(pct/100) * (100/fillWidth*100 - 100)}%)`;
+  }
+  recGrid.addEventListener('scroll', updateRecTrack);
+  window.addEventListener('resize', updateRecTrack);
+  document.getElementById('rec-prev').addEventListener('click', ()=>{
+    recGrid.scrollBy({left:-recGrid.querySelector('.pcard').offsetWidth - 14, behavior:'smooth'});
+  });
+  document.getElementById('rec-next').addEventListener('click', ()=>{
+    recGrid.scrollBy({left:recGrid.querySelector('.pcard').offsetWidth + 14, behavior:'smooth'});
+  });
+
   function renderRec(catKey){
     const items = catKey==='all' ? PRODUCTS : PRODUCTS.filter(p=>p.cat===catKey);
     recGrid.innerHTML = items.map(productCardHTML).join('');
     wireCards(recGrid);
+    recGrid.classList.remove('centered');
+    recGrid.scrollLeft = 0;
+    recGrid.classList.toggle('centered', recGrid.scrollWidth <= recGrid.clientWidth + 1);
+    updateRecTrack();
   }
   renderRec('all');
 

@@ -175,7 +175,7 @@ h1,h2,h3,h4{margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:60
   background-size:220px 220px;
 }
 .hero-grid{display:grid;grid-template-columns:1fr;align-items:center;gap:32px;position:relative;z-index:2;padding:28px 24px}
-@media(min-width:900px){.hero-grid{grid-template-columns:1.05fr .95fr;gap:36px;padding:46px 44px}}
+@media(min-width:900px){.hero-grid{grid-template-columns:1.05fr .95fr;gap:36px;padding:46px 64px}}
 .hero-copy{max-width:500px;order:2}
 @media(min-width:900px){.hero-copy{max-width:640px}}
 .hero-visual{order:1}
@@ -186,6 +186,7 @@ h1,h2,h3,h4{margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:60
 @media(min-width:900px){.hero-copy h1{font-size:clamp(30px,2.7vw,40px);white-space:nowrap}}
 .hero-copy h1 em{font-style:italic;color:#F0C987}
 .hero-tagline{font-size:16px;color:rgba(255,255,255,.85);max-width:420px;margin:0 0 34px;line-height:1.65}
+.hero-tagline-short{display:none}
 .hero-ctas{display:flex;flex-wrap:wrap;gap:16px}
 .hero-card .btn-outline{border-color:rgba(255,255,255,.7);color:#fff}
 .btn-gold{background:#F0C987;color:#6E2531;box-shadow:0 10px 24px rgba(0,0,0,.18)}
@@ -212,10 +213,14 @@ h1,h2,h3,h4{margin:0;font-family:'Playfair Display',Georgia,serif;font-weight:60
 /* mobile: the anchor photo moves to center-right and grows; the hoops stay
    the clear second-tier accent; the rest ring both at a smaller scale */
 @media(max-width:639px){
-  .hero-grid{padding:16px 18px;gap:16px}
-  .hero-copy .eyebrow{margin-bottom:12px}
-  .hero-copy h1{margin-bottom:10px;font-size:clamp(28px,7.5vw,36px)}
-  .hero-tagline{margin-bottom:16px;font-size:14.5px}
+  .hero-grid{padding:20px 20px;gap:20px}
+  .hero-copy .eyebrow{margin-bottom:14px}
+  .hero-copy h1{margin-bottom:12px;font-size:clamp(28px,7.5vw,36px)}
+  .hero-tagline-full{display:none}
+  .hero-tagline-short{display:block}
+  .hero-tagline{margin-bottom:20px;font-size:14.5px}
+  .hero-ctas{flex-wrap:nowrap;gap:8px}
+  .hero-ctas .btn{flex:1;padding:12px 10px;font-size:10.5px;letter-spacing:.01em}
   .gift-scene{aspect-ratio:.92/1;max-width:250px}
   .gwin-1{left:28%;top:6%;width:62%;height:80%}
   .gwin-2{left:0%;top:0%;width:26%;height:28%}
@@ -555,7 +560,8 @@ footer .socials svg{width:14px;height:14px}
         <div class="hero-copy rv">
           <p class="eyebrow">The Art of Gifting</p>
           <h1>Gifts They'll <em>Never</em> Take Off.</h1>
-          <p class="hero-tagline">Find theirs in a few taps — wrapped in Mia's signature box, finished with a handwritten note, and at their door in days.</p>
+          <p class="hero-tagline hero-tagline-full">Find theirs in a few taps — wrapped in Mia's signature box, finished with a handwritten note, and at their door in days.</p>
+          <p class="hero-tagline hero-tagline-short">Wrapped in Mia's box, finished with a handwritten note.</p>
           <div class="hero-ctas">
             <a href="#finder" class="btn btn-outline">Help Me Choose</a>
             <a href="#catrec" class="btn btn-gold">Shop Gold Coins</a>

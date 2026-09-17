@@ -120,7 +120,15 @@ h1,h2,h3,h4{margin:0;font-family:'Fraunces',Georgia,serif;font-weight:600;letter
 .btn-block{width:100%}
 
 /* ============ header ============ */
-.site-header{background:#fff;position:sticky;top:0;z-index:90}
+/* fixed, not sticky — body's overflow-x:hidden (needed elsewhere, see
+   its comment) forces body's overflow-y to 'auto', which makes body an
+   ambiguous scroll container and breaks position:sticky on a direct
+   child. position:fixed isn't affected by that, so the header locks
+   reliably; body gets a matching padding-top (set by JS, --header-h)
+   so content doesn't start underneath it */
+.site-header{background:#fff;position:fixed;top:0;left:0;right:0;z-index:90}
+body{padding-top:var(--header-h,127px)}
+#finder,#recipient,#catrec,#giftcard,#story{scroll-margin-top:var(--header-h,127px)}
 .icon-btn{width:22px;height:22px;display:flex;align-items:center;justify-content:center;color:var(--ink-2);position:relative}
 .icon-btn:hover{color:var(--pink)}
 .burger{display:flex}
@@ -1145,6 +1153,14 @@ footer .socials svg{width:14px;height:14px}
 
 <script>
 (function(){
+  // ---- fixed header height compensation ----
+  function setHeaderHeightVar(){
+    const h = document.querySelector('.site-header').offsetHeight;
+    document.documentElement.style.setProperty('--header-h', h + 'px');
+  }
+  setHeaderHeightVar();
+  window.addEventListener('resize', setHeaderHeightVar);
+
   // ---- scroll reveal ----
   const io = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });

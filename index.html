@@ -323,6 +323,11 @@ body{padding-top:var(--header-h,127px)}
 .catrec{padding-top:8px}
 .cat-strip{display:flex;flex-wrap:wrap;justify-content:center;gap:22px;padding:4px 0 18px}
 .cat-strip::-webkit-scrollbar{display:none}
+/* exactly 3 per row on mobile, not whatever the gap happens to fit (was 4) */
+@media(max-width:639px){
+  .cat-strip{display:grid;grid-template-columns:repeat(3,1fr);justify-items:center;gap:18px 8px}
+  .cat-chip{width:100%}
+}
 .cat-chip{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:9px;cursor:pointer;opacity:.75;transition:opacity .2s}
 .cat-chip:hover,.cat-chip.active{opacity:1}
 .cat-chip-ic{width:52px;height:52px;border-radius:50%;background:linear-gradient(155deg,var(--pink),var(--pink-deep));display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(168,14,94,.18);transition:all .2s var(--ease)}
@@ -348,7 +353,10 @@ body{padding-top:var(--header-h,127px)}
 /* on mobile the carousel's side gutter matches the hero banner's own
    15px edge margin, instead of carrying over the desktop 60px gutter */
 @media(max-width:639px){.rec-rail{--rail-gutter:15px;--rail-fade:28px}}
-#rec-grid{
+/* shared by every product carousel on the page (Shop By Category, Timeless
+   Favorites, ...) so they all behave identically — id selectors below are
+   JS hooks only, not styling hooks */
+.pcard-rail{
   display:flex;gap:14px;align-items:stretch;justify-content:flex-start;
   width:100%;
   padding:2px 0 10px;overflow-x:auto;-webkit-overflow-scrolling:touch;
@@ -362,11 +370,14 @@ body{padding-top:var(--header-h,127px)}
 /* centers the row when it fits (e.g. filtered to one category with few
    results) — set by JS after render, since CSS justify-content:center
    on an overflowing scroll container breaks start-padding/scroll-to-start */
-#rec-grid.centered{justify-content:center}
-#rec-grid::-webkit-scrollbar{display:none}
-#rec-grid .pcard{flex:0 0 200px;scroll-snap-align:start}
-@media(min-width:640px){#rec-grid .pcard{flex-basis:230px}}
-@media(min-width:1024px){#rec-grid .pcard{flex-basis:250px}}
+.pcard-rail.centered{justify-content:center}
+.pcard-rail::-webkit-scrollbar{display:none}
+.pcard-rail .pcard{flex:0 0 200px;scroll-snap-align:start}
+@media(min-width:640px){.pcard-rail .pcard{flex-basis:230px}}
+@media(min-width:1024px){.pcard-rail .pcard{flex-basis:250px}}
+/* more breathing room between the card row and its scroll-progress track,
+   on both mobile and desktop */
+.rec-rail + .rec-track{margin-top:18px}
 /* minimal prev/next arrows, desktop only */
 .rec-arrow{display:none;position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;background:#fff;border:1px solid var(--line-2);align-items:center;justify-content:center;color:var(--pink-deep);box-shadow:var(--shadow-2);z-index:5;transition:all .2s}
 .rec-arrow:hover{border-color:var(--pink);background:var(--blush-2)}
@@ -447,7 +458,7 @@ body{padding-top:var(--header-h,127px)}
 .pcard .csparkle.cs3{animation-delay:1.7s}
 @media(prefers-reduced-motion:reduce){.pcard .csparkle{animation:none}}
 .pcard .pthumb{width:calc(100% - 20px);aspect-ratio:1/0.92;background:rgba(0,0,0,.14);position:relative;overflow:hidden;margin:10px 10px 0;border-radius:10px}
-.pcard .pthumb img{width:100%;height:100%;object-fit:cover;display:block;border-radius:10px;transition:transform .5s var(--ease)}
+.pcard .pthumb img{width:100%;height:100%;object-fit:cover;display:block;border-radius:10px;transition:transform .5s var(--ease),opacity .22s ease}
 .pcard:hover .pthumb img{transform:scale(1.05)}
 .pcard .pribbon{position:absolute;top:20px;left:10px;background:#F0C987;color:#3a2410;font-size:9.5px;font-weight:800;letter-spacing:.08em;padding:5px 16px 5px 12px;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%);z-index:2}
 .pcard .pwish{position:absolute;top:10px;right:10px;width:30px;height:30px;background:rgba(255,255,255,.92);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.18);transition:background .2s}
@@ -476,7 +487,6 @@ body{padding-top:var(--header-h,127px)}
 .pcard .pdots{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);display:flex;gap:4px;z-index:2}
 .pcard .pdots .dot{width:5px;height:5px;border-radius:100px;background:rgba(255,255,255,.55);transition:all .2s}
 .pcard .pdots .dot.active{width:14px;background:#fff}
-.pcard .pthumb img{transition:opacity .3s}
 
 /* compare tray — fixed to the bottom edge, slides up once 1+ items picked */
 .cmp-tray{position:fixed;left:0;right:0;bottom:0;z-index:210;display:flex;justify-content:center;padding:0 16px 16px;transform:translateY(calc(100% + 40px));transition:transform .35s cubic-bezier(.22,.61,.36,1);pointer-events:none}
@@ -638,6 +648,11 @@ body{padding-top:var(--header-h,127px)}
    one copy's own width each loop — the classic seamless-marquee trick */
 .trust-marquee-track{display:contents}
 .trust-marquee-track.dupe{display:none}
+/* the two marquee copies each need a trailing separator dot so the loop
+   point (end of one copy, start of the next) reads the same as every
+   other junction — desktop shows only one copy laid flat, so that
+   trailing dot must stay hidden there or it dangles with nothing after it */
+.mobile-only-sep{display:none}
 @media(max-width:639px){
   .trust-ticker{padding:18px 0}
   .trust-ticker-inner{
@@ -649,6 +664,7 @@ body{padding-top:var(--header-h,127px)}
     padding:0 29px;animation:trustMarquee 18s linear infinite;
   }
   .trust-marquee-track.dupe{display:flex}
+  .mobile-only-sep{display:block}
 }
 @keyframes trustMarquee{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
 @media(prefers-reduced-motion:reduce){.trust-marquee-track{animation:none}}
@@ -909,11 +925,9 @@ body{padding-top:var(--header-h,127px)}
   .tf-div{display:none}
   .tf-chip{padding:7px 13px;font-size:10.5px}
 }
-.tf-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}
-/* exact same card size as the Shop By Category carousel, not a % width */
-.tf-grid .pcard{flex:0 0 200px}
-@media(min-width:640px){.tf-grid .pcard{flex-basis:230px}}
-@media(min-width:1024px){.tf-grid .pcard{flex-basis:250px}}
+/* card sizing/scroll behavior now comes from .pcard-rail (shared with
+   Shop By Category) — a real horizontal carousel on mobile too, not a
+   wrapping grid that stacks cards one below the other */
 
 .finder-restart-wrap{margin-top:20px;text-align:center}
 .finder-restart{display:inline-flex;align-items:center;gap:8px;padding:12px 26px;border-radius:100px;border:1.5px solid var(--line-2);font-size:12.5px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:var(--ink-2);transition:all .2s}
@@ -944,8 +958,10 @@ body{padding-top:var(--header-h,127px)}
    recolored to our satin-pink brand gradient instead of the reference's
    near-black one; content/structure/behaviour kept the same ============ */
 /* plain content section — the pink breaker treatment now belongs to the
-   Mia Difference (six touches) section below, not this one */
-.reviews-section{background:var(--cream);position:relative;overflow:hidden}
+   Mia Difference (six touches) section below, not this one. Left with no
+   background of its own (not even cream) so the page-wide pink dot
+   texture painted on body shows through, instead of being papered over. */
+.reviews-section{position:relative;overflow:hidden}
 .rv-sub{text-align:center;color:var(--muted);font-size:13.5px;margin:-8px 0 30px}
 .rv-score{max-width:640px;margin:0 auto 40px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px 30px;box-shadow:var(--shadow-1);display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:center}
 .rv-score-num{font-family:'Fraunces',serif;font-size:44px;font-weight:600;line-height:1;color:var(--ink)}
@@ -1333,7 +1349,7 @@ footer .socials svg{width:14px;height:14px}
     <!-- recommender grid, filtered by the category chip above -->
     <div class="rec-rail">
       <button type="button" class="rec-arrow rec-arrow-prev" id="rec-prev" aria-label="Scroll left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg></button>
-      <div class="rec-grid rv" id="rec-grid"></div>
+      <div class="pcard-rail rv" id="rec-grid"></div>
       <button type="button" class="rec-arrow rec-arrow-next" id="rec-next" aria-label="Scroll right"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg></button>
     </div>
     <div class="rec-track"><div class="rec-track-fill" id="rec-track-fill"></div></div>
@@ -1357,6 +1373,7 @@ footer .socials svg{width:14px;height:14px}
       <span class="trust-tick"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>1 Year Warranty</span>
       <span class="trust-sep"></span>
       <span class="trust-tick"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 16v-4h4"/></svg>30 Day Return</span>
+      <span class="trust-sep mobile-only-sep"></span>
     </div>
     <div class="trust-marquee-track dupe" aria-hidden="true">
       <span class="trust-tick"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="5"/><path d="M8.5 12.5 7 21l5-2.5 5 2.5-1.5-8.5"/></svg>BIS Hallmarked</span>
@@ -1370,6 +1387,7 @@ footer .socials svg{width:14px;height:14px}
       <span class="trust-tick"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>1 Year Warranty</span>
       <span class="trust-sep"></span>
       <span class="trust-tick"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 16v-4h4"/></svg>30 Day Return</span>
+      <span class="trust-sep mobile-only-sep"></span>
     </div>
   </div>
 </section>
@@ -1511,7 +1529,14 @@ footer .socials svg{width:14px;height:14px}
         <button type="button" class="tf-chip" data-filter="k_22">22 Karat</button>
       </div>
     </div>
-    <div class="tf-grid rv" id="tf-grid"></div>
+    <!-- same carousel as Shop By Category — horizontal scroll, never stacks
+         vertically on mobile -->
+    <div class="rec-rail">
+      <button type="button" class="rec-arrow rec-arrow-prev" id="tf-prev" aria-label="Scroll left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="pcard-rail rv" id="tf-grid"></div>
+      <button type="button" class="rec-arrow rec-arrow-next" id="tf-next" aria-label="Scroll right"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+    <div class="rec-track"><div class="rec-track-fill" id="tf-track-fill"></div></div>
     <div style="text-align:center;margin-top:28px"><a href="#catrec" class="section-link">View All Products <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
   </div>
 </section>
@@ -2168,10 +2193,20 @@ footer .socials svg{width:14px;height:14px}
     const img = thumb.querySelector('img');
     const cur = parseInt(img.dataset.idx || '0', 10);
     const next = (cur + dir + list.length) % list.length;
-    img.style.opacity = '.4';
+    if(img.dataset.switching === '1') return; // ignore rapid re-clicks mid-transition
+    img.dataset.switching = '1';
     const preload = new Image();
-    preload.onload = ()=>{ img.src = list[next]; img.dataset.idx = next; img.style.opacity = '1'; };
-    preload.onerror = ()=>{ img.style.opacity = '1'; };
+    function swap(){
+      img.style.opacity = '0'; // fully hide the old frame first — no cross-fade overlap
+      setTimeout(()=>{
+        img.src = list[next];
+        img.dataset.idx = next;
+        img.style.opacity = '1';
+        setTimeout(()=>{ img.dataset.switching = '0'; }, 220);
+      }, 220);
+    }
+    preload.onload = swap;
+    preload.onerror = ()=>{ img.dataset.switching = '0'; };
     preload.src = list[next];
     thumb.querySelectorAll('.pdots .dot').forEach((d,i)=>d.classList.toggle('active', i===next));
   };
@@ -2246,23 +2281,27 @@ footer .socials svg{width:14px;height:14px}
   }
 
   const recGrid = document.getElementById('rec-grid');
-  // ---- carousel arrows + scroll progress indicator ----
-  const recTrackFill = document.getElementById('rec-track-fill');
-  function updateRecTrack(){
-    const max = recGrid.scrollWidth - recGrid.clientWidth;
-    const pct = max > 0 ? Math.min(100, (recGrid.scrollLeft / max) * 100) : 100;
-    const fillWidth = max > 0 ? Math.max(15, recGrid.clientWidth / recGrid.scrollWidth * 100) : 100;
-    recTrackFill.style.width = fillWidth + '%';
-    recTrackFill.style.transform = `translateX(${(pct/100) * (100/fillWidth*100 - 100)}%)`;
+  // ---- carousel arrows + scroll progress indicator — shared by every
+  // product rail on the page (Shop By Category, Timeless Favorites, ...) ----
+  function wireRail(grid, trackFill, prevBtn, nextBtn){
+    function update(){
+      const max = grid.scrollWidth - grid.clientWidth;
+      const pct = max > 0 ? Math.min(100, (grid.scrollLeft / max) * 100) : 100;
+      const fillWidth = max > 0 ? Math.max(15, grid.clientWidth / grid.scrollWidth * 100) : 100;
+      trackFill.style.width = fillWidth + '%';
+      trackFill.style.transform = `translateX(${(pct/100) * (100/fillWidth*100 - 100)}%)`;
+    }
+    grid.addEventListener('scroll', update);
+    window.addEventListener('resize', update);
+    prevBtn.addEventListener('click', ()=>{
+      grid.scrollBy({left:-grid.querySelector('.pcard').offsetWidth - 14, behavior:'smooth'});
+    });
+    nextBtn.addEventListener('click', ()=>{
+      grid.scrollBy({left:grid.querySelector('.pcard').offsetWidth + 14, behavior:'smooth'});
+    });
+    return update;
   }
-  recGrid.addEventListener('scroll', updateRecTrack);
-  window.addEventListener('resize', updateRecTrack);
-  document.getElementById('rec-prev').addEventListener('click', ()=>{
-    recGrid.scrollBy({left:-recGrid.querySelector('.pcard').offsetWidth - 14, behavior:'smooth'});
-  });
-  document.getElementById('rec-next').addEventListener('click', ()=>{
-    recGrid.scrollBy({left:recGrid.querySelector('.pcard').offsetWidth + 14, behavior:'smooth'});
-  });
+  const updateRecTrack = wireRail(recGrid, document.getElementById('rec-track-fill'), document.getElementById('rec-prev'), document.getElementById('rec-next'));
 
   // Featured collection carousel — one full-width slide per click, snapped
   const featTrack = document.getElementById('feat-track');
@@ -2305,10 +2344,15 @@ footer .socials svg{width:14px;height:14px}
     if(key==='k_22') return p.kt==='22 KT';
     return false;
   }
+  const updateTfTrack = wireRail(tfGrid, document.getElementById('tf-track-fill'), document.getElementById('tf-prev'), document.getElementById('tf-next'));
   function renderFav(key){
     const items = PRODUCTS.filter(p=>favMatch(p,key)).slice(0,8);
     tfGrid.innerHTML = items.map(productCardHTML).join('');
     wireCards(tfGrid);
+    tfGrid.classList.remove('centered');
+    tfGrid.scrollLeft = 0;
+    tfGrid.classList.toggle('centered', tfGrid.scrollWidth <= tfGrid.clientWidth + 1);
+    updateTfTrack();
   }
   renderFav('most');
   tfTabs.querySelectorAll('.tf-chip').forEach(chip=>{

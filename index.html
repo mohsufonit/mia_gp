@@ -461,6 +461,17 @@ body{padding-top:var(--header-h,127px)}
 .pcard:hover .pzoom{opacity:1;transform:scale(1)}
 .pcard .pzoom svg{width:14px;height:14px;stroke:var(--pink-deep);fill:none;stroke-width:1.8}
 @media(hover:none){.pcard .pzoom{opacity:1;transform:scale(1)}}
+/* image switching — click arrows (not hover-scrub), dots are indicator-only */
+.pcard .pnav{position:absolute;top:50%;transform:translateY(-50%);width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center;z-index:2;opacity:0;transition:opacity .2s}
+.pcard:hover .pnav{opacity:1}
+.pcard .pnav svg{width:12px;height:12px;stroke:var(--pink-deep);fill:none;stroke-width:2.2}
+.pcard .pnav.prev{left:8px}
+.pcard .pnav.next{right:8px}
+@media(hover:none){.pcard .pnav{opacity:1;width:24px;height:24px}}
+.pcard .pdots{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);display:flex;gap:4px;z-index:2}
+.pcard .pdots .dot{width:5px;height:5px;border-radius:100px;background:rgba(255,255,255,.55);transition:all .2s}
+.pcard .pdots .dot.active{width:14px;background:#fff}
+.pcard .pthumb img{transition:opacity .3s}
 
 /* compare tray — fixed to the bottom edge, slides up once 1+ items picked */
 .cmp-tray{position:fixed;left:0;right:0;bottom:0;z-index:210;display:flex;justify-content:center;padding:0 16px 16px;transform:translateY(calc(100% + 40px));transition:transform .35s cubic-bezier(.22,.61,.36,1);pointer-events:none}
@@ -1654,6 +1665,8 @@ footer .socials svg{width:14px;height:14px}
     {code:'3826CEF', name:'Contemporary Paperclip Curb Gold Chain', price:25800, cat:'chains', tag:'BEST SELLER', kt:'18 KT', metal:'Yellow Gold', r:4.7, c:224},
   ];
   const imgSrc = p => `assets/products/${p.code}.webp`;
+  // real second/third angles pulled from the live site for every product
+  const imgSrcList = p => [imgSrc(p), `assets/products/${p.code}_2.jpg`, `assets/products/${p.code}_3.jpg`];
 
   // ---- compare (max 2, FIFO eviction) + zoom lightbox ----
   // exposed on window since the cards call these from inline onclick attrs
@@ -1726,15 +1739,34 @@ footer .socials svg{width:14px;height:14px}
   cmpModalOverlay.addEventListener('click', (e)=>{ if(e.target===cmpModalOverlay){ cmpModalOverlay.classList.remove('open'); document.body.classList.remove('locked'); } });
 
   const zoomOverlay = document.getElementById('zoom-overlay');
-  window.openZoom = function(code){
-    const p = PRODUCTS.find(p=>p.code===code);
-    document.getElementById('zoom-img').src = imgSrc(p);
-    document.getElementById('zoom-img').alt = p.name;
+  window.openZoom = function(el){
+    // shows whichever variant is currently on display for that card
+    const img = el.closest('.pthumb').querySelector('img');
+    document.getElementById('zoom-img').src = img.src;
+    document.getElementById('zoom-img').alt = img.alt;
     zoomOverlay.classList.add('open');
     document.body.classList.add('locked');
   };
   function closeZoom(){ zoomOverlay.classList.remove('open'); document.body.classList.remove('locked'); }
   document.getElementById('zoom-close').addEventListener('click', closeZoom);
+
+  // ---- image switching: real 2nd/3rd angles, click-arrow based (not hover-scrub) ----
+  window.switchImg = function(btn, dir){
+    const thumb = btn.closest('.pthumb');
+    const card = btn.closest('.pcard');
+    const p = PRODUCTS.find(p=>p.code===card.dataset.code);
+    if(!p) return;
+    const list = imgSrcList(p);
+    const img = thumb.querySelector('img');
+    const cur = parseInt(img.dataset.idx || '0', 10);
+    const next = (cur + dir + list.length) % list.length;
+    img.style.opacity = '.4';
+    const preload = new Image();
+    preload.onload = ()=>{ img.src = list[next]; img.dataset.idx = next; img.style.opacity = '1'; };
+    preload.onerror = ()=>{ img.style.opacity = '1'; };
+    preload.src = list[next];
+    thumb.querySelectorAll('.pdots .dot').forEach((d,i)=>d.classList.toggle('active', i===next));
+  };
   zoomOverlay.addEventListener('click', (e)=>{ if(e.target===zoomOverlay) closeZoom(); });
   document.addEventListener('keydown', (e)=>{
     if(e.key !== 'Escape') return;
@@ -1777,9 +1809,16 @@ footer .socials svg{width:14px;height:14px}
           <span class="pcmp" data-code="${p.code}" aria-label="add to compare" onclick="toggleCompare(this,'${p.code}');event.stopPropagation();">
             <svg viewBox="0 0 24 24"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg>
           </span>
-          <img src="${imgSrc(p)}" alt="${p.name}" loading="lazy">
+          <img src="${imgSrc(p)}" alt="${p.name}" loading="lazy" data-idx="0">
+          <span class="pnav prev" role="button" tabindex="0" aria-label="previous image" onclick="switchImg(this,-1);event.stopPropagation();">
+            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+          </span>
+          <span class="pnav next" role="button" tabindex="0" aria-label="next image" onclick="switchImg(this,1);event.stopPropagation();">
+            <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+          </span>
           <span class="prating"><span class="star">★</span><span>${p.r.toFixed(1)}</span><span class="sep">|</span><span>${p.c}</span></span>
-          <span class="pzoom" data-code="${p.code}" aria-label="zoom image" onclick="openZoom('${p.code}');event.stopPropagation();">
+          <div class="pdots"><span class="dot active"></span><span class="dot"></span><span class="dot"></span></div>
+          <span class="pzoom" data-code="${p.code}" aria-label="zoom image" onclick="openZoom(this);event.stopPropagation();">
             <svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5"/><path d="m20 20-4.4-4.4"/></svg>
           </span>
         </div>

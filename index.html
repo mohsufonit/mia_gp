@@ -367,8 +367,14 @@ body{padding-top:var(--header-h,127px)}
 .pcard h4{font-family:'Manrope',sans-serif;font-weight:600;font-size:12.5px;margin-bottom:8px;color:rgba(255,255,255,.94);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .pcard .ppills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
 .pcard .ppill{background:rgba(255,255,255,.14);color:#F0C987;border:1px solid rgba(240,201,135,.4);padding:4px 9px;border-radius:6px;font-size:10px;font-weight:700;white-space:nowrap}
-.pcard .padd{width:100%;background:#F0C987;color:#3a2410;padding:10px 14px;border-radius:100px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;text-align:center;transition:background .2s}
-.pcard:hover .padd{background:#EAC073}
+.pcard .padd{position:relative;overflow:hidden;width:100%;background:#fff;color:#8A0C52;padding:10px 14px;border-radius:100px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;text-align:center;transition:background .4s ease,color .3s ease}
+.pcard .padd::before{
+  content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
+  background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.65) 50%,transparent 100%);
+  transform:skewX(-20deg);transition:left .7s ease;pointer-events:none;
+}
+.pcard:hover .padd,.pcard .padd:hover{background:linear-gradient(120deg,#F0C987 0%,#FCE7B8 50%,#F0C987 100%);color:#3a2410}
+.pcard:hover .padd::before,.pcard .padd:hover::before{left:130%}
 
 /* ============ trust marker strip — its own clearly separated band ============ */
 /* trust ticker — thin coral-hairline bar, matches the real site's strip */

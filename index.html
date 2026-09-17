@@ -613,22 +613,23 @@ body{padding-top:var(--header-h,127px)}
 /* trust ticker — thin coral-hairline bar, matches the real site's strip */
 /* Direction B — Ribbon Ticker: the approved style from the trust-signal
    options artifact, with the real-site content/icons kept as-is */
-/* full-bleed band (not a floating pill) — the gradient now runs the whole
-   width of the section, sized up ~30% (padding/gap/font/icons) per feedback */
+/* full-bleed band, same radial gradient as our other pink breaker bands
+   (Mia Difference / modals) for consistency — one line always, never wraps:
+   uses the full available width first, shrinks type only if it must */
 .trust-ticker{
-  background:linear-gradient(90deg,#3D0620 0%,#E4127D 100%);
+  background:radial-gradient(130% 150% at 50% -10%,#F26AA8 0%,#E4127D 45%,#3D0620 100%);
   box-shadow:0 12px 28px rgba(61,6,32,.24);
   padding:29px 20px;
   width:var(--vw,100vw);position:relative;left:50%;margin-left:calc(var(--vw,100vw) * -0.5);
 }
 .trust-ticker-inner{
-  display:flex;align-items:center;justify-content:center;gap:29px;flex-wrap:wrap;
-  max-width:1240px;margin:0 auto;padding:0 32px;
+  display:flex;align-items:center;justify-content:center;gap:clamp(14px,2.4vw,29px);flex-wrap:nowrap;
+  max-width:1800px;margin:0 auto;padding:0 32px;
   overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none;
 }
 .trust-ticker-inner::-webkit-scrollbar{display:none}
-@media(max-width:900px){.trust-ticker-inner{flex-wrap:nowrap;justify-content:flex-start}}
-.trust-tick{display:inline-flex;align-items:center;gap:10px;font-size:15.5px;font-weight:700;letter-spacing:.03em;color:#fff;white-space:nowrap;flex-shrink:0}
+@media(max-width:900px){.trust-ticker-inner{justify-content:flex-start}}
+.trust-tick{display:inline-flex;align-items:center;gap:10px;font-size:clamp(12px,1.35vw,15.5px);font-weight:700;letter-spacing:.03em;color:#fff;white-space:nowrap;flex-shrink:0}
 .trust-tick svg{flex-shrink:0;color:#F0C987}
 .trust-sep{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.4);flex-shrink:0}
 /* mobile: no more drag-to-scroll — the band bleeds edge to edge and its

@@ -80,6 +80,10 @@ body{
   background-attachment:fixed;
 }
 body.locked{overflow:hidden}
+/* overflow:hidden on body alone doesn't stop the page scrolling in every
+   browser — some treat <html> as the actual scrolling element, so the
+   background stayed scrollable behind an "open" modal. Lock both. */
+html:has(body.locked){overflow:hidden}
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
@@ -87,7 +91,6 @@ h1,h2,h3,h4{margin:0;font-family:'Fraunces',Georgia,serif;font-weight:600;letter
 .container{max-width:var(--max);margin:0 auto;padding:0 24px}
 @media(min-width:1024px){.container{padding:0 48px}}
 .eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--pink-deep);display:inline-flex;align-items:center;gap:9px}
-.eyebrow::before{content:"";width:22px;height:1px;background:var(--pink);display:inline-block}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
 .rv{opacity:0;transform:translateY(20px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
 .rv.in{opacity:1;transform:none}
@@ -214,7 +217,6 @@ body{padding-top:var(--header-h,127px)}
 .hero-visual{order:1}
 @media(min-width:900px){.hero-copy{order:1}.hero-visual{order:2}}
 .hero-copy .eyebrow{margin-bottom:20px;background:#fff;color:#A80E5E;padding:7px 16px;border-radius:100px;width:fit-content}
-.hero-copy .eyebrow::before{display:none}
 .hero-copy h1{
   font-size:clamp(32px,5vw,52px);margin:0 0 20px;
   /* shine sweep on the headline — a bright band moving through a
@@ -373,6 +375,10 @@ body{padding-top:var(--header-h,127px)}
 .pcard-rail.centered{justify-content:center}
 .pcard-rail::-webkit-scrollbar{display:none}
 .pcard-rail .pcard{flex:0 0 200px;scroll-snap-align:start}
+/* bigger cards on mobile so the product photo actually reads — sized so
+   the next card peeks in by about a quarter, hinting there's more to
+   scroll instead of showing (or hiding) most of it */
+@media(max-width:639px){.pcard-rail .pcard{flex-basis:270px}}
 @media(min-width:640px){.pcard-rail .pcard{flex-basis:230px}}
 @media(min-width:1024px){.pcard-rail .pcard{flex-basis:250px}}
 /* more breathing room between the card row and its scroll-progress track,
@@ -460,7 +466,9 @@ body{padding-top:var(--header-h,127px)}
 .pcard .pthumb{width:calc(100% - 20px);aspect-ratio:1/0.92;background:rgba(0,0,0,.14);position:relative;overflow:hidden;margin:10px 10px 0;border-radius:10px}
 .pcard .pthumb img{width:100%;height:100%;object-fit:cover;display:block;border-radius:10px;transition:transform .5s var(--ease),opacity .22s ease}
 .pcard:hover .pthumb img{transform:scale(1.05)}
-.pcard .pribbon{position:absolute;top:20px;left:10px;background:#F0C987;color:#3a2410;font-size:9.5px;font-weight:800;letter-spacing:.08em;padding:5px 16px 5px 12px;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%);z-index:2}
+/* pushed flush into the corner (not inset over the jewelry) and given
+   some transparency so the product photo still reads through it */
+.pcard .pribbon{position:absolute;top:0;left:0;background:rgba(240,201,135,.82);color:#3a2410;font-size:9.5px;font-weight:800;letter-spacing:.08em;padding:6px 16px 6px 10px;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%);z-index:2;backdrop-filter:blur(2px)}
 .pcard .pwish{position:absolute;top:10px;right:10px;width:30px;height:30px;background:rgba(255,255,255,.92);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.18);transition:background .2s}
 .pcard .pwish svg{width:14px;height:14px;stroke:var(--pink-deep);fill:none;stroke-width:1.8;transition:fill .2s,stroke .2s}
 .pcard .pwish.active{background:var(--pink)}
@@ -483,6 +491,8 @@ body{padding-top:var(--header-h,127px)}
 .pcard .pnav svg{width:12px;height:12px;stroke:var(--pink-deep);fill:none;stroke-width:2.2}
 .pcard .pnav.prev{left:8px}
 .pcard .pnav.next{right:8px}
+/* now that mobile cards are bigger, vertically centered arrows no longer
+   collide with the wishlist/compare icon column — back to how it was */
 @media(hover:none){.pcard .pnav{opacity:1;width:24px;height:24px}}
 .pcard .pdots{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);display:flex;gap:4px;z-index:2}
 .pcard .pdots .dot{width:5px;height:5px;border-radius:100px;background:rgba(255,255,255,.55);transition:all .2s}
@@ -595,12 +605,27 @@ body{padding-top:var(--header-h,127px)}
 @keyframes ctaPing{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.7);opacity:0}}
 @media(prefers-reduced-motion:reduce){.pin-cta-dot::after{animation:none}}
 @media(max-width:480px){.pin-bar-cta{font-size:11px;padding:12px 18px}}
+.pin-icon{display:none}
+/* desktop: a circular icon button bottom-left, not a full-width bar —
+   a stopwatch icon so its "find a gift fast" meaning reads at a glance */
+@media(min-width:900px){
+  .pin-sticky{justify-content:flex-start;padding-left:32px;padding-bottom:28px}
+  .pin-bar-cta{position:relative;width:58px;height:58px;padding:0;border-radius:50%;justify-content:center;gap:0}
+  .pin-bar-cta .pin-label,.pin-bar-cta .pin-arrow{display:none}
+  .pin-icon{display:block}
+  .pin-cta-dot{position:absolute;top:6px;right:6px}
+  .pin-bar-cta:hover::after{
+    content:"Find A Gift In Under 30 Seconds";position:absolute;left:calc(100% + 12px);top:50%;transform:translateY(-50%);
+    background:var(--ink);color:#fff;font-size:11.5px;font-weight:600;text-transform:none;letter-spacing:0;
+    padding:8px 14px;border-radius:8px;white-space:nowrap;pointer-events:none;
+  }
+}
 
-.pcard .pbody{position:relative;z-index:2;padding:12px 13px 13px;display:flex;flex-direction:column}
+.pcard .pbody{position:relative;z-index:2;padding:12px 13px 13px;display:flex;flex-direction:column;align-items:center;text-align:center}
 .pcard .pprice{font-size:17px;font-weight:700;color:#fff;line-height:1.1}
 .pcard .ptax{font-size:10.5px;color:rgba(255,255,255,.65);margin:2px 0 7px}
 .pcard h4{font-family:'Manrope',sans-serif;font-weight:600;font-size:12.5px;margin-bottom:8px;color:rgba(255,255,255,.94);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.pcard .ppills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.pcard .ppills{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:10px}
 .pcard .ppill{position:relative;overflow:hidden;background:rgba(255,255,255,.14);color:#F0C987;border:1px solid rgba(240,201,135,.4);padding:4px 9px;border-radius:6px;font-size:10px;font-weight:700;white-space:nowrap}
 .pcard .ppill::before{
   content:"";position:absolute;top:0;left:-70%;width:45%;height:100%;
@@ -685,7 +710,10 @@ body{padding-top:var(--header-h,127px)}
 
 .feat-carousel{position:relative;border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:1.05/1}
 @media(min-width:720px){.feat-carousel{aspect-ratio:auto;height:100%}}
-.feat-track{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;-ms-overflow-style:none;scrollbar-width:none}
+/* overflow-x:auto alone lets the browser default overflow-y to auto too,
+   which was creating a stray internal vertical scrollbar on the image
+   whenever its content was even a few px taller than the track's box */
+.feat-track{display:flex;height:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;-ms-overflow-style:none;scrollbar-width:none}
 .feat-track::-webkit-scrollbar{display:none}
 .feat-slide{position:relative;flex:0 0 100%;height:100%;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:22px;color:#fff;isolation:isolate;scroll-snap-align:start}
 /* the source photos are mostly square/portrait, not this tile's wide
@@ -722,7 +750,9 @@ body{padding-top:var(--header-h,127px)}
     radial-gradient(70% 90% at 20% 0%, rgba(255,255,255,.16), transparent 60%),
     radial-gradient(145% 165% at 65% 15%, #F26AA8 0%, #E4127D 32%, #A80E5E 62%, #3D0620 100%);
 }
-.meaning-section::after{
+/* gold dust glitter texture — every pink breaker band gets this, not just
+   the coin/gift-card section */
+.meaning-section::after,.touches-section::after,.newsletter::after{
   content:"";position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.8;
   background-image:
     radial-gradient(1.6px 1.6px at 8% 22%, rgba(240,201,135,.9), transparent),
@@ -738,10 +768,12 @@ body{padding-top:var(--header-h,127px)}
   background-size:220px 220px;
 }
 .meaning-section .section-head,.meaning-section .coin-grid{position:relative;z-index:1}
+.touches-section .container,.newsletter > *{position:relative;z-index:1}
 .meaning-section .eyebrow{color:var(--gold)}
-.meaning-section .eyebrow::before{background:var(--gold)}
 .meaning-section .section-head h2{color:#fff}
-.meaning-section .msparkle{position:absolute;color:var(--gold);z-index:1;animation:sparkle 2.6s ease-in-out infinite;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3));pointer-events:none}
+/* gold sparkle decoration — shared by every pink breaker band, not just
+   the coin/gift-card section */
+.msparkle{position:absolute;color:var(--gold);z-index:1;animation:sparkle 2.6s ease-in-out infinite;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3));pointer-events:none}
 
 /* V2: shorter row cards, copy left / visual right, no dispatch badge.
    The visual is a small rectangular "coin pack" (sunburst window around
@@ -922,7 +954,10 @@ body{padding-top:var(--header-h,127px)}
 @media(max-width:639px){
   .tf-tabs{flex-wrap:wrap;overflow-x:visible;gap:8px 10px;max-width:340px}
   .tf-group{flex-wrap:wrap;justify-content:center;gap:8px}
-  .tf-div{display:none}
+  /* row 1 (sort chips) doesn't need a trailing divider on mobile; row 2
+     (weight vs karat) still needs the divider between those two groups */
+  .tf-div-1{display:none}
+  .tf-div-2{align-self:center;height:16px}
   .tf-chip{padding:7px 13px;font-size:10.5px}
 }
 /* card sizing/scroll behavior now comes from .pcard-rail (shared with
@@ -942,17 +977,73 @@ body{padding-top:var(--header-h,127px)}
 .touches-section{background:radial-gradient(130% 150% at 50% -10%,#F26AA8 0%,#E4127D 45%,#3D0620 100%);position:relative;overflow:hidden}
 .touches-section .eyebrow{color:#F5A8C8}
 .touches-section h2{color:#fff}
-.touch-strip{display:flex;gap:14px;overflow-x:auto;padding:4px 4px 10px;-ms-overflow-style:none;scrollbar-width:none;scroll-snap-type:x proximity}
+.touch-strip{display:flex;gap:14px;overflow-x:auto;padding:4px 4px 10px;-ms-overflow-style:none;scrollbar-width:none}
 .touch-strip::-webkit-scrollbar{display:none}
-.touch-card{flex:0 0 172px;scroll-snap-align:start;background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:18px 16px;position:relative;overflow:hidden;transition:border-color .2s,transform .2s}
-.touch-card:hover{border-color:var(--gold-line);transform:translateY(-2px)}
+.touch-card{flex:0 0 190px;scroll-snap-align:start;background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:18px 16px;position:relative;overflow:hidden;cursor:pointer;
+  transform:scale(.94);opacity:.6;transition:transform .5s var(--ease),opacity .5s var(--ease),border-color .2s}
+.touch-card.active{transform:scale(1);opacity:1;border-color:var(--gold-line)}
 .touch-num{position:absolute;top:-6px;right:8px;font-family:'Fraunces',serif;font-size:52px;font-weight:600;color:rgba(228,18,125,.08);line-height:1;pointer-events:none}
-.touch-icon{width:38px;height:38px;border-radius:10px;background:var(--blush);display:flex;align-items:center;justify-content:center;color:var(--pink-deep);margin-bottom:12px}
+.touch-icon{width:40px;height:40px;border-radius:11px;background:#3D0620;display:flex;align-items:center;justify-content:center;color:var(--gold);margin-bottom:12px;position:relative;overflow:hidden}
 .touch-card h4{font-size:14px;font-weight:700;margin:0 0 6px;color:var(--ink);position:relative}
 .touch-card h4 em{font-style:normal;color:var(--pink-deep)}
 .touch-card p{font-size:11.5px;color:var(--muted);line-height:1.5;margin:0 0 10px;position:relative}
 .touch-tag{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--pink-deep);background:var(--blush-2);border-radius:100px;padding:4px 9px}
-@media(max-width:639px){.touch-card{flex-basis:148px;padding:15px 13px}.touch-num{font-size:42px}}
+
+/* "Living Icons" — each touch's icon plays its own looping micro-scene
+   only while its card is active: box lid opens, pen glides, clock hand
+   ticks, shield check draws, resize arrows pulse, padlock shackle shuts */
+.ti-box-lid{transform-origin:2px 9px;transition:transform .5s var(--ease)}
+.touch-card.active .ti-box-lid{animation:tiBoxLid 1.8s var(--ease) infinite}
+@keyframes tiBoxLid{0%,20%{transform:rotate(0)}35%,65%{transform:rotate(-38deg)}80%,100%{transform:rotate(0)}}
+.ti-pen{transition:transform .3s}
+.touch-card.active .ti-pen{animation:tiPen 1.8s var(--ease) infinite}
+@keyframes tiPen{0%{transform:translate(-5px,3px)}50%{transform:translate(5px,-1px)}100%{transform:translate(-5px,3px)}}
+.ti-hand{transform-origin:12px 12px}
+.touch-card.active .ti-hand{animation:tiHand 1.8s steps(4) infinite}
+@keyframes tiHand{to{transform:rotate(360deg)}}
+.ti-check{stroke-dasharray:10;stroke-dashoffset:10}
+.touch-card.active .ti-check{animation:tiCheck 1.8s var(--ease) infinite}
+@keyframes tiCheck{0%,15%{stroke-dashoffset:10}45%,100%{stroke-dashoffset:0}}
+.ti-arrows{transform-origin:12px 12px}
+.touch-card.active .ti-arrows{animation:tiArrows 1.6s ease-in-out infinite}
+@keyframes tiArrows{0%,100%{transform:scale(1)}50%{transform:scale(1.35)}}
+.ti-shackle{transform-origin:12px 11px;transition:transform .4s}
+.touch-card.active .ti-shackle{animation:tiShackle 2s var(--ease) infinite}
+@keyframes tiShackle{0%,20%{transform:rotate(-22deg) translateX(-2px)}45%,100%{transform:rotate(0) translateX(0)}}
+@media(prefers-reduced-motion:reduce){.ti-box-lid,.ti-pen,.ti-hand,.ti-check,.ti-arrows,.ti-shackle{animation:none!important}}
+
+/* numbered timeline nav + arrows, same rec-arrow language used elsewhere */
+.touch-timeline-row{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:18px}
+.touch-arrow{position:static;display:flex}
+.touch-timeline{display:flex;align-items:center;gap:10px}
+.tt-item{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line-2);color:var(--muted);font-size:11px;font-weight:800;font-variant-numeric:tabular-nums;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#fff;transition:all .25s var(--ease)}
+.tt-item.active{background:var(--pink);border-color:var(--pink);color:#fff;transform:scale(1.15)}
+/* desktop (>=900px): all six sit in one row, no scrolling/arrows needed —
+   every icon animates by default, not just an "active" one. Widened
+   container just for this section (the gutter room the user allowed) so
+   six columns have room to breathe even on a ~1024px-wide laptop. */
+@media(min-width:900px){
+  .touches-section .container{max-width:1440px}
+  .touch-strip{overflow-x:visible;flex-wrap:nowrap}
+  .touch-card{flex:1 1 0;min-width:0;transform:none;opacity:1;cursor:default}
+  .touch-timeline-row{display:none}
+  .touch-card .ti-box-lid{animation:tiBoxLid 1.8s var(--ease) infinite}
+  .touch-card .ti-pen{animation:tiPen 1.8s var(--ease) infinite}
+  .touch-card .ti-hand{animation:tiHand 1.8s steps(4) infinite}
+  .touch-card .ti-check{animation:tiCheck 1.8s var(--ease) infinite}
+  .touch-card .ti-arrows{animation:tiArrows 1.6s ease-in-out infinite}
+  .touch-card .ti-shackle{animation:tiShackle 2s var(--ease) infinite}
+}
+@media(min-width:900px) and (max-width:1180px){
+  .touch-card{padding:14px 12px}
+  .touch-card p{font-size:10.5px}
+}
+/* mobile: one card fills the view at a time — a real swipe carousel,
+   not two-and-a-bit cards showing at once */
+@media(max-width:639px){
+  .touch-strip{scroll-snap-type:x mandatory}
+  .touch-card{flex-basis:82vw;scroll-snap-align:center;padding:18px 16px}
+}
 
 /* ============ reviews — real reference mechanic (fanned portrait carousel),
    recolored to our satin-pink brand gradient instead of the reference's
@@ -1013,7 +1104,10 @@ body{padding-top:var(--header-h,127px)}
   .tm-track{position:static;height:auto;display:flex;gap:12px;overflow-x:auto;padding:8px 4px 20px;justify-content:flex-start;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
   .tm-track::-webkit-scrollbar{display:none}
   .tm-portrait{position:static;margin:0;flex-shrink:0;scroll-snap-align:center}
-  .tm-portrait,.tm-portrait.tm-cv0{transform:none;width:180px;height:320px}
+  /* .tm-cv0 is a more specific selector than the reset above and was still
+     winning on its own margin-left/-top (the desktop centering offset),
+     which is what broke the mobile layout — needs its own explicit reset */
+  .tm-portrait.tm-cv0{transform:none;width:180px;height:320px;margin:0}
   .tm-portrait .tm-cat-pill{display:block}
   .tm-portrait .tm-portrait-quote{font-size:12px;-webkit-line-clamp:3;line-clamp:3;opacity:1}
   .rv-score{padding:22px 18px;gap:16px}
@@ -1034,7 +1128,9 @@ body{padding-top:var(--header-h,127px)}
 .faq-a-inner{padding:0 20px 20px;font-size:13px;line-height:1.65;color:var(--ink-2)}
 
 /* ============ newsletter ============ */
-.newsletter{background:var(--ink);color:#fff;text-align:center;padding:62px 24px}
+/* same breaker background as every other pink band on the page, not a
+   separate dark-ink treatment */
+.newsletter{background:radial-gradient(130% 150% at 50% -10%,var(--pink-hover) 0%,var(--pink) 45%,#3D0620 100%);color:#fff;text-align:center;padding:62px 24px;position:relative;overflow:hidden}
 .newsletter h2{color:#fff;font-size:clamp(21px,2.8vw,28px);margin-bottom:9px}
 .newsletter p{color:rgba(255,255,255,.6);max-width:420px;margin:0 auto 24px;font-size:13.5px}
 .nl-form{display:flex;max-width:400px;margin:0 auto;border-radius:100px;overflow:hidden;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2)}
@@ -1074,9 +1170,60 @@ footer .socials svg{width:14px;height:14px}
 .scrim{position:fixed;inset:0;background:rgba(20,14,15,.5);opacity:0;pointer-events:none;transition:opacity .3s var(--ease);z-index:150}
 .scrim.show{opacity:1;pointer-events:auto}
 
+/* ---- gallery lightbox: click any product photo to zoom/pan ---- */
+.qv-lightbox{position:fixed;inset:0;background:rgba(20,10,14,.94);z-index:260;opacity:0;pointer-events:none;transition:opacity .25s var(--ease);display:flex;align-items:center;justify-content:center}
+.qv-lightbox.show{opacity:1;pointer-events:auto}
+.qv-lb-stage{width:min(90vw,720px);height:min(80vh,720px);overflow:hidden;cursor:zoom-in;display:flex;align-items:center;justify-content:center}
+.qv-lb-stage img{max-width:100%;max-height:100%;object-fit:contain;transition:transform .3s var(--ease);transform-origin:center;cursor:grab}
+.qv-lb-stage.zoomed img{transform:scale(2);cursor:grab}
+.qv-lb-close,.qv-lb-zoom,.qv-lb-arrow{position:absolute;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.3);color:#fff;display:flex;align-items:center;justify-content:center;z-index:2;transition:background .2s}
+.qv-lb-close:hover,.qv-lb-zoom:hover,.qv-lb-arrow:hover{background:rgba(255,255,255,.22)}
+.qv-lb-arrow:disabled{opacity:.25;pointer-events:none}
+.qv-lb-close{top:20px;right:20px}
+.qv-lb-zoom{top:20px;right:70px}
+.qv-lb-arrow{top:50%;transform:translateY(-50%)}
+.qv-lb-prev{left:20px}
+.qv-lb-next{right:20px}
+@media(max-width:640px){.qv-lb-arrow{width:34px;height:34px}.qv-lb-prev{left:8px}.qv-lb-next{right:8px}}
+.qv-lb-dots{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px}
+.qv-lb-dots span{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.35);cursor:pointer;transition:all .2s}
+.qv-lb-dots span.active{background:var(--gold);width:20px;border-radius:100px}
+
+/* ---- Mia calendar — custom date picker, brand palette/typography instead
+   of the generic OS calendar widget ---- */
+.qv-date-row{position:relative}
+.qv-date-trigger{width:100%;display:flex;align-items:center;gap:9px;padding:11px 12px;border:1.5px solid var(--line-2);border-radius:8px;font-family:inherit;font-size:13px;color:var(--muted);background:#fff;text-align:left;transition:border-color .2s}
+.qv-date-trigger:hover,.qv-date-trigger.open{border-color:var(--pink)}
+.qv-date-trigger svg{color:var(--pink-deep);flex-shrink:0}
+.qv-date-trigger.has-value span{color:var(--ink);font-weight:600}
+.qv-cal{display:none;position:absolute;top:calc(100% + 8px);left:0;z-index:20;width:270px;background:#fff;border-radius:14px;box-shadow:0 20px 45px rgba(61,6,32,.22);border:1px solid var(--line);padding:16px}
+.qv-cal.show{display:block}
+.qv-cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.qv-cal-head span{font-family:'Fraunces',serif;font-size:14px;font-weight:600;color:var(--ink)}
+.qv-cal-nav{width:26px;height:26px;border-radius:50%;background:var(--cream);color:var(--pink-deep);display:flex;align-items:center;justify-content:center;transition:background .2s}
+.qv-cal-nav:hover{background:var(--blush)}
+.qv-cal-nav:disabled{opacity:.3;pointer-events:none}
+.qv-cal-dow{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;margin-bottom:4px}
+.qv-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.qv-cal-day{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--ink);border-radius:50%;cursor:pointer;transition:all .15s;font-variant-numeric:tabular-nums}
+.qv-cal-day:hover{background:var(--blush-2)}
+.qv-cal-day.other-month{color:var(--muted);opacity:.4}
+.qv-cal-day.disabled{opacity:.25;pointer-events:none}
+.qv-cal-day.today{color:var(--pink-deep);font-weight:800}
+.qv-cal-day.selected{background:var(--pink);color:#fff}
+.qv-cal-foot{display:flex;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.qv-cal-foot button{font-size:12px;font-weight:700;color:var(--pink-deep)}
+.qv-cal-foot button:hover{text-decoration:underline}
+
 /* ---- quick view modal: gifting-only fields, no full PDP chrome ---- */
 .qv-modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-46%) scale(.97);width:min(760px,92vw);max-height:88vh;overflow-y:auto;background:#fff;border-radius:16px;box-shadow:0 30px 80px rgba(0,0,0,.3);z-index:200;opacity:0;pointer-events:none;transition:all .3s var(--ease)}
 .qv-modal.show{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
+/* brand-pink scrollbar everywhere inside the modal, not the OS default */
+.qv-modal,.qv-info{scrollbar-width:thin;scrollbar-color:var(--pink) var(--cream)}
+.qv-modal::-webkit-scrollbar,.qv-info::-webkit-scrollbar{width:8px}
+.qv-modal::-webkit-scrollbar-track,.qv-info::-webkit-scrollbar-track{background:var(--cream)}
+.qv-modal::-webkit-scrollbar-thumb,.qv-info::-webkit-scrollbar-thumb{background:var(--pink);border-radius:100px}
+.qv-modal::-webkit-scrollbar-thumb:hover,.qv-info::-webkit-scrollbar-thumb:hover{background:var(--pink-deep)}
 @media(max-width:679px){
   .qv-modal{left:0;right:0;top:auto;bottom:0;width:100%;max-width:100%;max-height:92vh;border-radius:20px 20px 0 0;transform:translateY(100%);opacity:1}
   .qv-modal.show{transform:translateY(0)}
@@ -1085,12 +1232,48 @@ footer .socials svg{width:14px;height:14px}
 .qv-close{position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center;z-index:2}
 .qv-close:hover{background:var(--blush)}
 .qv-body{display:grid;grid-template-columns:minmax(0,1fr)}
-@media(min-width:680px){.qv-body{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}}
+@media(min-width:680px){.qv-body{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.qv-gallery{background:var(--cream);display:flex;flex-direction:column}
+/* mobile pattern: one main image + a thumbnail row (centered, not left) */
 .qv-img{background:var(--cream);aspect-ratio:1/1;min-width:0}
-.qv-img img{width:100%;height:100%;object-fit:cover}
+.qv-img img{width:100%;height:100%;object-fit:cover;transition:opacity .22s ease}
+.qv-thumbs{display:flex;justify-content:center;gap:8px;padding:10px 14px;flex-wrap:wrap}
+.qv-thumb{width:46px;height:46px;border-radius:8px;overflow:hidden;cursor:pointer;border:1.5px solid transparent;opacity:.62;transition:all .2s;flex-shrink:0}
+.qv-thumb.active{opacity:1;border-color:var(--pink)}
+.qv-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+/* desktop pattern: the gallery column freezes in place (sticky) while the
+   info column scrolls past it; scrolling INSIDE the frozen column pages
+   through every real product photo, like a PDP gallery, not a 3-dot preview */
+.qv-gallery-stack{display:none}
+.qv-gallery-item{position:relative;aspect-ratio:1/1;background:var(--cream);cursor:zoom-in;overflow:hidden}
+.qv-gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s var(--ease)}
+.qv-gallery-item:hover img{transform:scale(1.04)}
+.qv-gallery-item + .qv-gallery-item{border-top:1px solid var(--line)}
+.qv-gallery-item::after{content:'';position:absolute;top:12px;right:12px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.85);opacity:0;transition:opacity .2s;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A80E5E' stroke-width='2'%3E%3Ccircle cx='10' cy='10' r='6.5'/%3E%3Cpath d='m20 20-4.4-4.4'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:center;background-size:14px}
+.qv-gallery-item:hover::after{opacity:1}
+@media(min-width:680px){
+  .qv-img,.qv-thumbs{display:none}
+  /* matches the modal's own 16px corners so the gallery column never
+     squares off against them at the top/bottom-left */
+  .qv-gallery{border-radius:16px 0 0 16px;overflow:hidden}
+  .qv-gallery-stack{display:block;position:sticky;top:0;align-self:start;max-height:88vh;overflow-y:auto}
+  /* Mia-pink themed scrollbar instead of the OS default */
+  .qv-gallery-stack{scrollbar-width:thin;scrollbar-color:var(--pink) var(--cream)}
+  .qv-gallery-stack::-webkit-scrollbar{width:8px}
+  .qv-gallery-stack::-webkit-scrollbar-track{background:var(--cream)}
+  .qv-gallery-stack::-webkit-scrollbar-thumb{background:var(--pink);border-radius:100px}
+  .qv-gallery-stack::-webkit-scrollbar-thumb:hover{background:var(--pink-deep)}
+}
 .qv-info{padding:26px 26px 28px;min-width:0}
+/* product title + a small "view full details" link inline, replacing the
+   separate full-width ghost button that used to sit below the gift wrap */
+#qv-name-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;padding-right:30px}
+#qv-name-row #qv-name{font-size:21px}
+.qv-pdp-link{width:26px;height:26px;border-radius:50%;background:var(--cream);color:var(--pink-deep);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}
+.qv-pdp-link:hover{background:var(--blush)}
 .qv-eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pink-deep);margin-bottom:8px}
-.qv-info h3{font-size:21px;margin-bottom:6px;padding-right:30px}
 .qv-price{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:18px}
 .qv-note{font-size:12.5px;color:var(--muted);background:var(--cream);border-radius:8px;padding:10px 12px;margin-bottom:18px;display:flex;gap:8px;align-items:flex-start}
 .qv-note svg{flex-shrink:0;margin-top:1px;color:var(--pink)}
@@ -1105,9 +1288,38 @@ footer .socials svg{width:14px;height:14px}
 .switch input:checked ~ .track{background:var(--pink)}
 .switch input:checked ~ .knob{transform:translateX(16px)}
 
-.qv-sticker-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
-.sticker-btn{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--line-2);display:flex;align-items:center;justify-content:center;font-size:16px}
-.sticker-btn.active{border-color:var(--pink);background:var(--blush-2)}
+/* "Make it a Gift" reveal + Mia's real gift-wrap mechanic — a required
+   Gift Wrap picker and a required Sticker picker, each a row of preview
+   tiles with a pink border + checkmark badge on the selected one */
+.qv-gift-sub{display:none;margin-top:14px}
+.qv-gift-sub.show{display:block}
+.qv-gift-heading{font-family:'Fraunces',serif;font-size:15px;font-weight:600;margin:0 0 14px}
+.qv-req-label{font-size:11.5px;font-weight:700;color:var(--ink);display:block;margin:0 0 8px}
+.qv-req-label .req{color:var(--pink);margin-left:2px}
+.qv-check{position:absolute;top:-2px;right:-2px;width:16px;height:16px;border-radius:50%;background:var(--pink-deep);display:none;align-items:center;justify-content:center;z-index:2;box-shadow:0 0 0 2px #fff}
+.qv-check svg{width:9px;height:9px;color:#fff}
+
+.qv-wrap-row{display:flex;gap:10px;margin-bottom:18px}
+.qv-wrap-swatch{width:58px;height:78px;cursor:pointer;position:relative;flex-shrink:0;transition:transform .15s;
+  clip-path:polygon(0 0,calc(100% - 13px) 0,100% 13px,100% 100%,0 100%);
+  border:1.5px solid var(--line-2);border-radius:2px;overflow:hidden}
+.qv-wrap-swatch::after{content:'';position:absolute;top:0;right:0;width:13px;height:13px;background:rgba(255,255,255,.65);clip-path:polygon(100% 0,100% 100%,0 100%);box-shadow:-1px 1px 2px rgba(0,0,0,.15)}
+.qv-wrap-swatch.active{border-color:var(--pink-deep);transform:translateY(-2px)}
+.qv-wrap-swatch.active .qv-check{display:flex}
+.wrap-pattern-hearts{background-color:#FBE4E7;background-image:radial-gradient(circle at 30% 30%,var(--pink) 0 3px,transparent 3.5px),radial-gradient(circle at 65% 60%,var(--pink-hover) 0 2.5px,transparent 3px),radial-gradient(circle at 15% 70%,var(--pink-deep) 0 2px,transparent 2.5px),radial-gradient(circle at 80% 20%,var(--pink) 0 2px,transparent 2.5px);background-size:22px 22px}
+.wrap-pattern-weave{background-color:#F5EFEE;background-image:repeating-linear-gradient(45deg,var(--pink) 0 6px,var(--pink-hover) 6px 12px,#fff 12px 18px)}
+.wrap-pattern-dots{background-color:var(--blush-2);background-image:radial-gradient(var(--pink-deep) 1.6px,transparent 1.8px);background-size:14px 14px}
+
+.qv-sticker-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+/* real pink circular stickers, script-style white text on a solid pink
+   gradient disc — matching the samples provided, not a generic emoji chip */
+.sticker-btn{width:54px;height:54px;border-radius:50%;border:2px solid transparent;display:flex;align-items:center;justify-content:center;
+  font-family:'Fraunces',serif;font-style:italic;font-weight:600;font-size:9.5px;line-height:1.2;text-align:center;padding:6px;
+  background:radial-gradient(circle at 35% 30%,var(--pink-hover),var(--pink-deep));color:#fff;position:relative;cursor:pointer;
+  box-shadow:0 3px 8px rgba(168,14,94,.3);transition:transform .15s,border-color .15s}
+.sticker-btn:hover{transform:translateY(-1px)}
+.sticker-btn.active{border-color:var(--gold)}
+.sticker-btn.active .qv-check{display:flex}
 .qv-info textarea{width:100%;padding:10px 12px;border:1.5px solid var(--line-2);border-radius:8px;font-family:inherit;font-size:13px;resize:vertical;min-height:52px}
 .qv-info textarea:focus{outline:none;border-color:var(--pink)}
 
@@ -1116,12 +1328,20 @@ footer .socials svg{width:14px;height:14px}
 .qv-date-row input:focus,.qv-phone:focus{outline:none;border-color:var(--pink)}
 .qv-whatsapp{display:none;margin-top:10px}
 .qv-whatsapp.show{display:block}
+/* who gets the WhatsApp update — the recipient, or just the sender so the
+   surprise stays intact while they still get delivery peace of mind */
+.qv-audience-row{display:flex;gap:8px;margin-bottom:10px}
+.qv-audience-btn{flex:1;padding:9px 8px;border-radius:8px;border:1.5px solid var(--line-2);font-size:11px;font-weight:700;color:var(--ink-2);text-align:center;cursor:pointer;transition:all .2s;line-height:1.3}
+.qv-audience-btn.active{border-color:var(--pink);background:var(--blush-2);color:var(--pink-deep)}
 .qv-whatsapp-label{font-size:11.5px;color:var(--muted);margin-bottom:6px;display:flex;align-items:flex-start;gap:6px}
 .qv-whatsapp-label svg{color:#25D366;flex-shrink:0;margin-top:1px}
 .qv-whatsapp-label span{min-width:0}
 
 .qv-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
 .qv-actions .btn-primary{flex:1;min-width:180px}
+/* matches Mia's real "Wrap it & Add to Bag" CTA — flat grey until a valid
+   wrap + sticker are both chosen, then flips to solid brand pink */
+.qv-actions .btn-primary.grey{background:#c3c3c3;color:#9e9e9e;box-shadow:none;pointer-events:none}
 
 /* ---- bag drawer ---- */
 .drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,94vw);background:#fff;z-index:210;box-shadow:-16px 0 40px rgba(0,0,0,.18);transform:translateX(100%);transition:transform .35s var(--ease);display:flex;flex-direction:column}
@@ -1279,10 +1499,15 @@ footer .socials svg{width:14px;height:14px}
             <div class="cselect" data-target="f-relation" aria-labelledby="f-relation-label">
               <button type="button" class="cselect-btn"><span class="cselect-val placeholder">Select</span><svg class="cselect-chevron" width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
               <div class="cselect-menu">
-                <button type="button" class="cselect-opt" data-value="Her">Her</button>
-                <button type="button" class="cselect-opt" data-value="Him">Him</button>
-                <button type="button" class="cselect-opt" data-value="Parent">Parent</button>
-                <button type="button" class="cselect-opt" data-value="Bestie">Bestie</button>
+                <button type="button" class="cselect-opt" data-value="Spouse">Spouse</button>
+                <button type="button" class="cselect-opt" data-value="Mother">Mother</button>
+                <button type="button" class="cselect-opt" data-value="Father">Father</button>
+                <button type="button" class="cselect-opt" data-value="Sister">Sister</button>
+                <button type="button" class="cselect-opt" data-value="Brother">Brother</button>
+                <button type="button" class="cselect-opt" data-value="Daughter">Daughter</button>
+                <button type="button" class="cselect-opt" data-value="Son">Son</button>
+                <button type="button" class="cselect-opt" data-value="Friend">Friend</button>
+                <button type="button" class="cselect-opt" data-value="Self">Self</button>
               </div>
             </div>
             <input type="hidden" id="f-relation">
@@ -1295,6 +1520,10 @@ footer .socials svg{width:14px;height:14px}
                 <button type="button" class="cselect-opt" data-value="Birthday">Birthday</button>
                 <button type="button" class="cselect-opt" data-value="Anniversary">Anniversary</button>
                 <button type="button" class="cselect-opt" data-value="Wedding">Wedding</button>
+                <button type="button" class="cselect-opt" data-value="Raksha Bandhan">Raksha Bandhan</button>
+                <button type="button" class="cselect-opt" data-value="Engagement">Engagement</button>
+                <button type="button" class="cselect-opt" data-value="Festival">Festival</button>
+                <button type="button" class="cselect-opt" data-value="Milestone">Milestone</button>
                 <button type="button" class="cselect-opt" data-value="Just Because">Just Because</button>
               </div>
             </div>
@@ -1305,9 +1534,12 @@ footer .socials svg{width:14px;height:14px}
             <div class="cselect" data-target="f-budget" aria-labelledby="f-budget-label">
               <button type="button" class="cselect-btn"><span class="cselect-val placeholder">Select</span><svg class="cselect-chevron" width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
               <div class="cselect-menu">
-                <button type="button" class="cselect-opt" data-value="Under ₹15,000">Under ₹15,000</button>
-                <button type="button" class="cselect-opt" data-value="₹15,000 – ₹35,000">₹15,000 – ₹35,000</button>
-                <button type="button" class="cselect-opt" data-value="₹35,000+">₹35,000+</button>
+                <button type="button" class="cselect-opt" data-value="Under ₹10,000">Under ₹10,000</button>
+                <button type="button" class="cselect-opt" data-value="₹10,000 – ₹20,000">₹10,000 – ₹20,000</button>
+                <button type="button" class="cselect-opt" data-value="₹20,000 – ₹50,000">₹20,000 – ₹50,000</button>
+                <button type="button" class="cselect-opt" data-value="₹50,000 – ₹1,00,000">₹50,000 – ₹1,00,000</button>
+                <button type="button" class="cselect-opt" data-value="Above ₹1,00,000">Above ₹1,00,000</button>
+                <button type="button" class="cselect-opt" data-value="Show Me Everything">Show Me Everything</button>
               </div>
             </div>
             <input type="hidden" id="f-budget">
@@ -1431,8 +1663,8 @@ footer .socials svg{width:14px;height:14px}
           <button type="button" class="rec-arrow rec-arrow-next" id="feat-next" aria-label="Next collection"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg></button>
         </div>
         <div class="spotlight-stack">
-          <a href="#finder" class="spotlight-card" data-relation="Her"><h4>For Her</h4><span>Get Picks <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-          <a href="#finder" class="spotlight-card" data-relation="Him"><h4>For Him</h4><span>Get Picks <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+          <a href="#finder" class="spotlight-card" data-relation="Spouse"><h4>For Her</h4><span>Get Picks <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+          <a href="#finder" class="spotlight-card" data-relation="Father"><h4>For Him</h4><span>Get Picks <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
         </div>
       </div>
     </div>
@@ -1518,12 +1750,12 @@ footer .socials svg{width:14px;height:14px}
         <button type="button" class="tf-chip" data-filter="best">Best Sellers</button>
         <button type="button" class="tf-chip" data-filter="new">New Arrivals</button>
       </div>
-      <span class="tf-div"></span>
+      <span class="tf-div tf-div-1"></span>
       <div class="tf-group">
         <button type="button" class="tf-chip" data-filter="w_under2">Under 2g</button>
         <button type="button" class="tf-chip" data-filter="w_2to5">2g – 5g</button>
       </div>
-      <span class="tf-div"></span>
+      <span class="tf-div tf-div-2"></span>
       <div class="tf-group">
         <button type="button" class="tf-chip" data-filter="k_18">18 Karat</button>
         <button type="button" class="tf-chip" data-filter="k_22">22 Karat</button>
@@ -1545,6 +1777,9 @@ footer .socials svg{width:14px;height:14px}
      coin/gift-card breaker above (reference runs this as a full sticky-timeline
      scrollytelling section; condensed here into one horizontal strip) ============ -->
 <section class="band touches-section">
+  <svg class="msparkle" style="top:10%;left:5%" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6l2 6-2 6-2-6z"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+  <svg class="msparkle" style="top:72%;right:6%;animation-delay:1s" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6l2 6-2 6-2-6z"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+  <svg class="msparkle" style="top:20%;right:22%;animation-delay:1.8s" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6l2 6-2 6-2-6z"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
   <div class="container">
     <div class="section-head rv">
       <div>
@@ -1552,49 +1787,14 @@ footer .socials svg{width:14px;height:14px}
         <h2>Every Gift, From Us To Them, In Six Touches</h2>
       </div>
     </div>
-    <div class="touch-strip rv" id="touch-strip">
-      <div class="touch-card">
-        <span class="touch-num">01</span>
-        <div class="touch-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V8H6a2 2 0 0 0-2 2v10h16v-4"/><path d="M2 12h20"/></svg></div>
-        <h4>Wrapped in <em>Mia Velvet</em></h4>
-        <p>A velvet-lined box, satin ribbon, wax seal. The unboxing is half the gift.</p>
-        <span class="touch-tag">Free with every order</span>
-      </div>
-      <div class="touch-card">
-        <span class="touch-num">02</span>
-        <div class="touch-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></div>
-        <h4>A <em>handwritten</em> note</h4>
-        <p>Type it, we calligraph it. Up to 150 characters on ivory paper, tucked into the lid.</p>
-        <span class="touch-tag">150 characters, free</span>
-      </div>
-      <div class="touch-card">
-        <span class="touch-num">03</span>
-        <div class="touch-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg></div>
-        <h4>Delivered to <em>the moment</em></h4>
-        <p>Pick the exact date. Timed dispatch for the pincode and the moment.</p>
-        <span class="touch-tag">To-the-day precision</span>
-      </div>
-      <div class="touch-card">
-        <span class="touch-num">04</span>
-        <div class="touch-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg></div>
-        <h4>Insured, tracked, <em>private</em></h4>
-        <p>Covered up to ₹5 lakh, live tracking, discreet outer packaging.</p>
-        <span class="touch-tag">Insured end-to-end</span>
-      </div>
-      <div class="touch-card">
-        <span class="touch-num">05</span>
-        <div class="touch-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="7"/><path d="M12 5v2M12 17v2M5 12h2M17 12h2"/></svg></div>
-        <h4>Wrong size? <em>Fixed</em></h4>
-        <p>Free resize within 30 days at 300+ stores. No fees, no questions.</p>
-        <span class="touch-tag">300+ stores nationwide</span>
-      </div>
-      <div class="touch-card">
-        <span class="touch-num">06</span>
-        <div class="touch-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
-        <h4>Stay a mystery, <em>if you want</em></h4>
-        <p>Send anonymously if the moment calls for it. Lifetime exchange, always.</p>
-        <span class="touch-tag">Lifetime exchange, always</span>
-      </div>
+    <!-- "Living Icons" direction, confirmed from the animation-directions
+         artifact — each touch's icon plays its own small looping scene
+         while active (box lid opening, pen writing, clock ticking, ...) -->
+    <div class="touch-strip rv" id="touch-strip"></div>
+    <div class="touch-timeline-row">
+      <button type="button" class="rec-arrow touch-arrow" id="touch-prev" aria-label="Previous touch"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="touch-timeline" id="touch-timeline"></div>
+      <button type="button" class="rec-arrow touch-arrow" id="touch-next" aria-label="Next touch"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg></button>
     </div>
   </div>
 </section>
@@ -1697,6 +1897,9 @@ footer .socials svg{width:14px;height:14px}
 
 <!-- ============ NEWSLETTER ============ -->
 <section class="newsletter">
+  <svg class="msparkle" style="top:15%;left:8%" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6l2 6-2 6-2-6z"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+  <svg class="msparkle" style="top:65%;right:10%;animation-delay:1s" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6l2 6-2 6-2-6z"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+  <svg class="msparkle" style="top:25%;right:25%;animation-delay:1.8s" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6l2 6-2 6-2-6z"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
   <p class="eyebrow" style="color:#F5A8C8;margin-bottom:14px">Join The World Of Mia</p>
   <h2>Gifting ideas, delivered.</h2>
   <p>Sign up for early access to new collections and gift edits picked for the occasions on your calendar.</p>
@@ -1774,15 +1977,32 @@ footer .socials svg{width:14px;height:14px}
 <!-- ============ OVERLAYS: quick view / bag drawer / scrim ============ -->
 <div class="scrim" id="scrim"></div>
 
+<!-- gallery lightbox — click any product photo to zoom/pan -->
+<div class="qv-lightbox" id="qv-lightbox">
+  <button class="qv-lb-close" id="qv-lb-close" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <button class="qv-lb-zoom" id="qv-lb-zoom" aria-label="Toggle zoom"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="10" r="6.5"/><path d="m20 20-4.4-4.4"/><path d="M10 7.5v5M7.5 10h5"/></svg></button>
+  <button class="qv-lb-arrow qv-lb-prev" id="qv-lb-prev" aria-label="Previous photo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg></button>
+  <button class="qv-lb-arrow qv-lb-next" id="qv-lb-next" aria-label="Next photo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg></button>
+  <div class="qv-lb-stage" id="qv-lb-stage"><img id="qv-lb-img" src="" alt=""></div>
+  <div class="qv-lb-dots" id="qv-lb-dots"></div>
+</div>
+
 <div class="qv-modal" id="qv-modal" role="dialog" aria-modal="true">
   <button class="qv-close" id="qv-close" aria-label="Close">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg>
   </button>
   <div class="qv-body">
-    <div class="qv-img"><img id="qv-img" src="" alt=""></div>
+    <div class="qv-gallery">
+      <!-- desktop: sticky column, every product photo stacked and scrollable
+           in place — the gallery IS the scroll, not a 3-dot preview strip -->
+      <div class="qv-gallery-stack" id="qv-gallery-stack"></div>
+      <!-- mobile: main image + a centered thumbnail row underneath -->
+      <div class="qv-img"><img id="qv-img" src="" alt=""></div>
+      <div class="qv-thumbs" id="qv-thumbs"></div>
+    </div>
     <div class="qv-info">
       <p class="qv-eyebrow">Quick View · Gifting Details</p>
-      <h3 id="qv-name"></h3>
+      <h3 id="qv-name-row"><span id="qv-name"></span><a href="#" class="qv-pdp-link" id="qv-pdp" title="View full product details"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 4h6v6M10 14 20 4M18 14v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></a></h3>
       <div class="qv-price" id="qv-price"></div>
 
       <div class="qv-note">
@@ -1790,28 +2010,52 @@ footer .socials svg{width:14px;height:14px}
         Arrives in Mia's signature gift box with a printed care card — free on every order.
       </div>
 
-      <div class="qv-block">
+      <div class="qv-block" style="border-top:none;margin-top:0;padding-top:0">
         <div class="qv-block-head">
-          <label for="qv-wrap">Gift wrap + message card</label>
+          <label for="qv-wrap">Make it a Gift</label>
           <label class="switch"><input type="checkbox" id="qv-wrap" checked><span class="track"></span><span class="knob"></span></label>
         </div>
-        <div class="qv-sticker-row" id="qv-stickers"></div>
-        <textarea id="qv-message" placeholder="Write a short message to go with the box..."></textarea>
+        <div class="qv-gift-sub show" id="qv-gift-sub">
+          <p class="qv-gift-heading">Gift Wrappers &amp; Stickers</p>
+          <span class="qv-req-label">Choose Gift Wrap<span class="req">*</span></span>
+          <div class="qv-wrap-row" id="qv-wraps"></div>
+          <span class="qv-req-label">Choose Sticker<span class="req">*</span></span>
+          <div class="qv-sticker-row" id="qv-stickers"></div>
+          <textarea id="qv-message" placeholder="Write a short message to go with the box..."></textarea>
+        </div>
       </div>
 
       <div class="qv-block">
         <div class="qv-block-head"><label>Scheduled delivery</label></div>
         <div class="qv-date-row">
-          <input type="date" id="qv-date">
+          <button type="button" class="qv-date-trigger" id="qv-date-trigger">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>
+            <span id="qv-date-label">Pick a delivery date</span>
+          </button>
+          <input type="hidden" id="qv-date">
+          <div class="qv-cal" id="qv-cal">
+            <div class="qv-cal-head">
+              <button type="button" class="qv-cal-nav" id="qv-cal-prev" aria-label="Previous month"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg></button>
+              <span id="qv-cal-month"></span>
+              <button type="button" class="qv-cal-nav" id="qv-cal-next" aria-label="Next month"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg></button>
+            </div>
+            <div class="qv-cal-dow"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>
+            <div class="qv-cal-grid" id="qv-cal-grid"></div>
+            <div class="qv-cal-foot"><button type="button" id="qv-cal-clear">Clear</button><button type="button" id="qv-cal-today">Today</button></div>
+          </div>
         </div>
         <div class="qv-block-head" style="margin-top:12px">
-          <label for="qv-notify">Notify recipient on WhatsApp</label>
+          <label for="qv-notify">Notify on WhatsApp</label>
           <label class="switch"><input type="checkbox" id="qv-notify"><span class="track"></span><span class="knob"></span></label>
         </div>
         <div class="qv-whatsapp" id="qv-whatsapp-wrap">
+          <div class="qv-audience-row" id="qv-audience-row">
+            <button type="button" class="qv-audience-btn active" data-who="them">Notify them</button>
+            <button type="button" class="qv-audience-btn" data-who="me">Keep it a surprise — notify only me</button>
+          </div>
           <p class="qv-whatsapp-label">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11 11 0 0 0 3.7 17.4L2 22l4.7-1.6A11 11 0 1 0 20.5 3.5Z" opacity=".15"/><path d="M17.4 14.4c-.3-.2-1.7-.9-2-1s-.5-.1-.7.1-.7 1-.9 1.1-.4.2-.7.1a8.6 8.6 0 0 1-2.5-1.6 9.3 9.3 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.4-.5c.1-.2.1-.3.2-.5s0-.4 0-.5L9 7.1c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 2.9 2.9 0 0 0-.9 2.1c0 1.2.9 2.4 1 2.6s1.7 2.7 4.3 3.7a5 5 0 0 0 3 .6c.6-.1 1.7-.7 2-1.4s.3-1.2.2-1.4-.3-.2-.6-.4Z"/></svg>
-            <span>We'll message them a day before delivery, not the surprise</span>
+            <span id="qv-whatsapp-copy">We'll message them a day before delivery, not the surprise</span>
           </p>
           <input type="tel" class="qv-phone" id="qv-phone" placeholder="Recipient's WhatsApp number">
         </div>
@@ -1819,7 +2063,6 @@ footer .socials svg{width:14px;height:14px}
 
       <div class="qv-actions">
         <button class="btn btn-primary" id="qv-add">Add To Bag</button>
-        <button class="btn btn-ghost" id="qv-pdp">View Full Details</button>
       </div>
     </div>
   </div>
@@ -1975,8 +2218,11 @@ footer .socials svg{width:14px;height:14px}
 
 <!-- sticky bottom CTA, appears once the finder has scrolled mostly past view -->
 <div class="pin-sticky" id="pin-sticky">
-  <a href="#finder" class="pin-bar-cta"><span class="pin-cta-dot"></span>Find A Gift In Under 30 Seconds
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  <a href="#finder" class="pin-bar-cta" title="Find A Gift In Under 30 Seconds">
+    <span class="pin-cta-dot"></span>
+    <svg class="pin-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 3h6M12 3v2"/></svg>
+    <span class="pin-label">Find A Gift In Under 30 Seconds</span>
+    <svg class="pin-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
   </a>
 </div>
 
@@ -2007,6 +2253,82 @@ footer .socials svg{width:14px;height:14px}
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
   },{threshold:.12});
   document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+  // ---- six touches: "Living Icons" — proximity-based active detection
+  // while free-scrolling, numbered timeline + arrows for click-to-jump,
+  // eased scroll-to on click (mirrors the reference's own js-panels rail
+  // at breaker scale) — on mobile this rail IS the carousel (native swipe) ----
+  (function(){
+    const rail = document.getElementById('touch-strip');
+    if(!rail) return;
+    const TOUCHES = [
+      {tag:'01', title:'Wrapped in <em>Mia Velvet</em>', desc:'A velvet-lined box, satin ribbon, wax seal. The unboxing is half the gift.', tagline:'Free with every order',
+       icon:'<path d="M2 12h20"/><path d="M20 12v9H4v-9"/><path class="ti-box-lid" d="M4 12V9a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/>'},
+      {tag:'02', title:'A <em>handwritten</em> note', desc:'Type it, we calligraph it. Up to 150 characters on ivory paper, tucked into the lid.', tagline:'150 characters, free',
+       icon:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M6 17h6"/><g class="ti-pen"><path d="m15 10 3-3 2 2-3 3-2 2-2 .5.5-2z"/></g>'},
+      {tag:'03', title:'Delivered to <em>the moment</em>', desc:'Pick the exact date. Timed dispatch for the pincode and the moment.', tagline:'To-the-day precision',
+       icon:'<circle cx="12" cy="12" r="8"/><path class="ti-hand" d="M12 12V7"/><path d="M12 12l3 2"/>'},
+      {tag:'04', title:'Insured, tracked, <em>private</em>', desc:'Covered up to ₹5 lakh, live tracking, discreet outer packaging.', tagline:'Insured end-to-end',
+       icon:'<path d="M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6l7-3Z"/><path class="ti-check" d="m9 12 2 2 4-4"/>'},
+      {tag:'05', title:'Wrong size? <em>Fixed</em>', desc:'Free resize within 30 days at 300+ stores. No fees, no questions.', tagline:'300+ stores nationwide',
+       icon:'<g class="ti-arrows"><circle cx="12" cy="12" r="7"/><path d="M12 5v2M12 17v2M5 12h2M17 12h2"/></g>'},
+      {tag:'06', title:'Stay a mystery, <em>if you want</em>', desc:'Send anonymously if the moment calls for it. Lifetime exchange, always.', tagline:'Lifetime exchange, always',
+       icon:'<rect x="5" y="11" width="14" height="9" rx="2"/><path class="ti-shackle" d="M8 11V7a4 4 0 0 1 8 0v4"/>'},
+    ];
+    rail.innerHTML = TOUCHES.map((t,i)=>`
+      <div class="touch-card ${i===0?'active':''}" data-i="${i}">
+        <span class="touch-num">${t.tag}</span>
+        <div class="touch-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${t.icon}</svg></div>
+        <h4>${t.title}</h4>
+        <p>${t.desc}</p>
+        <span class="touch-tag">${t.tagline}</span>
+      </div>`).join('');
+    const timeline = document.getElementById('touch-timeline');
+    timeline.innerHTML = TOUCHES.map((_,i)=>`<button type="button" class="tt-item ${i===0?'active':''}" data-i="${i}">${String(i+1).padStart(2,'0')}</button>`).join('');
+    const cards = [...rail.querySelectorAll('.touch-card')];
+    const tItems = [...timeline.querySelectorAll('.tt-item')];
+    let active = 0;
+    function setActive(i){
+      active = i;
+      cards.forEach((c,idx)=> c.classList.toggle('active', idx===i));
+      tItems.forEach((t,idx)=> t.classList.toggle('active', idx===i));
+    }
+    function easeScrollTo(el, target, duration=420){
+      const start = el.scrollLeft, delta = target - start, startTime = performance.now();
+      function step(now){
+        const p = Math.min(1, (now-startTime)/duration);
+        const eased = 1 - Math.pow(1-p, 3);
+        el.scrollLeft = start + delta*eased;
+        if(p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+    function scrollToCard(i){
+      const c = cards[i];
+      const railRect = rail.getBoundingClientRect();
+      const target = c.offsetLeft - (railRect.width/2 - c.offsetWidth/2);
+      easeScrollTo(rail, Math.max(0, target));
+    }
+    cards.forEach((c,i)=> c.addEventListener('click', ()=>{ setActive(i); scrollToCard(i); }));
+    tItems.forEach((t,i)=> t.addEventListener('click', ()=>{ setActive(i); scrollToCard(i); }));
+    document.getElementById('touch-prev').addEventListener('click', ()=>{ if(active>0){ setActive(active-1); scrollToCard(active); } });
+    document.getElementById('touch-next').addEventListener('click', ()=>{ if(active<cards.length-1){ setActive(active+1); scrollToCard(active); } });
+    let railRAF;
+    rail.addEventListener('scroll', ()=>{
+      cancelAnimationFrame(railRAF);
+      railRAF = requestAnimationFrame(()=>{
+        const railRect = rail.getBoundingClientRect();
+        const center = railRect.left + railRect.width/2;
+        let closest = 0, closestDist = Infinity;
+        cards.forEach((c,i)=>{
+          const r = c.getBoundingClientRect();
+          const dist = Math.abs((r.left + r.width/2) - center);
+          if(dist < closestDist){ closestDist = dist; closest = i; }
+        });
+        if(closest !== active) setActive(closest);
+      });
+    }, {passive:true});
+  })();
 
   // ---- reviews: fanned portrait carousel (same mechanic as reference —
   // stacked cards fanned by offset-from-active, wraps around, click-to-select,
@@ -2312,14 +2634,30 @@ footer .socials svg{width:14px;height:14px}
     featTrack.scrollBy({left:featTrack.clientWidth, behavior:'smooth'});
   });
 
+  // product images finish loading (and webfonts swap in) after the initial
+  // scrollLeft=0/centered check runs, which can shift layout enough that the
+  // rail no longer actually starts at card 1 — reassert once things settle
+  function resetRailScroll(grid, trackUpdater){
+    grid.scrollLeft = 0;
+    grid.classList.toggle('centered', grid.scrollWidth <= grid.clientWidth + 1);
+    trackUpdater();
+    requestAnimationFrame(()=>{
+      grid.scrollLeft = 0;
+      grid.classList.toggle('centered', grid.scrollWidth <= grid.clientWidth + 1);
+      trackUpdater();
+    });
+    setTimeout(()=>{
+      grid.scrollLeft = 0;
+      grid.classList.toggle('centered', grid.scrollWidth <= grid.clientWidth + 1);
+      trackUpdater();
+    }, 400);
+  }
   function renderRec(catKey){
     const items = catKey==='all' ? PRODUCTS : PRODUCTS.filter(p=>p.cat===catKey);
     recGrid.innerHTML = items.map(productCardHTML).join('');
     wireCards(recGrid);
     recGrid.classList.remove('centered');
-    recGrid.scrollLeft = 0;
-    recGrid.classList.toggle('centered', recGrid.scrollWidth <= recGrid.clientWidth + 1);
-    updateRecTrack();
+    resetRailScroll(recGrid, updateRecTrack);
   }
   renderRec('all');
 
@@ -2350,9 +2688,7 @@ footer .socials svg{width:14px;height:14px}
     tfGrid.innerHTML = items.map(productCardHTML).join('');
     wireCards(tfGrid);
     tfGrid.classList.remove('centered');
-    tfGrid.scrollLeft = 0;
-    tfGrid.classList.toggle('centered', tfGrid.scrollWidth <= tfGrid.clientWidth + 1);
-    updateTfTrack();
+    resetRailScroll(tfGrid, updateTfTrack);
   }
   renderFav('most');
   tfTabs.querySelectorAll('.tf-chip').forEach(chip=>{
@@ -2415,39 +2751,258 @@ footer .socials svg{width:14px;height:14px}
 
   // ---- quick view modal ----
   const qvModal = document.getElementById('qv-modal');
-  const STICKERS = ['🎀','💝','✨','🎉','❤️','🌸'];
-  let activeSticker = null;
-  let currentProduct = null;
+  // real Gift Wrap + Gift Sticker picker, matching Mia's actual PDP mechanic
+  // (checkmark-badge selected state, both required once "Make it a Gift" is on)
+  const WRAPS = [
+    {cls:'wrap-pattern-hearts', name:'Scattered Hearts'},
+    {cls:'wrap-pattern-weave', name:'Diagonal Weave'},
+    {cls:'wrap-pattern-dots', name:'Pink Dot'},
+  ];
+  // matched as closely as possible to the six sticker designs provided —
+  // recreated in CSS/text since pasted chat images can't be saved as files
+  // from here; swap these for the real image files whenever they're on disk
+  const STICKERS = ['For The\nStar', 'Best\nWishes', 'For You\nWith Love', null, 'Happy\nBirthday', 'Made With\nLove'];
+  const STICKER_ICON = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11V7a3 3 0 0 1 6 0v6"/><path d="M9 11h9a2 2 0 0 1 2 2v2a5 5 0 0 1-5 5H10a5 5 0 0 1-4.5-2.8L4 13.5"/></svg>';
+  let activeWrap = null, activeSticker = null, currentProduct = null;
 
-  document.getElementById('qv-stickers').innerHTML = STICKERS.map(s=>`<button type="button" class="sticker-btn" data-s="${s}">${s}</button>`).join('');
-  document.querySelectorAll('.sticker-btn').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      document.querySelectorAll('.sticker-btn').forEach(b=>b.classList.remove('active'));
-      if(activeSticker === btn.dataset.s){ activeSticker = null; }
-      else { btn.classList.add('active'); activeSticker = btn.dataset.s; }
+  const qvWraps = document.getElementById('qv-wraps');
+  const qvStickersEl = document.getElementById('qv-stickers');
+  const qvAdd = document.getElementById('qv-add');
+  const qvWrapToggle = document.getElementById('qv-wrap');
+  const qvGiftSub = document.getElementById('qv-gift-sub');
+
+  qvWraps.innerHTML = WRAPS.map((w,i)=>`<div class="qv-wrap-swatch ${w.cls}" data-w="${i}" title="${w.name}"><span class="qv-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span></div>`).join('');
+  qvStickersEl.innerHTML = STICKERS.map((s,i)=>`<button type="button" class="sticker-btn" data-s="${i}">${s ? s.split('\n').map(l=>`<span>${l}</span>`).join('<br>') : STICKER_ICON}<span class="qv-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span></button>`).join('');
+
+  function updateAddBtnGate(){
+    const needsGift = qvWrapToggle.checked;
+    const valid = !needsGift || (activeWrap !== null && activeSticker !== null);
+    qvAdd.classList.toggle('grey', !valid);
+    qvAdd.textContent = needsGift ? 'Wrap It & Add To Bag' : 'Add To Bag';
+  }
+  qvWraps.querySelectorAll('.qv-wrap-swatch').forEach(sw=>{
+    sw.addEventListener('click', ()=>{
+      qvWraps.querySelectorAll('.qv-wrap-swatch').forEach(s=>s.classList.remove('active'));
+      sw.classList.add('active');
+      activeWrap = WRAPS[+sw.dataset.w].name;
+      updateAddBtnGate();
     });
+  });
+  qvStickersEl.querySelectorAll('.sticker-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      qvStickersEl.querySelectorAll('.sticker-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const sVal = STICKERS[+btn.dataset.s];
+      activeSticker = sVal ? sVal.replace('\n',' ') : 'Icon Sticker';
+      updateAddBtnGate();
+    });
+  });
+  qvWrapToggle.addEventListener('change', ()=>{
+    qvGiftSub.classList.toggle('show', qvWrapToggle.checked);
+    updateAddBtnGate();
+  });
+
+  // gallery — mobile: main image + thumbnail strip, same sequential fade
+  // (fade out fully, swap, fade in) as the product cards. Desktop: a sticky
+  // scrollable stack of every real product photo (see openQuickView) —
+  // clicking any of them opens the lightbox.
+  const qvImgEl = document.getElementById('qv-img');
+  const qvThumbs = document.getElementById('qv-thumbs');
+  const qvGalleryStack = document.getElementById('qv-gallery-stack');
+  function qvSwapImg(src){
+    if(qvImgEl.dataset.switching === '1') return;
+    qvImgEl.dataset.switching = '1';
+    qvImgEl.style.opacity = '0';
+    setTimeout(()=>{
+      qvImgEl.src = src;
+      qvImgEl.style.opacity = '1';
+      setTimeout(()=>{ qvImgEl.dataset.switching = '0'; }, 220);
+    }, 220);
+  }
+
+  // ---- lightbox: click any gallery photo to view large, toggle zoom ----
+  const qvLightbox = document.getElementById('qv-lightbox');
+  const qvLbStage = document.getElementById('qv-lb-stage');
+  const qvLbImg = document.getElementById('qv-lb-img');
+  const qvLbDots = document.getElementById('qv-lb-dots');
+  let lbImages = [], lbIndex = 0;
+  function openLightbox(images, startIdx){
+    lbImages = images; lbIndex = startIdx;
+    qvLbImg.src = lbImages[lbIndex];
+    qvLbStage.classList.remove('zoomed');
+    qvLbDots.innerHTML = lbImages.map((_,i)=>`<span class="${i===lbIndex?'active':''}" data-i="${i}"></span>`).join('');
+    qvLightbox.classList.add('show');
+    document.getElementById('qv-lb-prev').disabled = lbIndex===0;
+    document.getElementById('qv-lb-next').disabled = lbIndex===lbImages.length-1;
+  }
+  function closeLightbox(){ qvLightbox.classList.remove('show'); qvLbStage.classList.remove('zoomed'); }
+  function showLbIndex(i){
+    lbIndex = i;
+    qvLbImg.src = lbImages[lbIndex];
+    qvLbStage.classList.remove('zoomed');
+    qvLbDots.querySelectorAll('span').forEach((d,idx)=>d.classList.toggle('active', idx===lbIndex));
+    document.getElementById('qv-lb-prev').disabled = lbIndex===0;
+    document.getElementById('qv-lb-next').disabled = lbIndex===lbImages.length-1;
+  }
+  document.getElementById('qv-lb-close').addEventListener('click', closeLightbox);
+  document.getElementById('qv-lb-zoom').addEventListener('click', ()=> qvLbStage.classList.toggle('zoomed'));
+  document.getElementById('qv-lb-prev').addEventListener('click', ()=>{ if(lbIndex>0) showLbIndex(lbIndex-1); });
+  document.getElementById('qv-lb-next').addEventListener('click', ()=>{ if(lbIndex<lbImages.length-1) showLbIndex(lbIndex+1); });
+  qvLbStage.addEventListener('click', ()=> qvLbStage.classList.toggle('zoomed'));
+  qvLbDots.addEventListener('click', (e)=>{
+    const dot = e.target.closest('span'); if(!dot) return;
+    showLbIndex(+dot.dataset.i);
+  });
+  qvLightbox.addEventListener('click', (e)=>{ if(e.target===qvLightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e)=>{
+    if(!qvLightbox.classList.contains('show')) return;
+    if(e.key==='ArrowLeft' && lbIndex>0) showLbIndex(lbIndex-1);
+    if(e.key==='ArrowRight' && lbIndex<lbImages.length-1) showLbIndex(lbIndex+1);
+    if(e.key==='Escape') closeLightbox();
   });
 
   const qvNotify = document.getElementById('qv-notify');
   const qvWhatsappWrap = document.getElementById('qv-whatsapp-wrap');
+  const qvPhone = document.getElementById('qv-phone');
+  const qvWhatsappCopy = document.getElementById('qv-whatsapp-copy');
+  let notifyAudience = 'them';
   qvNotify.addEventListener('change', ()=> qvWhatsappWrap.classList.toggle('show', qvNotify.checked));
+  // who gets the WhatsApp update — the recipient, or just the sender (so the
+  // surprise stays intact but the sender still gets delivery peace of mind)
+  document.querySelectorAll('.qv-audience-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.qv-audience-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      notifyAudience = btn.dataset.who;
+      if(notifyAudience === 'them'){
+        qvPhone.placeholder = "Recipient's WhatsApp number";
+        qvWhatsappCopy.textContent = "We'll message them a day before delivery, not the surprise";
+      } else {
+        qvPhone.placeholder = 'Your WhatsApp number';
+        qvWhatsappCopy.textContent = "They won't be notified — we'll message you instead, so it stays a surprise";
+      }
+    });
+  });
+
+  // ---- Mia calendar: custom date picker replacing the generic OS one ----
+  const qvDateHidden = document.getElementById('qv-date');
+  const qvDateTrigger = document.getElementById('qv-date-trigger');
+  const qvDateLabel = document.getElementById('qv-date-label');
+  const qvCal = document.getElementById('qv-cal');
+  const qvCalMonth = document.getElementById('qv-cal-month');
+  const qvCalGrid = document.getElementById('qv-cal-grid');
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const today = new Date(); today.setHours(0,0,0,0);
+  let calView = new Date(today.getFullYear(), today.getMonth(), 1);
+  let calSelected = null;
+  function renderCal(){
+    qvCalMonth.textContent = `${MONTHS[calView.getMonth()]} ${calView.getFullYear()}`;
+    document.getElementById('qv-cal-prev').disabled = (calView.getFullYear()===today.getFullYear() && calView.getMonth()===today.getMonth());
+    const firstDow = calView.getDay();
+    const daysInMonth = new Date(calView.getFullYear(), calView.getMonth()+1, 0).getDate();
+    const daysInPrevMonth = new Date(calView.getFullYear(), calView.getMonth(), 0).getDate();
+    let cells = [];
+    for(let i=firstDow-1;i>=0;i--) cells.push({d:daysInPrevMonth-i, other:true});
+    for(let d=1;d<=daysInMonth;d++) cells.push({d, other:false});
+    while(cells.length % 7 !== 0) cells.push({d:cells.length, other:true, trailing:true});
+    qvCalGrid.innerHTML = cells.map(c=>{
+      if(c.other) return `<span class="qv-cal-day other-month">${c.trailing?'':c.d}</span>`;
+      const dateObj = new Date(calView.getFullYear(), calView.getMonth(), c.d);
+      const isPast = dateObj < today;
+      const isToday = dateObj.getTime() === today.getTime();
+      const isSelected = calSelected && dateObj.getTime() === calSelected.getTime();
+      return `<span class="qv-cal-day ${isPast?'disabled':''} ${isToday?'today':''} ${isSelected?'selected':''}" data-d="${c.d}">${c.d}</span>`;
+    }).join('');
+  }
+  function fmtDate(d){ return `${String(d.getDate()).padStart(2,'0')}-${String(d.getMonth()+1).padStart(2,'0')}-${d.getFullYear()}`; }
+  // local-date ISO string — toISOString() converts to UTC first, which
+  // shifts the date by a day in timezones behind UTC; build it from the
+  // local y/m/d components instead
+  function isoLocal(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+  qvDateTrigger.addEventListener('click', (e)=>{ e.stopPropagation(); qvCal.classList.toggle('show'); qvDateTrigger.classList.toggle('open'); });
+  document.getElementById('qv-cal-prev').addEventListener('click', ()=>{ calView.setMonth(calView.getMonth()-1); renderCal(); });
+  document.getElementById('qv-cal-next').addEventListener('click', ()=>{ calView.setMonth(calView.getMonth()+1); renderCal(); });
+  qvCalGrid.addEventListener('click', (e)=>{
+    const cell = e.target.closest('.qv-cal-day');
+    if(!cell || cell.classList.contains('other-month') || cell.classList.contains('disabled')) return;
+    calSelected = new Date(calView.getFullYear(), calView.getMonth(), +cell.dataset.d);
+    qvDateHidden.value = isoLocal(calSelected);
+    qvDateLabel.textContent = fmtDate(calSelected);
+    qvDateTrigger.classList.add('has-value');
+    renderCal();
+    qvCal.classList.remove('show'); qvDateTrigger.classList.remove('open');
+  });
+  document.getElementById('qv-cal-clear').addEventListener('click', ()=>{
+    calSelected = null; qvDateHidden.value = '';
+    qvDateLabel.textContent = 'Pick a delivery date';
+    qvDateTrigger.classList.remove('has-value');
+    renderCal();
+  });
+  document.getElementById('qv-cal-today').addEventListener('click', ()=>{
+    calView = new Date(today.getFullYear(), today.getMonth(), 1);
+    calSelected = new Date(today);
+    qvDateHidden.value = isoLocal(calSelected);
+    qvDateLabel.textContent = fmtDate(calSelected);
+    qvDateTrigger.classList.add('has-value');
+    renderCal();
+    qvCal.classList.remove('show'); qvDateTrigger.classList.remove('open');
+  });
+  document.addEventListener('click', (e)=>{
+    if(!qvCal.contains(e.target) && e.target!==qvDateTrigger && !qvDateTrigger.contains(e.target)){
+      qvCal.classList.remove('show'); qvDateTrigger.classList.remove('open');
+    }
+  });
+  function resetCal(){
+    calView = new Date(today.getFullYear(), today.getMonth(), 1);
+    calSelected = null;
+    qvDateHidden.value = '';
+    qvDateLabel.textContent = 'Pick a delivery date';
+    qvDateTrigger.classList.remove('has-value');
+    qvCal.classList.remove('show'); qvDateTrigger.classList.remove('open');
+    renderCal();
+  }
+  resetCal();
 
   function openQuickView(code){
     const p = PRODUCTS.find(x=>x.code===code);
     if(!p) return;
     currentProduct = p;
-    document.getElementById('qv-img').src = imgSrc(p);
-    document.getElementById('qv-img').alt = p.name;
+    const imgs = imgSrcList(p);
+    qvImgEl.src = imgs[0];
+    qvImgEl.alt = p.name;
+    qvImgEl.style.opacity = '1';
+    qvImgEl.dataset.switching = '0';
+    qvThumbs.innerHTML = imgs.map((im,i)=>`<div class="qv-thumb ${i===0?'active':''}" data-src="${im}"><img src="${im}" alt=""></div>`).join('');
+    qvThumbs.querySelectorAll('.qv-thumb').forEach(th=>{
+      th.addEventListener('click', ()=>{
+        qvThumbs.querySelectorAll('.qv-thumb').forEach(t=>t.classList.remove('active'));
+        th.classList.add('active');
+        qvSwapImg(th.dataset.src);
+      });
+    });
+    // desktop gallery — every real photo stacked, scrollable in place
+    qvGalleryStack.innerHTML = imgs.map((im,i)=>`<div class="qv-gallery-item" data-i="${i}"><img src="${im}" alt="${p.name} photo ${i+1}"></div>`).join('');
+    qvGalleryStack.scrollTop = 0;
+    qvGalleryStack.querySelectorAll('.qv-gallery-item').forEach(item=>{
+      item.addEventListener('click', ()=> openLightbox(imgs, +item.dataset.i));
+    });
     document.getElementById('qv-name').textContent = p.name;
     document.getElementById('qv-price').textContent = '₹' + p.price.toLocaleString('en-IN');
-    document.getElementById('qv-wrap').checked = true;
+    qvWrapToggle.checked = true;
+    qvGiftSub.classList.add('show');
     document.getElementById('qv-message').value = '';
-    document.getElementById('qv-date').value = '';
+    resetCal();
     qvNotify.checked = false;
     qvWhatsappWrap.classList.remove('show');
-    document.getElementById('qv-phone').value = '';
-    activeSticker = null;
-    document.querySelectorAll('.sticker-btn').forEach(b=>b.classList.remove('active'));
+    qvPhone.value = '';
+    qvPhone.placeholder = "Recipient's WhatsApp number";
+    qvWhatsappCopy.textContent = "We'll message them a day before delivery, not the surprise";
+    notifyAudience = 'them';
+    document.querySelectorAll('.qv-audience-btn').forEach(b=>b.classList.toggle('active', b.dataset.who==='them'));
+    activeWrap = null; activeSticker = null;
+    qvWraps.querySelectorAll('.qv-wrap-swatch').forEach(b=>b.classList.remove('active'));
+    qvStickersEl.querySelectorAll('.sticker-btn').forEach(b=>b.classList.remove('active'));
+    updateAddBtnGate();
 
     qvModal.classList.add('show');
     scrim.classList.add('show');
@@ -2458,19 +3013,22 @@ footer .socials svg{width:14px;height:14px}
     if(!drawer.classList.contains('show')){ scrim.classList.remove('show'); document.body.classList.remove('locked'); }
   }
   document.getElementById('qv-close').addEventListener('click', closeQuickView);
-  document.getElementById('qv-pdp').addEventListener('click', ()=> showToast('Opening full product page…'));
-  scrim.addEventListener('click', ()=>{ closeQuickView(); closeDrawer(); closeMenu(); });
+  document.getElementById('qv-pdp').addEventListener('click', (e)=>{ e.preventDefault(); showToast('Opening full product page…'); });
+  scrim.addEventListener('click', ()=>{ closeQuickView(); closeDrawer(); closeMenu(); qvCal.classList.remove('show'); });
 
   document.getElementById('qv-add').addEventListener('click', ()=>{
     if(!currentProduct) return;
+    if(qvAdd.classList.contains('grey')) return; // gated until wrap + sticker chosen
     bag.push({
       product: currentProduct,
-      wrap: document.getElementById('qv-wrap').checked,
+      wrap: qvWrapToggle.checked,
+      wrapDesign: qvWrapToggle.checked ? activeWrap : null,
+      sticker: qvWrapToggle.checked ? activeSticker : null,
       message: document.getElementById('qv-message').value,
-      sticker: activeSticker,
       date: document.getElementById('qv-date').value,
       notify: qvNotify.checked,
-      phone: document.getElementById('qv-phone').value
+      notifyAudience: qvNotify.checked ? notifyAudience : null,
+      phone: qvPhone.value
     });
     renderDrawer();
     closeQuickView();
@@ -2505,23 +3063,35 @@ footer .socials svg{width:14px;height:14px}
   // ---- gift finder — genuinely filters the real catalogue, not just display copy ----
   // recipient = hard filter (which categories are even relevant to them)
   const RELATION_CATS = {
-    Her:['necklaces','earrings','rings'],
-    Him:['chains','rings'],
-    Parent:['chains','bracelets'],
-    Bestie:['bracelets','earrings']
+    Spouse:['necklaces','earrings','rings'],
+    Mother:['necklaces','earrings'],
+    Father:['chains','rings'],
+    Sister:['bracelets','earrings'],
+    Brother:['chains','rings'],
+    Daughter:['earrings','bracelets'],
+    Son:['chains','rings'],
+    Friend:['bracelets','earrings'],
+    Self:['rings','necklaces']
   };
   // occasion = soft preference (ranks matching categories first, never excludes)
   const OCCASION_CATS = {
     Birthday:['earrings','bracelets'],
     Anniversary:['necklaces','rings'],
     Wedding:['rings','necklaces'],
+    'Raksha Bandhan':['bracelets','chains'],
+    Engagement:['rings','necklaces'],
+    Festival:['chains','earrings'],
+    Milestone:['necklaces','rings'],
     'Just Because':['bracelets','chains']
   };
   // budget = hard filter on real price
   const BUDGET_RANGE = {
-    'Under ₹15,000':[0,15000],
-    '₹15,000 – ₹35,000':[15000,35000],
-    '₹35,000+':[35000,Infinity]
+    'Under ₹10,000':[0,10000],
+    '₹10,000 – ₹20,000':[10000,20000],
+    '₹20,000 – ₹50,000':[20000,50000],
+    '₹50,000 – ₹1,00,000':[50000,100000],
+    'Above ₹1,00,000':[100000,Infinity],
+    'Show Me Everything':[0,Infinity]
   };
 
   // category labels for the post-result refinement chips — mirrors the
@@ -2636,7 +3206,7 @@ footer .socials svg{width:14px;height:14px}
       e.preventDefault();
       setCSelectValue('f-relation', card.dataset.relation);
       setCSelectValue('f-occasion', 'Birthday');
-      setCSelectValue('f-budget', '₹15,000 – ₹35,000');
+      setCSelectValue('f-budget', '₹20,000 – ₹50,000');
       runFinder(card.dataset.relation, 'Birthday', '₹15,000 – ₹35,000');
     });
   });

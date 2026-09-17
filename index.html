@@ -499,20 +499,30 @@ body{padding-top:var(--header-h,127px)}
 .zoom-stage img{width:100%;height:100%;object-fit:contain;border-radius:12px;background:#fff}
 .zoom-close{position:absolute;top:-14px;right:-14px;width:34px;height:34px;border-radius:50%;background:#fff;color:var(--pink-deep);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(0,0,0,.3)}
 
-/* compare modal */
+/* compare modal — a real aligned table (label column + two value columns)
+   instead of a repeated label-banner-then-values stack, so everything
+   lines up cleanly and reads as one balanced comparison, not a list */
 .cmp-modal-overlay{position:fixed;inset:0;background:rgba(20,6,14,.55);z-index:220;display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto}
 .cmp-modal-overlay.open{display:flex}
-.cmp-modal{background:#fff;border-radius:20px;max-width:720px;width:100%;position:relative;box-shadow:0 30px 60px rgba(0,0,0,.4);margin:auto 0;padding:32px}
-.cmp-modal-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:var(--blush-2);color:var(--pink-deep);display:flex;align-items:center;justify-content:center}
-.cmp-modal h2{font-family:'Fraunces',serif;font-size:22px;margin:0 0 20px;text-align:center}
-.cmp-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:14px}
-.cmp-col-head img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;margin-bottom:8px}
-.cmp-col-head h4{font-size:13px;margin:0}
-.cmp-spec{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:10px 0;border-top:1px solid var(--line)}
-.cmp-spec-label{grid-column:1/-1;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:2px}
-.cmp-spec-val{font-size:13px;font-weight:600;color:var(--ink)}
+.cmp-modal{background:#fff;border-radius:20px;max-width:600px;width:100%;position:relative;box-shadow:0 30px 60px rgba(0,0,0,.4);margin:auto 0;padding:36px 36px 30px}
+.cmp-modal-close{position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;background:var(--blush-2);color:var(--pink-deep);display:flex;align-items:center;justify-content:center}
+.cmp-modal h2{font-family:'Fraunces',serif;font-size:22px;margin:0 0 28px;text-align:center}
+.cmp-cols{display:grid;grid-template-columns:96px 1fr 1fr;gap:14px;align-items:end;margin-bottom:8px}
+.cmp-col-head{text-align:center}
+.cmp-col-head img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;margin-bottom:10px;background:var(--cream)}
+.cmp-col-head h4{font-size:12.5px;margin:0;line-height:1.35}
+.cmp-spec{display:grid;grid-template-columns:96px 1fr 1fr;gap:14px;align-items:center;padding:14px 0;border-top:1px solid var(--line)}
+.cmp-spec:nth-of-type(even){background:var(--cream)}
+.cmp-spec-label{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.cmp-spec-val{font-size:14px;font-weight:600;color:var(--ink);text-align:center}
 .cmp-spec-val.win{color:var(--pink);font-weight:800}
-@media(max-width:520px){.cmp-modal{padding:22px 16px}.cmp-cols,.cmp-spec{gap:10px}}
+@media(max-width:520px){
+  .cmp-modal{padding:26px 18px 20px}
+  .cmp-cols,.cmp-spec{grid-template-columns:64px 1fr 1fr;gap:8px}
+  .cmp-spec{padding:11px 0}
+  .cmp-spec-label{font-size:9px}
+  .cmp-spec-val{font-size:12.5px}
+}
 .pcard .pbody{position:relative;z-index:2;padding:12px 13px 13px;display:flex;flex-direction:column}
 .pcard .pprice{font-size:17px;font-weight:700;color:#fff;line-height:1.1}
 .pcard .ptax{font-size:10.5px;color:rgba(255,255,255,.65);margin:2px 0 7px}
@@ -1748,7 +1758,7 @@ footer .socials svg{width:14px;height:14px}
   cmpGo.addEventListener('click', ()=>{
     if(cmpPicked.length < 2) return;
     const [a,b] = cmpPicked;
-    document.getElementById('cmp-cols').innerHTML = [a,b].map(p=>`
+    document.getElementById('cmp-cols').innerHTML = '<div></div>' + [a,b].map(p=>`
       <div class="cmp-col-head"><img src="${imgSrc(p)}" alt="${p.name}"><h4>${p.name}</h4></div>
     `).join('');
     document.getElementById('cmp-specs').innerHTML =

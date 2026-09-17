@@ -632,8 +632,8 @@ body{padding-top:var(--header-h,127px)}
    (fading via gradient) instead of sitting in a separate boxed thumbnail —
    reads as one photographed card, not an image-plus-logo composite */
 .giftcard-pack{width:126px;aspect-ratio:1.55/1;border-radius:10px;background:linear-gradient(135deg,#F26AA8,#A80E5E 55%,#3D0620 100%);position:relative;overflow:hidden;transform:rotate(-9deg);box-shadow:0 16px 20px -4px rgba(0,0,0,.4),0 6px 10px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.3)}
-.giftcard-pack img{position:absolute;inset:0;left:-8%;width:68%;height:100%;object-fit:cover;mix-blend-mode:multiply;opacity:.92}
-.giftcard-pack .gp-fade{position:absolute;inset:0;background:linear-gradient(90deg,transparent 34%,var(--satin-d) 62%);pointer-events:none}
+.giftcard-pack .gp-illus{position:absolute;left:2%;top:0;width:62%;height:100%;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
+.giftcard-pack .gp-fade{position:absolute;inset:0;background:linear-gradient(90deg,transparent 46%,var(--satin-d) 68%);pointer-events:none}
 .giftcard-pack .gp-text{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;text-align:right;padding:8px 9px}
 .giftcard-pack .gp-brand{font-family:'Fraunces',serif;font-style:italic;color:#fff;font-size:13px;line-height:1}
 .giftcard-pack .gp-by{font-size:4.5px;color:rgba(255,255,255,.85);letter-spacing:.12em;text-transform:uppercase;margin-top:1px}
@@ -1174,7 +1174,15 @@ footer .socials svg{width:14px;height:14px}
         </div>
         <div class="cc-visual">
           <div class="giftcard-pack">
-            <img src="assets/products/M5I2GDY.webp" alt="Mia necklace draped on the gift card">
+            <svg class="gp-illus" viewBox="0 0 130 84" aria-hidden="true">
+              <path d="M40 0 C 18 16, 58 22, 34 40 S 44 58, 38 66" fill="none" stroke="#B8860B" stroke-width="3.2" stroke-linecap="round"/>
+              <path d="M40 0 C 18 16, 58 22, 34 40 S 44 58, 38 66" fill="none" stroke="#F0C987" stroke-width="1.6" stroke-linecap="round"/>
+              <circle cx="38" cy="66" r="15" fill="#F0C987" stroke="#241016" stroke-width="2"/>
+              <circle cx="38" cy="66" r="10.5" fill="#2A6DC9" stroke="#241016" stroke-width="1.6"/>
+              <circle cx="38" cy="66" r="6.5" fill="#fff" stroke="#241016" stroke-width="1.2"/>
+              <circle cx="38" cy="66" r="3" fill="#161421"/>
+              <ellipse cx="34.5" cy="62" rx="2.2" ry="1.3" fill="#fff" opacity=".85"/>
+            </svg>
             <div class="gp-fade"></div>
             <div class="gp-text">
               <div class="gp-brand">Mia</div>

@@ -296,10 +296,14 @@ body{padding-top:var(--header-h,127px)}
 @media(min-width:960px){.rec-grid{grid-template-columns:repeat(4,1fr)}}
 /* the main recommender is a full-bleed carousel, not a wrapping grid —
    breaks out of .container to the true viewport edge, no side gutter */
-.rec-rail{position:relative}
+/* the breakout lives on the RAIL itself, not the grid inside it — so
+   the arrows (positioned relative to .rec-rail) share the same
+   viewport-wide coordinate space as the grid, instead of the arrows
+   sitting at the normal .container edges while the grid bleeds past them */
+.rec-rail{position:relative;width:100vw;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw}
 #rec-grid{
   display:flex;gap:14px;align-items:stretch;justify-content:flex-start;
-  width:100vw;position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;
+  width:100%;
   padding:2px 45px 10px;overflow-x:auto;-webkit-overflow-scrolling:touch;
   scroll-snap-type:x proximity;scroll-padding-left:45px;
 }

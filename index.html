@@ -511,18 +511,43 @@ body{padding-top:var(--header-h,127px)}
 @media(prefers-reduced-motion:reduce){.trust-marquee-track{animation:none}}
 
 /* ============ recipient grid ============ */
-.recipient-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-@media(min-width:720px){.recipient-grid{grid-template-columns:repeat(4,1fr)}}
-.recipient-card{position:relative;border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:3/4;display:flex;align-items:flex-end;padding:20px;color:#fff;isolation:isolate;transition:transform .3s var(--ease)}
-.recipient-card:hover{transform:translateY(-4px)}
-.recipient-card::before{content:"";position:absolute;inset:0;z-index:-2;background-size:cover;background-position:center}
-.recipient-card::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,14,15,.82) 0%,rgba(20,14,15,.15) 55%,rgba(20,14,15,0) 75%);z-index:-1}
-.rc-1::before{background-image:url('assets/editorial/gifts-her.webp')}
-.rc-2::before{background-image:url('assets/editorial/gifts-him.webp')}
-.rc-3::before{background:linear-gradient(155deg,#c9a35a,#8a5a1c)}
-.rc-4::before{background:linear-gradient(155deg,#9c8f86,#4d4038)}
-.recipient-card h4{font-family:'Fraunces',serif;font-size:19px;margin-bottom:5px}
-.recipient-card span{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;opacity:.92;display:flex;align-items:center;gap:6px}
+/* Spotlight grid — one tall featured tile + two stacked landscape tiles,
+   the asymmetric layout from the reference (big collection banner on the
+   left, "For Her"/"For Him" stacked on the right using the same photos
+   already used elsewhere on the page) */
+.spotlight-grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:720px){.spotlight-grid{grid-template-columns:1.05fr 1fr;align-items:stretch}}
+.spotlight-stack{display:grid;grid-template-rows:1fr 1fr;gap:14px}
+.spotlight-card{position:relative;border-radius:var(--radius-lg);overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:22px;color:#fff;isolation:isolate;transition:transform .3s var(--ease)}
+.spotlight-card:hover{transform:translateY(-4px)}
+.spotlight-card::before{content:"";position:absolute;inset:0;z-index:-2;background-size:cover;background-position:center}
+.spotlight-card::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,14,15,.82) 0%,rgba(20,14,15,.15) 55%,rgba(20,14,15,0) 75%);z-index:-1}
+.sp-big{aspect-ratio:3/4}
+@media(min-width:720px){.sp-big{aspect-ratio:auto}}
+.sp-land{aspect-ratio:16/9}
+/* placeholder gradient for Rhapsody Of Colours — swap for the real banner
+   photo once it's provided, everything else about the tile stays the same */
+.sp-big::before{background:radial-gradient(130% 150% at 30% 0%,#F26AA8 0%,#E4127D 45%,#3D0620 100%)}
+.spotlight-stack .sp-land:nth-child(1)::before{background-image:url('assets/editorial/gifts-her.webp')}
+.spotlight-stack .sp-land:nth-child(2)::before{background-image:url('assets/editorial/gifts-him.webp')}
+.spotlight-card h4{font-family:'Fraunces',serif;font-size:19px;margin-bottom:5px}
+.sp-big h4{font-size:26px}
+.spotlight-card span{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;opacity:.92;display:flex;align-items:center;gap:6px}
+
+/* "Shop By Collection" strip — real collection banners, a carousel like the
+   product recommender, with the same minimal prev/next arrows */
+.collection-head{margin:44px 0 18px}
+.coll-rail{position:relative;width:var(--vw,100vw);left:50%;right:50%;margin-left:calc(var(--vw,100vw) * -0.5);margin-right:calc(var(--vw,100vw) * -0.5);padding:0 60px;box-sizing:border-box}
+@media(max-width:639px){.coll-rail{padding:0 15px}}
+.coll-grid{display:flex;gap:14px;align-items:stretch;justify-content:flex-start;width:100%;padding:2px 0 10px;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;scroll-padding-left:0}
+.coll-grid::-webkit-scrollbar{display:none}
+.coll-card{flex:0 0 210px;scroll-snap-align:start;position:relative;border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:4/5;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:16px;color:#fff;isolation:isolate;transition:transform .25s var(--ease)}
+@media(min-width:640px){.coll-card{flex-basis:235px}}
+.coll-card:hover{transform:translateY(-3px)}
+.coll-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.coll-card::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,14,15,.78) 0%,rgba(20,14,15,.1) 55%,rgba(20,14,15,0) 72%);z-index:-1}
+.coll-card h4{font-family:'Fraunces',serif;font-size:17px;margin-bottom:4px}
+.coll-card span{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;opacity:.92;display:flex;align-items:center;gap:5px}
 
 /* ============ gifts with meaning (single dark editorial moment) ============ */
 .meaning-section{background:var(--ink);color:#fff}
@@ -1002,11 +1027,38 @@ footer .socials svg{width:14px;height:14px}
         <h2>Skip Straight To Their Picks</h2>
       </div>
     </div>
-    <div class="recipient-grid rv">
-      <a href="#finder" class="recipient-card rc-1" data-relation="Her"><h4>For Her</h4><span>Get Picks <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-      <a href="#finder" class="recipient-card rc-2" data-relation="Him"><h4>For Him</h4><span>Get Picks <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-      <a href="#finder" class="recipient-card rc-3" data-relation="Parent"><h4>For Parents</h4><span>Get Picks <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-      <a href="#finder" class="recipient-card rc-4" data-relation="Bestie"><h4>For Bestie</h4><span>Get Picks <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+    <div class="spotlight-grid rv">
+      <a href="#catrec" class="spotlight-card sp-big"><h4>Rhapsody Of Colours</h4><span>Shop Now <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+      <div class="spotlight-stack">
+        <a href="#finder" class="spotlight-card sp-land" data-relation="Her"><h4>For Her</h4><span>Get Picks <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+        <a href="#finder" class="spotlight-card sp-land" data-relation="Him"><h4>For Him</h4><span>Get Picks <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+      </div>
+    </div>
+
+    <!-- Mia's own named collections — real banners, minimal arrows to browse
+         the rest since there are more than fit on screen at once -->
+    <div class="collection-head rv">
+      <p class="eyebrow">Shop By Collection</p>
+      <h2>Or Explore Mia's World</h2>
+    </div>
+    <div class="coll-rail">
+      <button type="button" class="rec-arrow rec-arrow-prev" id="coll-prev" aria-label="Scroll left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <div class="coll-grid rv" id="coll-grid">
+        <a href="#" class="coll-card"><img src="assets/collections/zen-nav.jpg" alt="Zen collection"><h4>Zen</h4><span>Shop Now</span></a>
+        <a href="#" class="coll-card"><img src="assets/collections/modern-polki-nav.jpg" alt="Modern Polki collection"><h4>Modern Polki</h4><span>Shop Now</span></a>
+        <a href="#" class="coll-card"><img src="assets/collections/sunkissed-nav.jpg" alt="Sunkissed collection"><h4>Sunkissed</h4><span>Shop Now</span></a>
+        <a href="#" class="coll-card"><img src="assets/collections/valentine-desktop.jpg" alt="Be My Valentine collection"><h4>Be My Valentine</h4><span>Shop Now</span></a>
+        <a href="#" class="coll-card"><img src="assets/collections/karat-range-desktop.jpg" alt="9 KT Range collection"><h4>9 KT Range</h4><span>Shop Now</span></a>
+        <a href="#" class="coll-card"><img src="assets/collections/manifest-desktop.jpg" alt="Manifest collection"><h4>Manifest</h4><span>Shop Now</span></a>
+        <a href="#" class="coll-card"><img src="assets/collections/mia-minis-desktop.jpg" alt="Mia Minis collection"><h4>Mia Minis</h4><span>Shop Now</span></a>
+        <a href="#" class="coll-card"><img src="assets/collections/fiora-desktop.jpg" alt="Fiora collection"><h4>Fiora</h4><span>Shop Now</span></a>
+        <a href="#" class="coll-card"><img src="assets/collections/aurum-desktop.jpg" alt="Aurum collection"><h4>Aurum</h4><span>Shop Now</span></a>
+        <a href="#" class="coll-card"><img src="assets/collections/homecoming-desktop.jpg" alt="Homecoming collection"><h4>Homecoming</h4><span>Shop Now</span></a>
+        <a href="#" class="coll-card"><img src="assets/collections/lovestruck-desktop.jpg" alt="Love Struck collection"><h4>Love Struck</h4><span>Shop Now</span></a>
+        <a href="#" class="coll-card"><img src="assets/collections/romani-desktop.jpg" alt="Romani collection"><h4>Romani</h4><span>Shop Now</span></a>
+        <a href="#" class="coll-card"><img src="assets/collections/gifting-range-desktop.jpg" alt="Gifting Essentials collection"><h4>Gifting Essentials</h4><span>Shop Now</span></a>
+      </div>
+      <button type="button" class="rec-arrow rec-arrow-next" id="coll-next" aria-label="Scroll right"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg></button>
     </div>
   </div>
 </section>
@@ -1446,6 +1498,15 @@ footer .socials svg{width:14px;height:14px}
     recGrid.scrollBy({left:recGrid.querySelector('.pcard').offsetWidth + 14, behavior:'smooth'});
   });
 
+  // Shop By Collection carousel — same prev/next pattern as the recommender
+  const collGrid = document.getElementById('coll-grid');
+  document.getElementById('coll-prev').addEventListener('click', ()=>{
+    collGrid.scrollBy({left:-collGrid.querySelector('.coll-card').offsetWidth - 14, behavior:'smooth'});
+  });
+  document.getElementById('coll-next').addEventListener('click', ()=>{
+    collGrid.scrollBy({left:collGrid.querySelector('.coll-card').offsetWidth + 14, behavior:'smooth'});
+  });
+
   function renderRec(catKey){
     const items = catKey==='all' ? PRODUCTS : PRODUCTS.filter(p=>p.cat===catKey);
     recGrid.innerHTML = items.map(productCardHTML).join('');
@@ -1733,7 +1794,7 @@ footer .socials svg{width:14px;height:14px}
 
   // recipient tiles are a quick-entry into the SAME finder, not a separate
   // decision surface — they pre-fill the form and run it immediately
-  document.querySelectorAll('.recipient-card[data-relation]').forEach(card=>{
+  document.querySelectorAll('.spotlight-card[data-relation]').forEach(card=>{
     card.addEventListener('click', (e)=>{
       e.preventDefault();
       setCSelectValue('f-relation', card.dataset.relation);

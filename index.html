@@ -215,7 +215,18 @@ body{padding-top:var(--header-h,127px)}
 @media(min-width:900px){.hero-copy{order:1}.hero-visual{order:2}}
 .hero-copy .eyebrow{margin-bottom:20px;background:#fff;color:#A80E5E;padding:7px 16px;border-radius:100px;width:fit-content}
 .hero-copy .eyebrow::before{display:none}
-.hero-copy h1{font-size:clamp(32px,5vw,52px);color:#fff;margin:0 0 20px}
+.hero-copy h1{
+  font-size:clamp(32px,5vw,52px);margin:0 0 20px;
+  /* shine sweep on the headline — a bright band moving through a
+     background clipped to the text, so the base reads as plain white
+     with a moving highlight rather than a gradient fill */
+  background-image:linear-gradient(100deg,#fff 0%,#fff 42%,#fff6e0 50%,#fff 58%,#fff 100%);
+  background-size:280% 100%;background-position:-90% 0;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:headlineShine 5.5s ease-in-out infinite;
+}
+@keyframes headlineShine{0%,18%{background-position:-90% 0}68%,100%{background-position:190% 0}}
+@media(prefers-reduced-motion:reduce){.hero-copy h1{animation:none;background-position:0 0}}
 @media(min-width:900px){.hero-copy h1{font-size:clamp(30px,2.7vw,40px);white-space:nowrap}}
 .hero-copy h1 em{font-style:italic;color:#F0C987}
 .hero-tagline{font-size:16px;color:rgba(255,255,255,.85);max-width:420px;margin:0 0 34px;line-height:1.65}
@@ -236,23 +247,42 @@ body{padding-top:var(--header-h,127px)}
 @media(prefers-reduced-motion:reduce){.hero-ctas .btn::before{animation:none}}
 .hero-visual{position:relative;display:flex;align-items:center;justify-content:center;min-height:280px}
 @media(min-width:900px){.hero-visual{min-height:360px}}
-/* Three lifestyle photos (real scene backgrounds, not white studio cutouts),
-   generously spaced with no overlap so none of them get hidden on mobile —
-   one anchor + two stacked accents, not five crowded windows */
+/* Desktop: unchanged Direction C "Layered Depth Stack" — one anchor, one
+   clear second-tier accent, three smaller. This was never the problem, so
+   it stays exactly as it was; only mobile gets a dedicated layout below. */
 .gift-scene{position:relative;width:100%;max-width:460px;aspect-ratio:1.1/1}
 @media(min-width:900px){.gift-scene{max-width:540px;aspect-ratio:1.3/1}}
 .gift-ribbon-line{position:absolute;inset:0;width:100%;height:100%;z-index:0;overflow:visible}
-.gwin{position:absolute;border-radius:16px;overflow:hidden;box-shadow:0 18px 38px rgba(0,0,0,.28);border:5px solid #fff;z-index:1}
+.gwin{position:relative;border-radius:16px;overflow:hidden;box-shadow:0 18px 38px rgba(0,0,0,.28);border:5px solid #fff;z-index:1}
 .gwin img{width:100%;height:100%;object-fit:cover;display:block}
-.gwin-1{width:52%;height:72%;left:2%;top:4%;box-shadow:0 24px 48px rgba(0,0,0,.34);z-index:2;--base:-6deg;transform:rotate(var(--base));animation:floatA 7s ease-in-out infinite}
-.gwin-2{width:38%;height:44%;left:58%;top:2%;--base:-4deg;transform:rotate(var(--base));animation:floatB 6.4s ease-in-out infinite;animation-delay:.3s}
-.gwin-3{width:36%;height:42%;left:60%;top:54%;z-index:2;--base:5deg;transform:rotate(var(--base));animation:floatC 6s ease-in-out infinite;animation-delay:.9s}
+/* shine sweep across each photo, looping, staggered per frame */
+.gwin::after{
+  content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
+  background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.55) 50%,transparent 100%);
+  transform:skewX(-20deg);animation:gwinShine 4.5s ease-in-out infinite;pointer-events:none;
+}
+.gwin-2::after{animation-delay:1.2s}
+.gwin-3::after{animation-delay:2.4s}
+.gwin-4::after{animation-delay:.6s}
+.gwin-5::after{animation-delay:1.8s}
+@keyframes gwinShine{0%,20%{left:-60%}70%,100%{left:140%}}
+.gwin-1{position:absolute;width:48%;height:68%;left:3%;top:2%;box-shadow:0 24px 48px rgba(0,0,0,.34);z-index:2;--base:-6deg;transform:rotate(var(--base));animation:floatA 7s ease-in-out infinite}
+.gwin-2{position:absolute;width:24%;height:30%;left:52%;top:0%;--base:-4deg;transform:rotate(var(--base));animation:floatB 6.4s ease-in-out infinite;animation-delay:.3s}
+.gwin-3{position:absolute;width:36%;height:44%;left:60%;top:24%;z-index:2;--base:5deg;transform:rotate(var(--base));animation:floatC 6s ease-in-out infinite;animation-delay:.9s}
+.gwin-4{position:absolute;width:24%;height:30%;left:4%;top:68%;--base:4deg;transform:rotate(var(--base));animation:floatD 6.8s ease-in-out infinite;animation-delay:1.4s}
+.gwin-5{position:absolute;width:26%;height:32%;left:40%;top:62%;--base:-3deg;transform:rotate(var(--base));animation:floatE 6.2s ease-in-out infinite;animation-delay:.6s}
 @keyframes floatA{0%,100%{transform:translateY(0) rotate(var(--base))}50%{transform:translateY(-8px) rotate(calc(var(--base) - 1deg))}}
 @keyframes floatB{0%,100%{transform:translateY(0) rotate(var(--base))}50%{transform:translateY(9px) rotate(calc(var(--base) + 1deg))}}
 @keyframes floatC{0%,100%{transform:translateY(0) rotate(var(--base))}50%{transform:translateY(-7px) rotate(calc(var(--base) - 1.2deg))}}
-@media(prefers-reduced-motion:reduce){.gwin-1,.gwin-2,.gwin-3,.sparkle{animation:none!important}}
-/* mobile: same three photos, same non-overlapping logic, just re-flowed
-   into a taller scene so nothing is cropped or hidden behind another */
+@keyframes floatD{0%,100%{transform:translateY(0) rotate(var(--base))}50%{transform:translateY(8px) rotate(calc(var(--base) + 1.4deg))}}
+@keyframes floatE{0%,100%{transform:translateY(0) rotate(var(--base))}50%{transform:translateY(-9px) rotate(calc(var(--base) - 1deg))}}
+@media(prefers-reduced-motion:reduce){.gwin-1,.gwin-2,.gwin-3,.gwin-4,.gwin-5,.gwin::after,.sparkle{animation:none!important}}
+/* Mobile only: the actual problem — instead of 5 crowded windows with two
+   fully hidden, show 3 lifestyle photos in a clean centered vertical
+   stack — small on top, big anchor in the middle, small on bottom, all
+   centered on the same axis so it reads as one composed arrangement
+   instead of a random scatter. The other two windows are hidden here,
+   not deleted, so desktop keeps its original five. */
 @media(max-width:639px){
   .hero-grid{padding:20px 20px;gap:20px}
   .hero-copy .eyebrow{margin-bottom:14px}
@@ -262,10 +292,11 @@ body{padding-top:var(--header-h,127px)}
   .hero-tagline{margin-bottom:20px;font-size:14.5px}
   .hero-ctas{flex-wrap:nowrap;gap:8px}
   .hero-ctas .btn{flex:1;padding:12px 10px;font-size:10.5px;letter-spacing:.01em}
-  .gift-scene{aspect-ratio:.95/1;max-width:270px}
-  .gwin-1{left:4%;top:8%;width:58%;height:72%}
-  .gwin-2{left:66%;top:4%;width:32%;height:32%}
-  .gwin-3{left:66%;top:42%;width:32%;height:34%}
+  .gift-scene{aspect-ratio:.72/1;max-width:250px}
+  .gwin-4,.gwin-5{display:none}
+  .gwin-2{left:20%;top:0%;width:60%;height:25%;z-index:1}
+  .gwin-1{left:8%;top:23%;width:84%;height:52%;z-index:2}
+  .gwin-3{left:20%;top:73%;width:60%;height:25%;z-index:1}
 }
 .sparkle{position:absolute;color:#F0C987;opacity:.9;animation:sparkle 2.6s ease-in-out infinite;filter:drop-shadow(0 1px 3px rgba(0,0,0,.35));z-index:3}
 .sparkle.s2{animation-delay:.9s}
@@ -457,6 +488,27 @@ body{padding-top:var(--header-h,127px)}
 .trust-tick{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.03em;color:#fff;white-space:nowrap;flex-shrink:0}
 .trust-tick svg{flex-shrink:0;color:#F0C987}
 .trust-sep{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.4);flex-shrink:0}
+/* mobile: no more drag-to-scroll — the pill bleeds edge to edge and its
+   content auto-scrolls as a continuous ticker. Two identical copies of
+   the same content, animated in perfect sync, translating by exactly
+   one copy's own width each loop — the classic seamless-marquee trick */
+.trust-marquee-track{display:contents}
+.trust-marquee-track.dupe{display:none}
+@media(max-width:639px){
+  .trust-ticker{padding:18px 0}
+  .trust-ticker-inner{
+    max-width:none;border-radius:0;padding:14px 0;
+    width:100vw;position:relative;left:50%;margin-left:-50vw;
+    flex-wrap:nowrap;justify-content:flex-start;overflow:hidden;
+  }
+  .trust-marquee-track{
+    display:flex;align-items:center;gap:22px;flex-shrink:0;
+    padding:0 22px;animation:trustMarquee 18s linear infinite;
+  }
+  .trust-marquee-track.dupe{display:flex}
+}
+@keyframes trustMarquee{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+@media(prefers-reduced-motion:reduce){.trust-marquee-track{animation:none}}
 
 /* ============ recipient grid ============ */
 .recipient-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
@@ -786,6 +838,8 @@ footer .socials svg{width:14px;height:14px}
             <div class="gwin gwin-1"><img src="assets/editorial/hero-gift-frame.webp" alt="A ribboned Mia jewellery gift unwrapped, with a handwritten note that reads 'For my love'"></div>
             <div class="gwin gwin-2"><img src="assets/editorial/gifts-her.webp" alt="A hand holding up a Mia necklace and hoop earrings"></div>
             <div class="gwin gwin-3"><img src="assets/editorial/gifts-him.webp" alt="Two hands presenting a Mia necklace and rings in a gift tray"></div>
+            <div class="gwin gwin-4"><img src="assets/products/M5I2FDW.webp" alt="Mia sculpted distinct tsavorite gold ring"></div>
+            <div class="gwin gwin-5"><img src="assets/products/IKD5BDG.webp" alt="Mia little sunshine gold bracelet"></div>
             <span class="tag tag-wrap"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V8H6a2 2 0 0 0-2 2v10h16v-4"/><path d="M2 12h20"/></svg>Free Gift Wrap</span>
             <span class="tag tag-note"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M14 3v5h5M8 13h8M8 17h5"/></svg>Handwritten Note</span>
             <span class="tag tag-deliver"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="14" height="11" rx="2"/><path d="M17 10h2.5a1 1 0 0 1 .9.55L22 13v4h-5"/><circle cx="7.5" cy="18.5" r="1.5"/><circle cx="16.5" cy="18.5" r="1.5"/></svg>Delivered On Your Chosen Day</span>
@@ -907,17 +961,32 @@ footer .socials svg{width:14px;height:14px}
      on a gifting purchase, so they're answered the moment products appear. -->
 <section class="trust-ticker">
   <div class="trust-ticker-inner">
-    <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="5"/><path d="M8.5 12.5 7 21l5-2.5 5 2.5-1.5-8.5"/></svg>BIS Hallmarked</span>
-    <span class="trust-sep"></span>
-    <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="7" width="14" height="10" rx="1.5"/><path d="M15 10h4.5a1 1 0 0 1 .9.55L22 14v3h-3.5"/><circle cx="6.5" cy="18.5" r="1.6"/><circle cx="17" cy="18.5" r="1.6"/></svg>Free Shipping</span>
-    <span class="trust-sep"></span>
-    <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg>A Tata Product</span>
-    <span class="trust-sep"></span>
-    <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12l3 5-9 13L3 8Z"/><path d="M3 8h18M9 3l-2 5 5 13 5-13-2-5"/></svg>Certified Natural Diamonds</span>
-    <span class="trust-sep"></span>
-    <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>1 Year Warranty</span>
-    <span class="trust-sep"></span>
-    <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 16v-4h4"/></svg>30 Day Return</span>
+    <div class="trust-marquee-track">
+      <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="5"/><path d="M8.5 12.5 7 21l5-2.5 5 2.5-1.5-8.5"/></svg>BIS Hallmarked</span>
+      <span class="trust-sep"></span>
+      <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="7" width="14" height="10" rx="1.5"/><path d="M15 10h4.5a1 1 0 0 1 .9.55L22 14v3h-3.5"/><circle cx="6.5" cy="18.5" r="1.6"/><circle cx="17" cy="18.5" r="1.6"/></svg>Free Shipping</span>
+      <span class="trust-sep"></span>
+      <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg>A Tata Product</span>
+      <span class="trust-sep"></span>
+      <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12l3 5-9 13L3 8Z"/><path d="M3 8h18M9 3l-2 5 5 13 5-13-2-5"/></svg>Certified Natural Diamonds</span>
+      <span class="trust-sep"></span>
+      <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>1 Year Warranty</span>
+      <span class="trust-sep"></span>
+      <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 16v-4h4"/></svg>30 Day Return</span>
+    </div>
+    <div class="trust-marquee-track dupe" aria-hidden="true">
+      <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="5"/><path d="M8.5 12.5 7 21l5-2.5 5 2.5-1.5-8.5"/></svg>BIS Hallmarked</span>
+      <span class="trust-sep"></span>
+      <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="1" y="7" width="14" height="10" rx="1.5"/><path d="M15 10h4.5a1 1 0 0 1 .9.55L22 14v3h-3.5"/><circle cx="6.5" cy="18.5" r="1.6"/><circle cx="17" cy="18.5" r="1.6"/></svg>Free Shipping</span>
+      <span class="trust-sep"></span>
+      <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg>A Tata Product</span>
+      <span class="trust-sep"></span>
+      <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12l3 5-9 13L3 8Z"/><path d="M3 8h18M9 3l-2 5 5 13 5-13-2-5"/></svg>Certified Natural Diamonds</span>
+      <span class="trust-sep"></span>
+      <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>1 Year Warranty</span>
+      <span class="trust-sep"></span>
+      <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 16v-4h4"/></svg>30 Day Return</span>
+    </div>
   </div>
 </section>
 

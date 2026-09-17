@@ -339,18 +339,32 @@ body{padding-top:var(--header-h,127px)}
 /* Direction D — Gold-Framed Jewel Box: the hero's coral-to-maroon
    gradient + glitter-dot texture carried onto the card itself, photo
    inset like a gem behind a hairline gold frame */
-/* vivid satin pink lifted from the "Perfect Gifts" reference photo —
-   stays true pink throughout, no brown/maroon undertone at the edges */
-.pcard{position:relative;background:radial-gradient(130% 150% at 50% -10%,#F0529C 0%,#E4127D 45%,#B4106A 100%);border:1.5px solid rgba(240,201,135,.5);border-radius:16px;overflow:hidden;transition:box-shadow .25s var(--ease),transform .25s var(--ease),border-color .25s var(--ease);cursor:pointer;text-align:left;display:flex;flex-direction:column;box-shadow:0 14px 30px rgba(180,16,106,.25)}
-.pcard:hover{box-shadow:0 18px 40px rgba(180,16,106,.32);transform:translateY(-3px);border-color:#F0C987}
+/* "Sunkissed by Mia" cosmic banner — a bloomed glow near the top-right,
+   deepening into near-black maroon at the corners, plus a denser,
+   varied-size starfield instead of the earlier handful of flecks */
+.pcard{
+  position:relative;
+  background:
+    radial-gradient(58% 50% at 70% 22%, rgba(255,255,255,.28), transparent 70%),
+    radial-gradient(145% 165% at 65% 28%, #F26AA8 0%, #E4127D 32%, #A80E5E 62%, #3D0620 100%);
+  border:1.5px solid rgba(240,201,135,.5);border-radius:16px;overflow:hidden;transition:box-shadow .25s var(--ease),transform .25s var(--ease),border-color .25s var(--ease);cursor:pointer;text-align:left;display:flex;flex-direction:column;box-shadow:0 14px 30px rgba(61,6,32,.32)
+}
+.pcard:hover{box-shadow:0 18px 40px rgba(61,6,32,.4);transform:translateY(-3px);border-color:#F0C987}
 .pcard::after{
-  content:"";position:absolute;inset:0;pointer-events:none;opacity:.8;z-index:1;
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.9;z-index:1;
   background-image:
-    radial-gradient(1.5px 1.5px at 12% 24%, rgba(255,255,255,.9), transparent),
-    radial-gradient(1.2px 1.2px at 30% 70%, rgba(255,255,255,.6), transparent),
-    radial-gradient(1.3px 1.3px at 66% 34%, rgba(255,255,255,.8), transparent),
-    radial-gradient(1px 1px at 84% 62%, rgba(255,255,255,.55), transparent),
-    radial-gradient(1.2px 1.2px at 92% 90%, rgba(255,255,255,.6), transparent);
+    radial-gradient(1.6px 1.6px at 10% 16%, rgba(255,255,255,.9), transparent),
+    radial-gradient(1px 1px at 20% 38%, rgba(255,255,255,.5), transparent),
+    radial-gradient(1.3px 1.3px at 32% 12%, rgba(255,255,255,.8), transparent),
+    radial-gradient(.8px .8px at 40% 60%, rgba(255,255,255,.5), transparent),
+    radial-gradient(1.4px 1.4px at 50% 30%, rgba(255,255,255,.75), transparent),
+    radial-gradient(1px 1px at 58% 78%, rgba(255,255,255,.55), transparent),
+    radial-gradient(1.6px 1.6px at 66% 20%, rgba(255,255,255,.9), transparent),
+    radial-gradient(.9px .9px at 74% 52%, rgba(255,255,255,.5), transparent),
+    radial-gradient(1.3px 1.3px at 82% 68%, rgba(255,255,255,.8), transparent),
+    radial-gradient(1px 1px at 88% 30%, rgba(255,255,255,.55), transparent),
+    radial-gradient(1.5px 1.5px at 14% 84%, rgba(255,255,255,.7), transparent),
+    radial-gradient(.9px .9px at 94% 88%, rgba(255,255,255,.5), transparent);
 }
 .pcard .pthumb{width:calc(100% - 20px);aspect-ratio:1/0.92;background:rgba(0,0,0,.14);position:relative;overflow:hidden;margin:10px 10px 0;border-radius:10px}
 .pcard .pthumb img{width:100%;height:100%;object-fit:cover;display:block;border-radius:10px;transition:transform .5s var(--ease)}

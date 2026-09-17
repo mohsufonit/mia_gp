@@ -140,9 +140,8 @@ body{padding-top:var(--header-h,127px)}
 .header-top{background:#fff;border-bottom:1px solid var(--line)}
 .header-top-inner{display:flex;align-items:center;gap:20px;padding:14px 24px;max-width:var(--max);margin:0 auto}
 @media(min-width:1024px){.header-top-inner{padding:14px 48px}}
-.logo-mia{flex-shrink:0;width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#F7A0C6 0%,#E4127D 55%,#A80E5E 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(168,14,94,.18),inset 0 1px 0 rgba(255,255,255,.35);position:relative;overflow:hidden;text-decoration:none}
-.logo-mia::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 25% 25%,rgba(255,255,255,.3) 0%,transparent 45%);pointer-events:none}
-.logo-mia-text{font-family:'Fraunces',serif;font-style:italic;font-weight:600;font-size:22px;color:#fff;line-height:1;position:relative;z-index:2;text-shadow:0 2px 6px rgba(0,0,0,.18)}
+.logo-mia{flex-shrink:0;display:flex;align-items:center;text-decoration:none}
+.logo-mia-img{height:38px;width:auto;display:block}
 .header-search{display:none;flex:1;max-width:560px;align-items:center;background:#fff;border:1.5px solid var(--line-2);border-radius:100px;padding:4px 6px 4px 18px;transition:border-color .2s,box-shadow .2s}
 @media(min-width:760px){.header-search{display:flex}}
 .header-search:focus-within{border-color:var(--pink);box-shadow:0 0 0 4px rgba(228,18,125,.08)}
@@ -618,8 +617,8 @@ body{padding-top:var(--header-h,127px)}
 .coin-pack{width:92px;aspect-ratio:.86/1;border-radius:9px;padding:9px 6px 7px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:2px;transform:rotate(-9deg);box-shadow:0 16px 20px -4px rgba(0,0,0,.4),0 6px 10px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.3)}
 .coin-pack-gold{background:linear-gradient(160deg,#E8A23A 0%,#C97A1E 55%,#9C5A10 100%)}
 .coin-pack-silver{background:linear-gradient(160deg,#E4E8EC 0%,#AEB6BE 55%,#7C8590 100%)}
-.coin-pack .cp-brand{font-family:'Fraunces',serif;font-style:italic;font-size:11px;color:#fff;line-height:1;margin-top:1px;text-shadow:0 1px 2px rgba(0,0,0,.2)}
-.coin-pack .cp-by{font-size:4px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85)}
+.coin-pack .cp-logo{width:26px;height:auto;margin-top:1px;filter:brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0,0,0,.25))}
+.cc-silver .cp-logo{filter:brightness(.25) drop-shadow(0 1px 1px rgba(255,255,255,.4))}
 .coin-pack .cp-window{width:54px;height:54px;border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center;margin:3px 0 2px}
 .coin-pack .cp-window::before{content:"";position:absolute;inset:-7px;border-radius:50%;background:repeating-conic-gradient(rgba(255,255,255,.6) 0deg 1.1deg, transparent 1.1deg 7.5deg)}
 .coin-pack .cp-window .cp-coin{position:relative;z-index:1;width:80%;height:80%;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,.85);box-shadow:0 2px 6px rgba(0,0,0,.35)}
@@ -668,6 +667,32 @@ body{padding-top:var(--header-h,127px)}
 .gc-form input:focus,.gc-form textarea:focus{outline:none;border-color:var(--pink)}
 .gc-form textarea{resize:vertical;min-height:60px}
 .gc-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* ============ gift card modal ============ */
+.gcmodal-overlay{position:fixed;inset:0;background:rgba(20,6,14,.55);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:24px 16px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.gcmodal-overlay.open{display:flex}
+.gcmodal{background:#fff;border-radius:20px;max-width:840px;width:100%;position:relative;box-shadow:0 30px 60px rgba(0,0,0,.4);overflow:hidden;margin:auto 0}
+.gcmodal-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:var(--blush-2);display:flex;align-items:center;justify-content:center;color:var(--pink-deep);z-index:5;transition:background .2s}
+.gcmodal-close:hover{background:var(--blush)}
+.gcmodal-grid{display:grid;grid-template-columns:1fr}
+@media(min-width:760px){.gcmodal-grid{grid-template-columns:1fr 1.15fr}}
+.gcmodal-preview{background:radial-gradient(120% 140% at 30% 0%,#F7A0C6,#E4127D 55%,#A80E5E 100%);display:flex;align-items:center;justify-content:center;padding:44px 30px}
+.gcmodal-card{width:100%;max-width:300px}
+.gcm-logo{height:22px;width:auto;filter:brightness(0) invert(1)}
+.gcm-card-label{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.85;margin-top:16px;position:relative;z-index:1}
+.gcmodal-form{padding:44px 32px 32px;display:flex;flex-direction:column}
+@media(max-width:759px){.gcmodal-form{padding:28px 22px 24px}}
+.gcmodal-badge{display:inline-flex;align-self:flex-start;background:var(--blush-2);color:var(--pink-deep);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:5px 12px;border-radius:100px;margin-bottom:14px}
+.gcmodal-form h2{font-family:'Fraunces',serif;font-size:clamp(22px,3vw,27px);margin:0 0 8px}
+.gcmodal-form>p{color:var(--muted);font-size:13px;margin:0 0 16px}
+.gcmodal-label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:14px 0 7px}
+.gcmodal-amounts{display:flex;flex-wrap:wrap;gap:8px}
+.gcmodal-amt{padding:9px 15px;border-radius:100px;border:1.5px solid var(--line-2);font-size:12px;font-weight:700;color:var(--ink);background:#fff;transition:all .15s}
+.gcmodal-amt.active,.gcmodal-amt:hover{background:var(--pink);border-color:var(--pink);color:#fff}
+.gcmodal-form input,.gcmodal-form textarea{width:100%;box-sizing:border-box;padding:11px 13px;border:1.5px solid var(--line-2);border-radius:8px;font-family:inherit;font-size:13px;color:var(--ink)}
+.gcmodal-form input:focus,.gcmodal-form textarea:focus{outline:none;border-color:var(--pink)}
+.gcmodal-form textarea{resize:vertical;min-height:64px}
+.gcmodal-form .btn{margin-top:20px;width:100%}
 
 /* ============ our philosophy — DY-style editorial spread ============ */
 .story-wrap{display:grid;grid-template-columns:1fr;gap:32px;align-items:center}
@@ -860,7 +885,7 @@ footer .socials svg{width:14px;height:14px}
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
       </button>
       <a href="#" class="logo-mia" aria-label="Mia by Tanishq">
-        <span class="logo-mia-text">Mia</span>
+        <img class="logo-mia-img" src="assets/logo/mia-logo-pink.png" alt="Mia by Tanishq">
       </a>
       <div class="header-search">
         <button class="header-search-btn" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5" stroke-linecap="round"/></svg></button>
@@ -901,7 +926,7 @@ footer .socials svg{width:14px;height:14px}
 
 <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">
   <div class="mobile-menu-head">
-    <span class="logo-mark" style="font-size:21px">Mia</span>
+    <img src="assets/logo/mia-logo-pink.png" alt="Mia by Tanishq" style="height:32px;width:auto">
     <button class="icon-btn" id="menu-close" aria-label="Close menu"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   </div>
   <a href="#">Rings</a>
@@ -1157,8 +1182,7 @@ footer .socials svg{width:14px;height:14px}
         </div>
         <div class="cc-visual">
           <div class="coin-pack coin-pack-silver">
-            <div class="cp-brand">Mia</div>
-            <div class="cp-by">by Tanishq</div>
+            <img class="cp-logo" src="assets/logo/mia-logo-pink.png" alt="Mia by Tanishq">
             <div class="cp-window"><span class="cp-coin"><img src="assets/coins/silver-coin.jpg" alt="Mia fine silver coin"></span></div>
             <div class="cp-purity">Silver &middot; 999 Purity</div>
           </div>
@@ -1187,8 +1211,7 @@ footer .socials svg{width:14px;height:14px}
         </div>
         <div class="cc-visual">
           <div class="coin-pack coin-pack-gold">
-            <div class="cp-brand">Mia</div>
-            <div class="cp-by">by Tanishq</div>
+            <img class="cp-logo" src="assets/logo/mia-logo-pink.png" alt="Mia by Tanishq">
             <div class="cp-window"><span class="cp-coin"><img src="assets/coins/gold-coin.jpg" alt="Mia 24 karat gold coin"></span></div>
             <div class="cp-purity">Gold &middot; 24 KT (9999)</div>
           </div>
@@ -1463,6 +1486,44 @@ footer .socials svg{width:14px;height:14px}
     </div>
 
     <button class="btn btn-primary btn-block" id="drawer-checkout">Proceed To Checkout</button>
+  </div>
+</div>
+
+<!-- gift card modal — opened from "Buy Gift Cards" in the coin section,
+     matching the reference site's popup flow instead of a scroll-to-section -->
+<div class="gcmodal-overlay" id="gcmodal-overlay" aria-hidden="true">
+  <div class="gcmodal" role="dialog" aria-modal="true" aria-label="Design your gift card">
+    <button type="button" class="gcmodal-close" id="gcmodal-close" aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <div class="gcmodal-grid">
+      <div class="gcmodal-preview">
+        <div class="gift-card-mock gcmodal-card">
+          <div class="gcm-top">
+            <img class="gcm-logo" src="assets/logo/mia-logo-pink.png" alt="Mia by Tanishq">
+          </div>
+          <div class="gcm-card-label">Gift Card</div>
+          <div class="gcm-value" id="gcmodal-value">₹5,000</div>
+          <div class="gcm-to">For <strong id="gcmodal-to">Priya Sharma</strong></div>
+        </div>
+      </div>
+      <div class="gcmodal-form">
+        <span class="gcmodal-badge">Instant Delivery</span>
+        <h2>Design Their Gift Card</h2>
+        <p>Preview updates live as you type.</p>
+        <div class="gcmodal-label">Amount</div>
+        <div class="gcmodal-amounts" id="gcmodal-amounts">
+          <button type="button" class="gcmodal-amt" data-amt="1000">₹1,000</button>
+          <button type="button" class="gcmodal-amt" data-amt="2000">₹2,000</button>
+          <button type="button" class="gcmodal-amt active" data-amt="5000">₹5,000</button>
+          <button type="button" class="gcmodal-amt" data-amt="10000">₹10,000</button>
+          <button type="button" class="gcmodal-amt" data-amt="25000">₹25,000</button>
+        </div>
+        <div class="gcmodal-label">Recipient Name</div>
+        <input type="text" id="gcmodal-name" value="Priya Sharma">
+        <div class="gcmodal-label">Your Message</div>
+        <textarea id="gcmodal-msg">Happy anniversary, my love. Here's to more forevers.</textarea>
+        <button type="button" class="btn btn-primary" id="gcmodal-buy">Buy Gift Card</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1913,6 +1974,50 @@ footer .socials svg{width:14px;height:14px}
   [gcName, gcAmount, gcMessage].forEach(el=>el.addEventListener('input', syncCard));
   document.getElementById('gc-form').addEventListener('submit', (e)=>{ e.preventDefault(); showToast('Gift card added to bag ✨'); });
   document.getElementById('nl-form').addEventListener('submit', (e)=>{ e.preventDefault(); showToast("You're on the list ✨"); e.target.reset(); });
+
+  // ---- gift card modal: opened from "Buy Gift Cards" in the coin section ----
+  const gcmOverlay = document.getElementById('gcmodal-overlay');
+  const gcmNameInput = document.getElementById('gcmodal-name');
+  const gcmMsgInput = document.getElementById('gcmodal-msg');
+  const gcmAmountBtns = document.querySelectorAll('.gcmodal-amt');
+  let gcmActiveAmount = 5000;
+
+  function syncGcModalCard(){
+    document.getElementById('gcmodal-to').textContent = gcmNameInput.value || 'Someone Special';
+    document.getElementById('gcmodal-value').textContent = '₹' + gcmActiveAmount.toLocaleString('en-IN');
+  }
+  gcmNameInput.addEventListener('input', syncGcModalCard);
+  gcmAmountBtns.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      gcmAmountBtns.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      gcmActiveAmount = parseInt(btn.dataset.amt, 10);
+      syncGcModalCard();
+    });
+  });
+
+  function openGcModal(){
+    gcmOverlay.classList.add('open');
+    gcmOverlay.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('locked');
+    syncGcModalCard();
+  }
+  function closeGcModal(){
+    gcmOverlay.classList.remove('open');
+    gcmOverlay.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('locked');
+  }
+  document.querySelector('.coin-card.cc-giftcard').addEventListener('click', (e)=>{
+    e.preventDefault();
+    openGcModal();
+  });
+  document.getElementById('gcmodal-close').addEventListener('click', closeGcModal);
+  gcmOverlay.addEventListener('click', (e)=>{ if(e.target === gcmOverlay) closeGcModal(); });
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && gcmOverlay.classList.contains('open')) closeGcModal(); });
+  document.getElementById('gcmodal-buy').addEventListener('click', ()=>{
+    closeGcModal();
+    showToast('Gift card added to bag ✨');
+  });
 })();
 </script>
 </body>

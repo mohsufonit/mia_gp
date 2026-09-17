@@ -623,16 +623,21 @@ body{padding-top:var(--header-h,127px)}
 .coin-pack .cp-window{width:54px;height:54px;border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center;margin:3px 0 2px}
 .coin-pack .cp-window::before{content:"";position:absolute;inset:-7px;border-radius:50%;background:repeating-conic-gradient(rgba(255,255,255,.6) 0deg 1.1deg, transparent 1.1deg 7.5deg)}
 .coin-pack .cp-window .cp-coin{position:relative;z-index:1;width:80%;height:80%;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,.85);box-shadow:0 2px 6px rgba(0,0,0,.35)}
-.coin-pack .cp-window img{width:150%;height:150%;object-fit:cover;position:relative;left:-25%;top:-25%}
+.coin-pack .cp-window img{width:100%;height:100%;object-fit:cover;object-position:center;transform:scale(1.9);transform-origin:center}
 .coin-pack .cp-purity{font-size:4.6px;font-weight:700;color:#fff;text-align:center;letter-spacing:.02em;line-height:1.35;text-shadow:0 1px 1px rgba(0,0,0,.2)}
 
 /* gift card visual — a real product photo standing in for the card face,
    same tilt + cast shadow treatment as the coin packs */
-.giftcard-pack{width:118px;aspect-ratio:1.55/1;border-radius:10px;background:linear-gradient(135deg,#F26AA8,#A80E5E 60%,#3D0620 100%);position:relative;overflow:hidden;display:flex;align-items:center;padding:8px;gap:8px;transform:rotate(-9deg);box-shadow:0 16px 20px -4px rgba(0,0,0,.4),0 6px 10px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.3)}
-.giftcard-pack img{width:38%;height:88%;object-fit:cover;border-radius:6px;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,.3)}
-.giftcard-pack .gp-brand{font-family:'Fraunces',serif;font-style:italic;color:#fff;font-size:12px;line-height:1}
-.giftcard-pack .gp-by{font-size:4px;color:rgba(255,255,255,.85);letter-spacing:.12em;text-transform:uppercase;margin-top:1px}
-.giftcard-pack .gp-tag{font-size:5.5px;color:var(--gold);margin-top:4px;line-height:1.4}
+/* the jewellery photo now bleeds straight into the card's own pink surface
+   (fading via gradient) instead of sitting in a separate boxed thumbnail —
+   reads as one photographed card, not an image-plus-logo composite */
+.giftcard-pack{width:126px;aspect-ratio:1.55/1;border-radius:10px;background:linear-gradient(135deg,#F26AA8,#A80E5E 55%,#3D0620 100%);position:relative;overflow:hidden;transform:rotate(-9deg);box-shadow:0 16px 20px -4px rgba(0,0,0,.4),0 6px 10px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.3)}
+.giftcard-pack img{position:absolute;inset:0;left:-8%;width:68%;height:100%;object-fit:cover;mix-blend-mode:multiply;opacity:.92}
+.giftcard-pack .gp-fade{position:absolute;inset:0;background:linear-gradient(90deg,transparent 34%,var(--satin-d) 62%);pointer-events:none}
+.giftcard-pack .gp-text{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;text-align:right;padding:8px 9px}
+.giftcard-pack .gp-brand{font-family:'Fraunces',serif;font-style:italic;color:#fff;font-size:13px;line-height:1}
+.giftcard-pack .gp-by{font-size:4.5px;color:rgba(255,255,255,.85);letter-spacing:.12em;text-transform:uppercase;margin-top:1px}
+.giftcard-pack .gp-tag{font-size:6px;color:var(--gold);margin-top:5px;line-height:1.4}
 
 /* ============ occasion ============ */
 .occasion-scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:6px;-ms-overflow-style:none;scrollbar-width:none}
@@ -1169,8 +1174,9 @@ footer .socials svg{width:14px;height:14px}
         </div>
         <div class="cc-visual">
           <div class="giftcard-pack">
-            <img src="assets/products/M5I2GDY.webp" alt="Mia necklace on the gift card">
-            <div>
+            <img src="assets/products/M5I2GDY.webp" alt="Mia necklace draped on the gift card">
+            <div class="gp-fade"></div>
+            <div class="gp-text">
               <div class="gp-brand">Mia</div>
               <div class="gp-by">by Tanishq</div>
               <div class="gp-tag">Celebrate<br>Her Always</div>

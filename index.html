@@ -393,6 +393,7 @@ body{padding-top:var(--header-h,127px)}
 .rec-arrow-prev{left:14px}
 .rec-arrow-next{right:14px}
 @media(min-width:1024px){.rec-arrow{display:flex}}
+.rec-arrow.hide{display:none!important}
 /* scroll progress indicator, matches the page's coral palette */
 .rec-track{width:100%;max-width:160px;height:4px;background:var(--line-2);border-radius:100px;margin:4px auto 0;overflow:hidden}
 .rec-track-fill{width:20%;height:100%;background:linear-gradient(90deg,var(--pink-deep),var(--pink));border-radius:100px;transition:width .2s,transform .2s}
@@ -696,12 +697,17 @@ body{padding-top:var(--header-h,127px)}
 @media(max-width:639px){
   .trust-ticker{padding:18px 0}
   .trust-ticker-inner{
-    max-width:none;padding:0;
+    max-width:none;padding:0;gap:0;
     flex-wrap:nowrap;justify-content:flex-start;overflow:hidden;
   }
+  /* gap alone (no extra per-track padding, which was stacking with the
+     container's own gap and making the two loop seams wider than every
+     other gap in the ticker) — the trailing .mobile-only-sep is what
+     marks the seam, spaced identically to every other item via this
+     same gap */
   .trust-marquee-track{
     display:flex;align-items:center;gap:29px;flex-shrink:0;
-    padding:0 29px;animation:trustMarquee 18s linear infinite;
+    padding:0;animation:trustMarquee 18s linear infinite;
   }
   .trust-marquee-track.dupe{display:flex}
   .mobile-only-sep{display:block}
@@ -1029,7 +1035,9 @@ body{padding-top:var(--header-h,127px)}
 
 /* numbered timeline nav + arrows, same rec-arrow language used elsewhere */
 .touch-timeline-row{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:18px}
-.touch-arrow{position:static;display:flex}
+/* sized to match the number pills exactly (was the generic 38px carousel
+   arrow next to 30px numbers, which looked mismatched) */
+.touch-arrow{position:static;display:flex;width:30px;height:30px}
 .touch-timeline{display:flex;align-items:center;gap:10px}
 .tt-item{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line-2);color:var(--muted);font-size:11px;font-weight:800;font-variant-numeric:tabular-nums;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#fff;transition:all .25s var(--ease)}
 .tt-item.active{background:var(--pink);border-color:var(--pink);color:#fff;transform:scale(1.15)}
@@ -1156,7 +1164,10 @@ body{padding-top:var(--header-h,127px)}
 /* ============ newsletter ============ */
 /* same breaker background as every other pink band on the page, not a
    separate dark-ink treatment */
-.newsletter{background:radial-gradient(130% 150% at 50% -10%,var(--pink-hover) 0%,var(--pink) 45%,#3D0620 100%);color:#fff;text-align:center;padding:62px 24px;position:relative;overflow:hidden}
+/* margin-bottom so it doesn't butt straight into the footer's own solid
+   pink — the dark-maroon-to-bright-pink jump with zero gap read as a
+   layout bug rather than two intentionally different bands */
+.newsletter{background:radial-gradient(130% 150% at 50% -10%,var(--pink-hover) 0%,var(--pink) 45%,#3D0620 100%);color:#fff;text-align:center;padding:62px 24px;margin-bottom:36px;position:relative;overflow:hidden}
 .newsletter h2{color:#fff;font-size:clamp(21px,2.8vw,28px);margin-bottom:9px}
 .newsletter p{color:rgba(255,255,255,.6);max-width:420px;margin:0 auto 24px;font-size:13.5px}
 .nl-form{display:flex;max-width:400px;margin:0 auto;border-radius:100px;overflow:hidden;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2)}
@@ -2709,6 +2720,10 @@ footer .socials svg{width:14px;height:14px}
       const fillWidth = max > 0 ? Math.max(15, grid.clientWidth / grid.scrollWidth * 100) : 100;
       trackFill.style.width = fillWidth + '%';
       trackFill.style.transform = `translateX(${(pct/100) * (100/fillWidth*100 - 100)}%)`;
+      // arrows only show up when there's actually somewhere to scroll to —
+      // not by default regardless of whether the row even needs scrolling
+      prevBtn.classList.toggle('hide', max <= 1 || grid.scrollLeft <= 1);
+      nextBtn.classList.toggle('hide', max <= 1 || grid.scrollLeft >= max - 1);
     }
     grid.addEventListener('scroll', update);
     window.addEventListener('resize', update);
@@ -2734,21 +2749,23 @@ footer .socials svg{width:14px;height:14px}
   // product images finish loading (and webfonts swap in) after the initial
   // scrollLeft=0/centered check runs, which can shift layout enough that the
   // rail no longer actually starts at card 1 — reassert once things settle
+  const _railsToReset = [];
   function resetRailScroll(grid, trackUpdater){
-    grid.scrollLeft = 0;
-    grid.classList.toggle('centered', grid.scrollWidth <= grid.clientWidth + 1);
-    trackUpdater();
-    requestAnimationFrame(()=>{
+    function reassert(){
       grid.scrollLeft = 0;
       grid.classList.toggle('centered', grid.scrollWidth <= grid.clientWidth + 1);
       trackUpdater();
-    });
-    setTimeout(()=>{
-      grid.scrollLeft = 0;
-      grid.classList.toggle('centered', grid.scrollWidth <= grid.clientWidth + 1);
-      trackUpdater();
-    }, 400);
+    }
+    reassert();
+    requestAnimationFrame(reassert);
+    setTimeout(reassert, 400);
+    setTimeout(reassert, 1200);
+    // product images finishing (or fonts swapping in) after all the timers
+    // above is what was still occasionally leaving the rail mid-scrolled on
+    // first paint — window 'load' fires only once everything is truly done
+    if(!_railsToReset.some(r=>r.grid===grid)) _railsToReset.push({grid, reassert});
   }
+  window.addEventListener('load', ()=> _railsToReset.forEach(r=>r.reassert()));
   const recViewAll = document.getElementById('rec-viewall');
   function renderRec(catKey){
     const items = catKey==='all' ? PRODUCTS : PRODUCTS.filter(p=>p.cat===catKey);

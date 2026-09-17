@@ -224,28 +224,35 @@ body{padding-top:var(--header-h,127px)}
 .hero-card .btn-outline{border-color:rgba(255,255,255,.7);color:#fff}
 .btn-gold{background:#F0C987;color:#3D0620;box-shadow:0 10px 24px rgba(0,0,0,.18)}
 .btn-gold:hover{background:#ecbd72}
+/* looping shine sweep on both hero CTAs, mobile and desktop alike */
+.hero-ctas .btn{position:relative;overflow:hidden}
+.hero-ctas .btn::before{
+  content:"";position:absolute;top:0;left:-60%;width:35%;height:100%;
+  background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.65) 50%,transparent 100%);
+  transform:skewX(-20deg);animation:heroBtnShine 3.6s ease-in-out infinite;pointer-events:none;
+}
+.hero-ctas .btn:nth-child(2)::before{animation-delay:1.1s}
+@keyframes heroBtnShine{0%,15%{left:-60%}55%,100%{left:140%}}
+@media(prefers-reduced-motion:reduce){.hero-ctas .btn::before{animation:none}}
 .hero-visual{position:relative;display:flex;align-items:center;justify-content:center;min-height:280px}
 @media(min-width:900px){.hero-visual{min-height:360px}}
-/* Direction C — Layered Depth Stack, with a size hierarchy: one anchor,
-   one clear second-tier accent, three smaller — not one big + four equal */
+/* Three lifestyle photos (real scene backgrounds, not white studio cutouts),
+   generously spaced with no overlap so none of them get hidden on mobile —
+   one anchor + two stacked accents, not five crowded windows */
 .gift-scene{position:relative;width:100%;max-width:460px;aspect-ratio:1.1/1}
 @media(min-width:900px){.gift-scene{max-width:540px;aspect-ratio:1.3/1}}
 .gift-ribbon-line{position:absolute;inset:0;width:100%;height:100%;z-index:0;overflow:visible}
 .gwin{position:absolute;border-radius:16px;overflow:hidden;box-shadow:0 18px 38px rgba(0,0,0,.28);border:5px solid #fff;z-index:1}
 .gwin img{width:100%;height:100%;object-fit:cover;display:block}
-.gwin-1{width:48%;height:68%;left:3%;top:2%;box-shadow:0 24px 48px rgba(0,0,0,.34);z-index:2;--base:-6deg;transform:rotate(var(--base));animation:floatA 7s ease-in-out infinite}
-.gwin-2{width:24%;height:30%;left:52%;top:0%;--base:-4deg;transform:rotate(var(--base));animation:floatB 6.4s ease-in-out infinite;animation-delay:.3s}
-.gwin-3{width:36%;height:44%;left:60%;top:24%;z-index:2;--base:5deg;transform:rotate(var(--base));animation:floatC 6s ease-in-out infinite;animation-delay:.9s}
-.gwin-4{width:24%;height:30%;left:4%;top:68%;--base:4deg;transform:rotate(var(--base));animation:floatD 6.8s ease-in-out infinite;animation-delay:1.4s}
-.gwin-5{width:26%;height:32%;left:40%;top:62%;--base:-3deg;transform:rotate(var(--base));animation:floatE 6.2s ease-in-out infinite;animation-delay:.6s}
+.gwin-1{width:52%;height:72%;left:2%;top:4%;box-shadow:0 24px 48px rgba(0,0,0,.34);z-index:2;--base:-6deg;transform:rotate(var(--base));animation:floatA 7s ease-in-out infinite}
+.gwin-2{width:38%;height:44%;left:58%;top:2%;--base:-4deg;transform:rotate(var(--base));animation:floatB 6.4s ease-in-out infinite;animation-delay:.3s}
+.gwin-3{width:36%;height:42%;left:60%;top:54%;z-index:2;--base:5deg;transform:rotate(var(--base));animation:floatC 6s ease-in-out infinite;animation-delay:.9s}
 @keyframes floatA{0%,100%{transform:translateY(0) rotate(var(--base))}50%{transform:translateY(-8px) rotate(calc(var(--base) - 1deg))}}
 @keyframes floatB{0%,100%{transform:translateY(0) rotate(var(--base))}50%{transform:translateY(9px) rotate(calc(var(--base) + 1deg))}}
 @keyframes floatC{0%,100%{transform:translateY(0) rotate(var(--base))}50%{transform:translateY(-7px) rotate(calc(var(--base) - 1.2deg))}}
-@keyframes floatD{0%,100%{transform:translateY(0) rotate(var(--base))}50%{transform:translateY(8px) rotate(calc(var(--base) + 1.4deg))}}
-@keyframes floatE{0%,100%{transform:translateY(0) rotate(var(--base))}50%{transform:translateY(-9px) rotate(calc(var(--base) - 1deg))}}
-@media(prefers-reduced-motion:reduce){.gwin-1,.gwin-2,.gwin-3,.gwin-4,.gwin-5,.sparkle{animation:none!important}}
-/* mobile: the anchor photo moves to center-right and grows; the hoops stay
-   the clear second-tier accent; the rest ring both at a smaller scale */
+@media(prefers-reduced-motion:reduce){.gwin-1,.gwin-2,.gwin-3,.sparkle{animation:none!important}}
+/* mobile: same three photos, same non-overlapping logic, just re-flowed
+   into a taller scene so nothing is cropped or hidden behind another */
 @media(max-width:639px){
   .hero-grid{padding:20px 20px;gap:20px}
   .hero-copy .eyebrow{margin-bottom:14px}
@@ -255,12 +262,10 @@ body{padding-top:var(--header-h,127px)}
   .hero-tagline{margin-bottom:20px;font-size:14.5px}
   .hero-ctas{flex-wrap:nowrap;gap:8px}
   .hero-ctas .btn{flex:1;padding:12px 10px;font-size:10.5px;letter-spacing:.01em}
-  .gift-scene{aspect-ratio:.92/1;max-width:250px}
-  .gwin-1{left:28%;top:6%;width:62%;height:80%}
-  .gwin-2{left:0%;top:0%;width:26%;height:28%}
-  .gwin-3{left:0%;top:54%;width:36%;height:38%}
-  .gwin-4{left:76%;top:64%;width:22%;height:26%}
-  .gwin-5{left:74%;top:0%;width:24%;height:28%}
+  .gift-scene{aspect-ratio:.95/1;max-width:270px}
+  .gwin-1{left:4%;top:8%;width:58%;height:72%}
+  .gwin-2{left:66%;top:4%;width:32%;height:32%}
+  .gwin-3{left:66%;top:42%;width:32%;height:34%}
 }
 .sparkle{position:absolute;color:#F0C987;opacity:.9;animation:sparkle 2.6s ease-in-out infinite;filter:drop-shadow(0 1px 3px rgba(0,0,0,.35));z-index:3}
 .sparkle.s2{animation-delay:.9s}
@@ -304,7 +309,10 @@ body{padding-top:var(--header-h,127px)}
    cards get cropped right at that 60px line (by #rec-grid's overflow),
    both at rest and mid-scroll, instead of a blank strip tacked on after
    the last card. */
-.rec-rail{position:relative;width:var(--vw,100vw);left:50%;right:50%;margin-left:calc(var(--vw,100vw) * -0.5);margin-right:calc(var(--vw,100vw) * -0.5);padding:0 60px;box-sizing:border-box}
+.rec-rail{--rail-gutter:60px;--rail-fade:60px;position:relative;width:var(--vw,100vw);left:50%;right:50%;margin-left:calc(var(--vw,100vw) * -0.5);margin-right:calc(var(--vw,100vw) * -0.5);padding:0 var(--rail-gutter);box-sizing:border-box}
+/* on mobile the carousel's side gutter matches the hero banner's own
+   15px edge margin, instead of carrying over the desktop 60px gutter */
+@media(max-width:639px){.rec-rail{--rail-gutter:15px;--rail-fade:28px}}
 #rec-grid{
   display:flex;gap:14px;align-items:stretch;justify-content:flex-start;
   width:100%;
@@ -313,8 +321,8 @@ body{padding-top:var(--header-h,127px)}
   /* soft fade at the crop line instead of a hard cut — mask is fixed to
      this box's own edge, so it stays put on whichever card is at the
      boundary as the row scrolls underneath it */
-  -webkit-mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 60px),rgba(0,0,0,.75) 100%);
-  mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 60px),rgba(0,0,0,.75) 100%);
+  -webkit-mask-image:linear-gradient(to right,#000 0,#000 calc(100% - var(--rail-fade,60px)),rgba(0,0,0,.75) 100%);
+  mask-image:linear-gradient(to right,#000 0,#000 calc(100% - var(--rail-fade,60px)),rgba(0,0,0,.75) 100%);
 }
 /* centers the row when it fits (e.g. filtered to one category with few
    results) — set by JS after render, since CSS justify-content:center
@@ -507,7 +515,7 @@ body{padding-top:var(--header-h,127px)}
 .gcard-copy h2{font-size:clamp(22px,3vw,30px);margin-bottom:12px}
 .gcard-copy p{color:var(--muted);max-width:420px;margin-bottom:22px}
 .gc-form{display:grid;gap:12px;max-width:420px}
-.gc-form input,.gc-form textarea{padding:12px 14px;border:1.5px solid var(--line-2);border-radius:8px;font-family:inherit;font-size:13.5px;color:var(--ink)}
+.gc-form input,.gc-form textarea{width:100%;min-width:0;box-sizing:border-box;padding:12px 14px;border:1.5px solid var(--line-2);border-radius:8px;font-family:inherit;font-size:13.5px;color:var(--ink)}
 .gc-form input:focus,.gc-form textarea:focus{outline:none;border-color:var(--pink)}
 .gc-form textarea{resize:vertical;min-height:60px}
 .gc-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -776,10 +784,8 @@ footer .socials svg{width:14px;height:14px}
               <path d="M40 380 C 180 300, 340 480, 600 260" stroke="#fff" stroke-width="2" stroke-dasharray="1 10" stroke-linecap="round" opacity=".3"/>
             </svg>
             <div class="gwin gwin-1"><img src="assets/editorial/hero-gift-frame.webp" alt="A ribboned Mia jewellery gift unwrapped, with a handwritten note that reads 'For my love'"></div>
-            <div class="gwin gwin-2"><img src="assets/products/M5I2GDY.webp" alt="Mia elegant cluster diamond gold necklace"></div>
-            <div class="gwin gwin-3"><img src="assets/products/3026HDW.webp" alt="Mia solar radiance diamond hoop earrings"></div>
-            <div class="gwin gwin-4"><img src="assets/products/M5I2FDW.webp" alt="Mia sculpted distinct tsavorite gold ring"></div>
-            <div class="gwin gwin-5"><img src="assets/products/IKD5BDG.webp" alt="Mia little sunshine gold bracelet"></div>
+            <div class="gwin gwin-2"><img src="assets/editorial/gifts-her.webp" alt="A hand holding up a Mia necklace and hoop earrings"></div>
+            <div class="gwin gwin-3"><img src="assets/editorial/gifts-him.webp" alt="Two hands presenting a Mia necklace and rings in a gift tray"></div>
             <span class="tag tag-wrap"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V8H6a2 2 0 0 0-2 2v10h16v-4"/><path d="M2 12h20"/></svg>Free Gift Wrap</span>
             <span class="tag tag-note"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M14 3v5h5M8 13h8M8 17h5"/></svg>Handwritten Note</span>
             <span class="tag tag-deliver"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="14" height="11" rx="2"/><path d="M17 10h2.5a1 1 0 0 1 .9.55L22 13v4h-5"/><circle cx="7.5" cy="18.5" r="1.5"/><circle cx="16.5" cy="18.5" r="1.5"/></svg>Delivered On Your Chosen Day</span>
@@ -788,6 +794,11 @@ footer .socials svg{width:14px;height:14px}
           </div>
         </div>
       </div>
+      <svg class="sparkle" style="top:10%;left:38%;animation-delay:.4s" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6l2 6-2 6-2-6z"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <svg class="sparkle" style="top:78%;left:10%;animation-delay:1.3s" width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6l2 6-2 6-2-6z"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <svg class="sparkle" style="top:48%;left:47%;animation-delay:2.1s" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6l2 6-2 6-2-6z"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <svg class="sparkle" style="top:86%;left:52%;animation-delay:.8s" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6l2 6-2 6-2-6z"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <svg class="sparkle" style="top:20%;right:32%;animation-delay:1.7s" width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6l2 6-2 6-2-6z"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
     </div>
   </div>
 </section>

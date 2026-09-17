@@ -452,6 +452,51 @@ body{padding-top:var(--header-h,127px)}
 .pcard .prating{position:absolute;bottom:18px;left:18px;background:rgba(255,255,255,.92);padding:4px 9px;border-radius:100px;font-size:11px;font-weight:700;color:var(--pink-deep);display:flex;align-items:center;gap:4px;z-index:2}
 .pcard .prating .star{color:#f2a01c;font-size:11px;line-height:1}
 .pcard .prating .sep{color:#d8d8d8;margin:0 1px}
+/* compare + zoom — same white-on-pink circle language as the wishlist icon */
+.pcard .pcmp{position:absolute;top:48px;right:10px;width:30px;height:30px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:2;transition:background .2s,color .2s}
+.pcard .pcmp svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:1.8}
+.pcard .pcmp.on{background:var(--gold)}
+.pcard .pcmp.on svg{stroke:#3a2410}
+.pcard .pzoom{position:absolute;bottom:18px;right:10px;width:30px;height:30px;background:rgba(255,255,255,.92);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:2;opacity:0;transform:scale(.85);transition:opacity .2s,transform .2s}
+.pcard:hover .pzoom{opacity:1;transform:scale(1)}
+.pcard .pzoom svg{width:14px;height:14px;stroke:var(--pink-deep);fill:none;stroke-width:1.8}
+@media(hover:none){.pcard .pzoom{opacity:1;transform:scale(1)}}
+
+/* compare tray — fixed to the bottom edge, slides up once 1+ items picked */
+.cmp-tray{position:fixed;left:0;right:0;bottom:0;z-index:210;display:flex;justify-content:center;padding:0 16px 16px;transform:translateY(calc(100% + 40px));transition:transform .35s cubic-bezier(.22,.61,.36,1);pointer-events:none}
+.cmp-tray.show{transform:translateY(0);pointer-events:auto}
+.cmp-tray-inner{background:#fff;border-radius:100px;box-shadow:0 16px 40px rgba(0,0,0,.22);padding:8px 10px 8px 18px;display:flex;align-items:center;gap:12px;max-width:100%;overflow-x:auto}
+.cmp-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--pink-deep);white-space:nowrap;flex-shrink:0}
+.cmp-slots{display:flex;gap:8px;flex-shrink:0}
+.cmp-slot{position:relative;width:42px;height:42px;border-radius:10px;overflow:hidden;background:var(--cream);flex-shrink:0}
+.cmp-slot img{width:100%;height:100%;object-fit:cover}
+.cmp-slot .cmp-remove{position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;background:var(--pink-deep);color:#fff;font-size:10px;line-height:1;display:flex;align-items:center;justify-content:center}
+.cmp-slot.empty{border:1.5px dashed var(--line-2);background:transparent;display:flex;align-items:center;justify-content:center;font-size:8.5px;color:var(--muted);text-align:center;padding:2px}
+.cmp-go{background:var(--pink);color:#fff;border-radius:100px;padding:10px 18px;font-size:11.5px;font-weight:800;text-transform:uppercase;white-space:nowrap;flex-shrink:0;transition:opacity .2s}
+.cmp-go:disabled{opacity:.4;pointer-events:none}
+.cmp-clear{color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;flex-shrink:0;padding:0 4px}
+
+/* zoom lightbox */
+.zoom-overlay{position:fixed;inset:0;background:rgba(20,6,14,.75);z-index:220;display:none;align-items:center;justify-content:center;padding:24px}
+.zoom-overlay.open{display:flex}
+.zoom-stage{position:relative;max-width:min(90vw,560px);max-height:85vh}
+.zoom-stage img{width:100%;height:100%;object-fit:contain;border-radius:12px;background:#fff}
+.zoom-close{position:absolute;top:-14px;right:-14px;width:34px;height:34px;border-radius:50%;background:#fff;color:var(--pink-deep);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(0,0,0,.3)}
+
+/* compare modal */
+.cmp-modal-overlay{position:fixed;inset:0;background:rgba(20,6,14,.55);z-index:220;display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto}
+.cmp-modal-overlay.open{display:flex}
+.cmp-modal{background:#fff;border-radius:20px;max-width:720px;width:100%;position:relative;box-shadow:0 30px 60px rgba(0,0,0,.4);margin:auto 0;padding:32px}
+.cmp-modal-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:var(--blush-2);color:var(--pink-deep);display:flex;align-items:center;justify-content:center}
+.cmp-modal h2{font-family:'Fraunces',serif;font-size:22px;margin:0 0 20px;text-align:center}
+.cmp-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:14px}
+.cmp-col-head img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;margin-bottom:8px}
+.cmp-col-head h4{font-size:13px;margin:0}
+.cmp-spec{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:10px 0;border-top:1px solid var(--line)}
+.cmp-spec-label{grid-column:1/-1;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:2px}
+.cmp-spec-val{font-size:13px;font-weight:600;color:var(--ink)}
+.cmp-spec-val.win{color:var(--pink);font-weight:800}
+@media(max-width:520px){.cmp-modal{padding:22px 16px}.cmp-cols,.cmp-spec{gap:10px}}
 .pcard .pbody{position:relative;z-index:2;padding:12px 13px 13px;display:flex;flex-direction:column}
 .pcard .pprice{font-size:17px;font-weight:700;color:#fff;line-height:1.1}
 .pcard .ptax{font-size:10.5px;color:rgba(255,255,255,.65);margin:2px 0 7px}
@@ -652,37 +697,13 @@ body{padding-top:var(--header-h,127px)}
 .giftcard-pack .gp-tag::before,.giftcard-pack .gp-tag::after{content:"";width:10px;height:1px;background:rgba(255,255,255,.6)}
 @media(prefers-reduced-motion:reduce){.giftcard-pack,.giftcard-pack::after{animation:none}}
 
-/* ============ occasion ============ */
-.occasion-scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:6px;-ms-overflow-style:none;scrollbar-width:none}
-.occasion-scroll::-webkit-scrollbar{display:none}
-.occ-card{flex:0 0 240px;border-radius:var(--radius-lg);padding:26px 22px;min-height:170px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;color:#fff}
-.occ-1{background:linear-gradient(155deg,#F3A9CB,#A80E5E)}
-.occ-2{background:linear-gradient(155deg,#c9a35a,#8a5a1c)}
-.occ-3{background:linear-gradient(155deg,#3c3c44,#1B1B1F)}
-.occ-4{background:linear-gradient(155deg,#9c8f86,#4d4038)}
-.occ-5{background:linear-gradient(155deg,#E27FB0,#4A0A28)}
-.occ-card svg{position:absolute;top:18px;right:18px;opacity:.5;width:22px;height:22px}
-.occ-card h4{font-family:'Fraunces',serif;font-size:18px;margin-bottom:5px}
-.occ-card span{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.88}
-
-/* ============ gift card builder ============ */
-.gcard-wrap{display:grid;grid-template-columns:1fr;gap:36px}
-@media(min-width:900px){.gcard-wrap{grid-template-columns:1fr 1fr;align-items:center}}
-.gcard-visual{display:flex;justify-content:center}
+/* ============ gift card mock (shared with the gift card modal) ============ */
 .gift-card-mock{width:100%;max-width:360px;aspect-ratio:1.6/1;border-radius:16px;background:linear-gradient(135deg,#3D0620 0%,#E4127D 55%,#F26AA8 100%);position:relative;box-shadow:0 22px 46px rgba(61,6,32,.24);padding:24px;color:#fff;overflow:hidden}
 .gift-card-mock::before{content:"";position:absolute;width:200px;height:200px;border-radius:50%;border:1px solid rgba(255,255,255,.18);top:-80px;right:-60px}
 .gcm-top{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1}
-.gcm-brand{font-family:'Fraunces',serif;font-size:19px}
 .gcm-value{font-family:'Fraunces',serif;font-size:24px;margin-top:30px;position:relative;z-index:1}
 .gcm-to{font-size:12px;margin-top:14px;opacity:.85;position:relative;z-index:1}
 .gcm-msg{font-size:12px;font-style:italic;margin-top:8px;max-width:82%;line-height:1.5;opacity:.92;position:relative;z-index:1}
-.gcard-copy h2{font-size:clamp(22px,3vw,30px);margin-bottom:12px}
-.gcard-copy p{color:var(--muted);max-width:420px;margin-bottom:22px}
-.gc-form{display:grid;gap:12px;max-width:420px}
-.gc-form input,.gc-form textarea{width:100%;min-width:0;box-sizing:border-box;padding:12px 14px;border:1.5px solid var(--line-2);border-radius:8px;font-family:inherit;font-size:13.5px;color:var(--ink)}
-.gc-form input:focus,.gc-form textarea:focus{outline:none;border-color:var(--pink)}
-.gc-form textarea{resize:vertical;min-height:60px}
-.gc-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
 /* ============ gift card modal ============ */
 .gcmodal-overlay{position:fixed;inset:0;background:rgba(20,6,14,.55);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:24px 16px;overflow-y:auto;-webkit-overflow-scrolling:touch}
@@ -1260,61 +1281,6 @@ footer .socials svg{width:14px;height:14px}
   </div>
 </section>
 
-<!-- CRO: occasion is the strongest purchase trigger for a gifting page
-     specifically (vs. a regular PLP) — surfaced after recipient/meaning so it
-     narrows an already-warm visitor instead of front-loading a decision most
-     visitors haven't made yet. -->
-<section class="band">
-  <div class="container">
-    <div class="section-head rv">
-      <div>
-        <p class="eyebrow">Shop By Occasion</p>
-        <h2>Gift By Occasion</h2>
-      </div>
-    </div>
-    <div class="occasion-scroll rv">
-      <a href="#catrec" class="occ-card occ-1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 8a4 4 0 1 0-4-4c0 2 4 4 4 4Zm0 0a4 4 0 1 1 4-4c0 2-4 4-4 4Z"/><path d="M4 12h16v8H4z"/><path d="M12 8v12M4 12h16"/></svg><h4>Birthday</h4><span>Shop Now</span></a>
-      <a href="#catrec" class="occ-card occ-2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg><h4>Anniversary</h4><span>Shop Now</span></a>
-      <a href="#catrec" class="occ-card occ-3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="7"/><path d="M12 8v4l3 2"/></svg><h4>Wedding</h4><span>Shop Now</span></a>
-      <a href="#catrec" class="occ-card occ-4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v6M8 6h8l2 4H6l2-4Z"/><path d="M4 10h16l-1.5 10a2 2 0 0 1-2 2h-9a2 2 0 0 1-2-2L4 10Z"/></svg><h4>Rakhi</h4><span>Shop Now</span></a>
-      <a href="#catrec" class="occ-card occ-5"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg><h4>Karva Chauth</h4><span>Shop Now</span></a>
-    </div>
-  </div>
-</section>
-
-<!-- CRO: the "can't decide" escape hatch — placed after every browse path
-     (finder, recipient, meaning, occasion) has had a chance to convert, so it
-     only intercepts genuinely undecided visitors instead of short-circuiting
-     product discovery too early. -->
-<section class="band" id="giftcard">
-  <div class="container gcard-wrap">
-    <div class="gcard-visual rv">
-      <div class="gift-card-mock">
-        <div class="gcm-top">
-          <span class="gcm-brand">Mia</span>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" opacity=".8"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg>
-        </div>
-        <div class="gcm-value" id="gcm-value">₹5,000</div>
-        <div class="gcm-to">For <strong id="gcm-to">Priya Sharma</strong></div>
-        <div class="gcm-msg" id="gcm-msg">"Happy anniversary, my love. Here's to more forevers."</div>
-      </div>
-    </div>
-    <div class="gcard-copy rv">
-      <p class="eyebrow">When You Can't Decide</p>
-      <h2>Give Them Every Piece In One Card.</h2>
-      <p>Let them pick. A Mia gift card, personalised with a name and a note, delivered instantly or on the date that matters.</p>
-      <form class="gc-form" id="gc-form">
-        <div class="gc-row">
-          <input type="text" id="gc-name" placeholder="Recipient's name" value="Priya Sharma">
-          <input type="text" id="gc-amount" placeholder="Amount (₹)" value="5000" inputmode="numeric">
-        </div>
-        <textarea id="gc-message" placeholder="A few words to make it land right">Happy anniversary, my love. Here's to more forevers.</textarea>
-        <button type="submit" class="btn btn-primary" style="align-self:flex-start">Buy Gift Card</button>
-      </form>
-    </div>
-  </div>
-</section>
-
 <!-- ============ OUR PHILOSOPHY — editorial brand-story spread, structurally
      cloned from David Yurman's "Sybil and David Yurman: Artists and Jewelers"
      monograph section (asymmetric image + eyebrow + headline + copy + two CTAs) -->
@@ -1392,14 +1358,14 @@ footer .socials svg{width:14px;height:14px}
         <div class="foot-h">Gifting</div>
         <ul class="foot-links">
           <li><a href="#finder">Gift Finder</a></li><li><a href="#recipient">Shop By Recipient</a></li>
-          <li><a href="#giftcard">Mia Gift Card</a></li><li><a href="#story">Our Story</a></li>
+          <li><a href="#" data-gcm-open>Mia Gift Card</a></li><li><a href="#story">Our Story</a></li>
           <li><a href="#catrec">Best Sellers</a></li>
         </ul>
       </div>
       <div class="foot-col">
         <div class="foot-h">Trending</div>
         <ul class="foot-links">
-          <li><a href="#">Gifting Range</a></li><li><a href="#giftcard">Gift Cards</a></li><li><a href="#">Gold Exchange Program</a></li>
+          <li><a href="#">Gifting Range</a></li><li><a href="#" data-gcm-open>Gift Cards</a></li><li><a href="#">Gold Exchange Program</a></li>
         </ul>
         <div class="foot-h foot-h-gap">Information</div>
         <ul class="foot-links">
@@ -1567,6 +1533,33 @@ footer .socials svg{width:14px;height:14px}
   </div>
 </div>
 
+<!-- compare tray + modal, and zoom lightbox — shared across every product
+     card on the page (carousel, finder results) -->
+<div class="cmp-tray" id="cmp-tray">
+  <div class="cmp-tray-inner">
+    <span class="cmp-label">Compare</span>
+    <div class="cmp-slots" id="cmp-slots"></div>
+    <button type="button" class="cmp-go" id="cmp-go" disabled>Compare Now</button>
+    <button type="button" class="cmp-clear" id="cmp-clear">Clear</button>
+  </div>
+</div>
+
+<div class="cmp-modal-overlay" id="cmp-modal-overlay">
+  <div class="cmp-modal">
+    <button type="button" class="cmp-modal-close" id="cmp-modal-close" aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <h2>Compare Products</h2>
+    <div class="cmp-cols" id="cmp-cols"></div>
+    <div id="cmp-specs"></div>
+  </div>
+</div>
+
+<div class="zoom-overlay" id="zoom-overlay">
+  <div class="zoom-stage">
+    <button type="button" class="zoom-close" id="zoom-close" aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <img id="zoom-img" src="" alt="Zoomed product photo">
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1626,6 +1619,93 @@ footer .socials svg{width:14px;height:14px}
   ];
   const imgSrc = p => `assets/products/${p.code}.webp`;
 
+  // ---- compare (max 2, FIFO eviction) + zoom lightbox ----
+  // exposed on window since the cards call these from inline onclick attrs
+  let cmpPicked = [];
+  const cmpTray = document.getElementById('cmp-tray');
+  const cmpSlots = document.getElementById('cmp-slots');
+  const cmpGo = document.getElementById('cmp-go');
+
+  function paintCmpTray(){
+    cmpSlots.innerHTML = cmpPicked.map(p=>`
+      <span class="cmp-slot"><img src="${imgSrc(p)}" alt="${p.name}"><span class="cmp-remove" onclick="removeCompare('${p.code}')">&times;</span></span>
+    `).join('') + (cmpPicked.length < 2 ? `<span class="cmp-slot empty">${cmpPicked.length===0?'Pick two pieces':'Pick one more'}</span>` : '');
+    cmpGo.disabled = cmpPicked.length < 2;
+    cmpTray.classList.toggle('show', cmpPicked.length > 0);
+  }
+  window.toggleCompare = function(btn, code){
+    const already = cmpPicked.find(p=>p.code===code);
+    if(already){
+      cmpPicked = cmpPicked.filter(p=>p.code!==code);
+      btn.classList.remove('on');
+    } else {
+      if(cmpPicked.length >= 2){
+        const evicted = cmpPicked.shift();
+        document.querySelectorAll(`.pcmp[data-code="${evicted.code}"]`).forEach(b=>b.classList.remove('on'));
+      }
+      const p = PRODUCTS.find(p=>p.code===code);
+      cmpPicked.push(p);
+      document.querySelectorAll(`.pcmp[data-code="${code}"]`).forEach(b=>b.classList.add('on'));
+    }
+    paintCmpTray();
+  };
+  window.removeCompare = function(code){
+    cmpPicked = cmpPicked.filter(p=>p.code!==code);
+    document.querySelectorAll(`.pcmp[data-code="${code}"]`).forEach(b=>b.classList.remove('on'));
+    paintCmpTray();
+  };
+  document.getElementById('cmp-clear').addEventListener('click', ()=>{
+    cmpPicked.forEach(p=>document.querySelectorAll(`.pcmp[data-code="${p.code}"]`).forEach(b=>b.classList.remove('on')));
+    cmpPicked = [];
+    paintCmpTray();
+  });
+
+  const cmpModalOverlay = document.getElementById('cmp-modal-overlay');
+  function specRow(label, a, b, better){
+    const aWin = better==='low' ? a<b : a>b;
+    const bWin = better==='low' ? b<a : b>a;
+    return `<div class="cmp-spec"><div class="cmp-spec-label">${label}</div>
+      <div class="cmp-spec-val${aWin&&a!==b?' win':''}">${a}</div>
+      <div class="cmp-spec-val${bWin&&a!==b?' win':''}">${b}</div></div>`;
+  }
+  cmpGo.addEventListener('click', ()=>{
+    if(cmpPicked.length < 2) return;
+    const [a,b] = cmpPicked;
+    document.getElementById('cmp-cols').innerHTML = [a,b].map(p=>`
+      <div class="cmp-col-head"><img src="${imgSrc(p)}" alt="${p.name}"><h4>${p.name}</h4></div>
+    `).join('');
+    document.getElementById('cmp-specs').innerHTML =
+      specRow('Price', '₹'+a.price.toLocaleString('en-IN'), '₹'+b.price.toLocaleString('en-IN'), 'low') +
+      specRow('Karat', a.kt, b.kt, 'high') +
+      specRow('Metal', a.metal, b.metal, 'high') +
+      specRow('Rating', a.r.toFixed(1), b.r.toFixed(1), 'high') +
+      specRow('Reviews', a.c, b.c, 'high');
+    cmpModalOverlay.classList.add('open');
+    document.body.classList.add('locked');
+  });
+  document.getElementById('cmp-modal-close').addEventListener('click', ()=>{
+    cmpModalOverlay.classList.remove('open');
+    document.body.classList.remove('locked');
+  });
+  cmpModalOverlay.addEventListener('click', (e)=>{ if(e.target===cmpModalOverlay){ cmpModalOverlay.classList.remove('open'); document.body.classList.remove('locked'); } });
+
+  const zoomOverlay = document.getElementById('zoom-overlay');
+  window.openZoom = function(code){
+    const p = PRODUCTS.find(p=>p.code===code);
+    document.getElementById('zoom-img').src = imgSrc(p);
+    document.getElementById('zoom-img').alt = p.name;
+    zoomOverlay.classList.add('open');
+    document.body.classList.add('locked');
+  };
+  function closeZoom(){ zoomOverlay.classList.remove('open'); document.body.classList.remove('locked'); }
+  document.getElementById('zoom-close').addEventListener('click', closeZoom);
+  zoomOverlay.addEventListener('click', (e)=>{ if(e.target===zoomOverlay) closeZoom(); });
+  document.addEventListener('keydown', (e)=>{
+    if(e.key !== 'Escape') return;
+    if(zoomOverlay.classList.contains('open')) closeZoom();
+    if(cmpModalOverlay.classList.contains('open')){ cmpModalOverlay.classList.remove('open'); document.body.classList.remove('locked'); }
+  });
+
   // Direction B — Coral Gradient / ornate icon set, chosen from the
   // category-icon-directions artifact (chain icon redrawn per feedback —
   // three overlapping diagonal links instead of two boxes)
@@ -1658,8 +1738,14 @@ footer .socials svg{width:14px;height:14px}
           <span class="pwish" aria-label="wishlist" onclick="this.classList.toggle('active');event.stopPropagation();">
             <svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-9c-1.5-2.7 0-6.5 3.5-7s6 3 6 3 2.5-3.5 6-3 5 4.3 3.5 7c-2.5 4.5-9.5 9-9.5 9z"/></svg>
           </span>
+          <span class="pcmp" data-code="${p.code}" aria-label="add to compare" onclick="toggleCompare(this,'${p.code}');event.stopPropagation();">
+            <svg viewBox="0 0 24 24"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg>
+          </span>
           <img src="${imgSrc(p)}" alt="${p.name}" loading="lazy">
           <span class="prating"><span class="star">★</span><span>${p.r.toFixed(1)}</span><span class="sep">|</span><span>${p.c}</span></span>
+          <span class="pzoom" data-code="${p.code}" aria-label="zoom image" onclick="openZoom('${p.code}');event.stopPropagation();">
+            <svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5"/><path d="m20 20-4.4-4.4"/></svg>
+          </span>
         </div>
         <div class="pbody">
           <div class="pprice">₹${p.price.toLocaleString('en-IN')}</div>
@@ -2001,18 +2087,6 @@ footer .socials svg{width:14px;height:14px}
     });
   });
 
-  // ---- gift card live preview ----
-  const gcName = document.getElementById('gc-name');
-  const gcAmount = document.getElementById('gc-amount');
-  const gcMessage = document.getElementById('gc-message');
-  function syncCard(){
-    document.getElementById('gcm-to').textContent = gcName.value || 'Someone Special';
-    const amt = parseInt(gcAmount.value || '0', 10);
-    document.getElementById('gcm-value').textContent = '₹' + (isNaN(amt)?0:amt).toLocaleString('en-IN');
-    document.getElementById('gcm-msg').textContent = gcMessage.value ? `"${gcMessage.value}"` : '';
-  }
-  [gcName, gcAmount, gcMessage].forEach(el=>el.addEventListener('input', syncCard));
-  document.getElementById('gc-form').addEventListener('submit', (e)=>{ e.preventDefault(); showToast('Gift card added to bag ✨'); });
   document.getElementById('nl-form').addEventListener('submit', (e)=>{ e.preventDefault(); showToast("You're on the list ✨"); e.target.reset(); });
 
   // ---- gift card modal: opened from "Buy Gift Cards" in the coin section ----
@@ -2048,9 +2122,11 @@ footer .socials svg{width:14px;height:14px}
     gcmOverlay.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('locked');
   }
-  document.querySelector('.coin-card.cc-giftcard').addEventListener('click', (e)=>{
-    e.preventDefault();
-    openGcModal();
+  document.querySelectorAll('.coin-card.cc-giftcard, [data-gcm-open]').forEach(el=>{
+    el.addEventListener('click', (e)=>{
+      e.preventDefault();
+      openGcModal();
+    });
   });
   document.getElementById('gcmodal-close').addEventListener('click', closeGcModal);
   gcmOverlay.addEventListener('click', (e)=>{ if(e.target === gcmOverlay) closeGcModal(); });

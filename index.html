@@ -960,22 +960,28 @@ body{padding-top:var(--header-h,127px)}
 .rv-bar-val{font-weight:700;color:var(--ink);text-align:right}
 .rv-score.in .rv-bar-fill{transform:scaleX(1)}
 .tm-carousel-wrap{position:relative}
-.tm-track{display:flex;gap:16px;justify-content:center;align-items:center;perspective:1400px;min-height:420px}
-.tm-portrait{width:150px;height:320px;border-radius:20px;position:relative;flex-shrink:0;overflow:hidden;cursor:pointer;box-shadow:0 24px 50px rgba(0,0,0,.4);transition:transform .6s cubic-bezier(.16,1,.3,1),width .6s cubic-bezier(.16,1,.3,1),height .6s cubic-bezier(.16,1,.3,1),opacity .3s}
+/* true circular conveyor — every card stays on screen and visible, spread
+   left/right and shrunk/faded by distance from center, wrapping endlessly
+   in both directions (confirmed direction over the reference's "one card
+   fully retires" fan) */
+.tm-track{position:relative;height:400px;margin:0 auto}
+.tm-portrait{width:150px;height:310px;border-radius:20px;position:absolute;left:50%;top:50%;margin-left:-75px;margin-top:-155px;overflow:hidden;cursor:pointer;box-shadow:0 24px 50px rgba(0,0,0,.4);transition:transform .6s cubic-bezier(.16,1,.3,1),width .6s cubic-bezier(.16,1,.3,1),height .6s cubic-bezier(.16,1,.3,1),margin .6s cubic-bezier(.16,1,.3,1),opacity .5s,z-index 0s .3s}
 .tm-portrait img{width:100%;height:100%;object-fit:cover;display:block}
-.tm-portrait::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.85) 100%)}
-.tm-fan-left{transform:rotate(-8deg) translateY(18px)}
-.tm-fan-left-2{transform:rotate(-4deg) translateY(6px)}
-.tm-fan-right{transform:rotate(8deg) translateY(18px)}
-.tm-fan-right-2{transform:rotate(4deg) translateY(6px)}
-.tm-hidden{display:none}
-.tm-active{width:230px;height:400px;transform:none;z-index:5;box-shadow:0 34px 70px rgba(0,0,0,.5)}
+.tm-portrait::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 34%,rgba(61,6,32,.94) 100%)}
+.tm-cv0{transform:translateX(0) scale(1) translateY(0) rotate(0);z-index:6;opacity:1}
+.tm-cv1{transform:translateX(150px) scale(.84) translateY(16px) rotate(7deg);z-index:5;opacity:.9}
+.tm-cvn1{transform:translateX(-150px) scale(.84) translateY(16px) rotate(-7deg);z-index:5;opacity:.9}
+.tm-cv2{transform:translateX(268px) scale(.68) translateY(30px) rotate(12deg);z-index:4;opacity:.7}
+.tm-cvn2{transform:translateX(-268px) scale(.68) translateY(30px) rotate(-12deg);z-index:4;opacity:.7}
+.tm-cv3{transform:translateX(354px) scale(.54) translateY(40px) rotate(16deg);z-index:3;opacity:.45}
+.tm-cvn3{transform:translateX(-354px) scale(.54) translateY(40px) rotate(-16deg);z-index:3;opacity:.45}
+.tm-portrait.tm-cv0{width:220px;height:380px;margin-left:-110px;margin-top:-190px}
+.tm-cv0 .tm-cat-pill{display:block}
 .tm-cat-pill{display:none;position:absolute;top:14px;left:14px;font-size:9.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;background:rgba(255,255,255,.24);backdrop-filter:blur(12px);border-radius:100px;padding:5px 11px;z-index:2}
-.tm-active .tm-cat-pill{display:block}
 .tm-portrait-body{position:absolute;left:0;right:0;bottom:0;padding:14px;z-index:2}
-.tm-portrait-name{display:block;font-size:9.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:rgba(255,255,255,.8);margin-bottom:6px}
-.tm-portrait-quote{font-family:'Fraunces',serif;font-style:italic;font-size:11.5px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;opacity:.85}
-.tm-active .tm-portrait-quote{font-size:15px;-webkit-line-clamp:4;line-clamp:4;opacity:1;transition:opacity .3s .2s}
+.tm-portrait-name{display:block;font-size:9.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.tm-portrait-quote{font-family:'Fraunces',serif;font-style:italic;font-size:11.5px;line-height:1.45;color:#fff;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;opacity:.95}
+.tm-cv0 .tm-portrait-quote{font-size:15px;-webkit-line-clamp:4;line-clamp:4;opacity:1;transition:opacity .3s .2s}
 .tm-nav{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:24px}
 .tm-nav button{width:46px;height:46px;border-radius:50%;background:#fff;border:1.5px solid var(--line-2);color:var(--ink-2);display:flex;align-items:center;justify-content:center;transition:all .2s}
 .tm-nav button:hover{border-color:var(--pink)}
@@ -986,10 +992,12 @@ body{padding-top:var(--header-h,127px)}
 .tm-cta-row .btn{background:transparent;border:1.5px solid var(--pink);color:var(--pink-deep)}
 .tm-cta-row .btn:hover{background:var(--pink);color:#fff}
 @media(max-width:900px){
-  .tm-track{overflow-x:auto;padding:8px 4px 20px;justify-content:flex-start;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;min-height:auto}
+  /* mobile: back to a plain horizontal scroll-snap strip — the circular
+     conveyor's absolute-position spread doesn't fit narrow screens */
+  .tm-track{position:static;height:auto;display:flex;gap:12px;overflow-x:auto;padding:8px 4px 20px;justify-content:flex-start;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
   .tm-track::-webkit-scrollbar{display:none}
-  .tm-portrait{scroll-snap-align:center}
-  .tm-portrait,.tm-portrait.tm-active{transform:none;width:180px;height:320px}
+  .tm-portrait{position:static;margin:0;flex-shrink:0;scroll-snap-align:center}
+  .tm-portrait,.tm-portrait.tm-cv0{transform:none;width:180px;height:320px}
   .tm-portrait .tm-cat-pill{display:block}
   .tm-portrait .tm-portrait-quote{font-size:12px;-webkit-line-clamp:3;line-clamp:3;opacity:1}
   .rv-score{padding:22px 18px;gap:16px}
@@ -2004,13 +2012,10 @@ footer .socials svg{width:14px;height:14px}
     const curEl = document.getElementById('tm-current');
     const totEl = document.getElementById('tm-total');
     totEl.textContent = String(total).padStart(2,'0');
-    function offsetClass(offset){
-      if(offset===0) return 'tm-active';
-      if(offset===-1) return 'tm-fan-left-2';
-      if(offset===-2) return 'tm-fan-left';
-      if(offset===1) return 'tm-fan-right-2';
-      if(offset===2) return 'tm-fan-right';
-      return 'tm-hidden';
+    // true circular conveyor — every card stays visible and wraps endlessly,
+    // instead of the reference's "one card retires off-canvas" fan
+    function offsetClass(d){
+      return d===0 ? 'tm-cv0' : (d<0 ? 'tm-cvn'+(-d) : 'tm-cv'+d);
     }
     function update(){
       cards.forEach((c,i)=>{

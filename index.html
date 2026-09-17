@@ -614,9 +614,19 @@ body{padding-top:var(--header-h,127px)}
 
 /* the coin pack — rectangular pack like a real assay-certified coin
    blister, sunburst window, tilted with a genuine cast shadow */
-.coin-pack{width:92px;aspect-ratio:.86/1;border-radius:9px;padding:9px 6px 7px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:2px;transform:rotate(-9deg);box-shadow:0 16px 20px -4px rgba(0,0,0,.4),0 6px 10px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.3)}
-.coin-pack-gold{background:linear-gradient(160deg,#E8A23A 0%,#C97A1E 55%,#9C5A10 100%)}
+.coin-pack{position:relative;overflow:hidden;width:92px;aspect-ratio:.86/1;border-radius:9px;padding:9px 6px 7px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:2px;--tilt:-9deg;transform:rotate(var(--tilt));box-shadow:0 16px 20px -4px rgba(0,0,0,.4),0 6px 10px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.3);animation:packFloat 4.5s ease-in-out infinite}
+.coin-pack-gold{background:linear-gradient(160deg,#E8A23A 0%,#C97A1E 55%,#9C5A10 100%);animation-delay:.6s}
 .coin-pack-silver{background:linear-gradient(160deg,#E4E8EC 0%,#AEB6BE 55%,#7C8590 100%)}
+.coin-pack::after{
+  content:"";position:absolute;top:0;left:-60%;width:35%;height:100%;
+  background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.5) 50%,transparent 100%);
+  transform:skewX(-20deg);animation:packShine 4.5s ease-in-out infinite;pointer-events:none;
+}
+.coin-pack-gold::after{animation-delay:1.4s}
+.coin-pack-silver::after{animation-delay:.5s}
+@keyframes packFloat{0%,100%{transform:rotate(var(--tilt)) translateY(0)}50%{transform:rotate(calc(var(--tilt) - 2deg)) translateY(-6px)}}
+@keyframes packShine{0%,25%{left:-60%}75%,100%{left:140%}}
+@media(prefers-reduced-motion:reduce){.coin-pack,.coin-pack::after{animation:none}}
 .coin-pack .cp-logo{width:26px;height:auto;margin-top:1px;filter:brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0,0,0,.25))}
 .cc-silver .cp-logo{filter:brightness(.25) drop-shadow(0 1px 1px rgba(255,255,255,.4))}
 .coin-pack .cp-window{width:54px;height:54px;border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center;margin:3px 0 2px}
@@ -630,11 +640,17 @@ body{padding-top:var(--header-h,127px)}
 /* No jewellery illustration — just the real Mia by Tanishq logo (fetched
    from their own site, recolored white via filter) centered on the card,
    with the tagline beneath it. */
-.giftcard-pack{width:152px;aspect-ratio:1.55/1;border-radius:10px;background:linear-gradient(135deg,#F26AA8,#A80E5E 55%,#3D0620 100%);position:relative;overflow:hidden;transform:rotate(-9deg);box-shadow:0 16px 20px -4px rgba(0,0,0,.4),0 6px 10px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.3)}
+.giftcard-pack{width:152px;aspect-ratio:1.55/1;border-radius:10px;background:linear-gradient(135deg,#F26AA8,#A80E5E 55%,#3D0620 100%);position:relative;overflow:hidden;--tilt:-9deg;transform:rotate(var(--tilt));box-shadow:0 16px 20px -4px rgba(0,0,0,.4),0 6px 10px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.3);animation:packFloat 4.8s ease-in-out infinite;animation-delay:.3s}
+.giftcard-pack::after{
+  content:"";position:absolute;top:0;left:-60%;width:35%;height:100%;
+  background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.4) 50%,transparent 100%);
+  transform:skewX(-20deg);animation:packShine 4.8s ease-in-out infinite;animation-delay:2s;pointer-events:none;
+}
 .giftcard-pack .gp-text{position:relative;z-index:1;height:100%;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10px}
 .giftcard-pack .gp-logo{width:60px;height:auto;filter:brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0,0,0,.25))}
 .giftcard-pack .gp-tag{font-family:'Fraunces',serif;font-size:7px;color:#fff;line-height:1.5;display:flex;align-items:center;gap:5px;margin-top:6px}
 .giftcard-pack .gp-tag::before,.giftcard-pack .gp-tag::after{content:"";width:10px;height:1px;background:rgba(255,255,255,.6)}
+@media(prefers-reduced-motion:reduce){.giftcard-pack,.giftcard-pack::after{animation:none}}
 
 /* ============ occasion ============ */
 .occasion-scroll{display:flex;gap:14px;overflow-x:auto;padding-bottom:6px;-ms-overflow-style:none;scrollbar-width:none}
@@ -677,7 +693,14 @@ body{padding-top:var(--header-h,127px)}
 .gcmodal-grid{display:grid;grid-template-columns:1fr}
 @media(min-width:760px){.gcmodal-grid{grid-template-columns:1fr 1.15fr}}
 .gcmodal-preview{background:radial-gradient(120% 140% at 30% 0%,#F7A0C6,#E4127D 55%,#A80E5E 100%);display:flex;align-items:center;justify-content:center;padding:44px 30px}
-.gcmodal-card{width:100%;max-width:300px}
+.gcmodal-card{width:100%;max-width:300px;aspect-ratio:auto;min-height:230px;animation:gcmCardFloat 4.5s ease-in-out infinite}
+.gcmodal-card::after{
+  content:"";position:absolute;top:0;left:-60%;width:35%;height:100%;
+  background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.35) 50%,transparent 100%);
+  transform:skewX(-20deg);animation:packShine 4.5s ease-in-out infinite;pointer-events:none;
+}
+@keyframes gcmCardFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-7px) rotate(-1deg)}}
+@media(prefers-reduced-motion:reduce){.gcmodal-card,.gcmodal-card::after{animation:none}}
 .gcm-logo{height:22px;width:auto;filter:brightness(0) invert(1)}
 .gcm-card-label{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.85;margin-top:16px;position:relative;z-index:1}
 .gcmodal-form{padding:44px 32px 32px;display:flex;flex-direction:column}
@@ -1503,6 +1526,7 @@ footer .socials svg{width:14px;height:14px}
           <div class="gcm-card-label">Gift Card</div>
           <div class="gcm-value" id="gcmodal-value">₹5,000</div>
           <div class="gcm-to">For <strong id="gcmodal-to">Priya Sharma</strong></div>
+          <div class="gcm-msg" id="gcmodal-msg-preview">"Happy anniversary, my love. Here's to more forevers."</div>
         </div>
       </div>
       <div class="gcmodal-form">
@@ -1985,8 +2009,9 @@ footer .socials svg{width:14px;height:14px}
   function syncGcModalCard(){
     document.getElementById('gcmodal-to').textContent = gcmNameInput.value || 'Someone Special';
     document.getElementById('gcmodal-value').textContent = '₹' + gcmActiveAmount.toLocaleString('en-IN');
+    document.getElementById('gcmodal-msg-preview').textContent = gcmMsgInput.value ? `"${gcmMsgInput.value}"` : '';
   }
-  gcmNameInput.addEventListener('input', syncGcModalCard);
+  [gcmNameInput, gcmMsgInput].forEach(el=>el.addEventListener('input', syncGcModalCard));
   gcmAmountBtns.forEach(btn=>{
     btn.addEventListener('click', ()=>{
       gcmAmountBtns.forEach(b=>b.classList.remove('active'));

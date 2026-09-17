@@ -339,8 +339,10 @@ body{padding-top:var(--header-h,127px)}
 /* Direction D — Gold-Framed Jewel Box: the hero's coral-to-maroon
    gradient + glitter-dot texture carried onto the card itself, photo
    inset like a gem behind a hairline gold frame */
-.pcard{position:relative;background:radial-gradient(130% 150% at 50% -10%,var(--pink) 0%,#B23A52 45%,#6E2531 100%);border:1.5px solid rgba(240,201,135,.5);border-radius:16px;overflow:hidden;transition:box-shadow .25s var(--ease),transform .25s var(--ease),border-color .25s var(--ease);cursor:pointer;text-align:left;display:flex;flex-direction:column;box-shadow:0 14px 30px rgba(110,37,49,.25)}
-.pcard:hover{box-shadow:0 18px 40px rgba(110,37,49,.32);transform:translateY(-3px);border-color:#F0C987}
+/* vivid rani-pink/magenta lifted from the lower, brighter part of the
+   reference banner's gradient — replaces the earlier muted rose-maroon */
+.pcard{position:relative;background:radial-gradient(130% 150% at 50% -10%,#EC1E79 0%,#C81463 45%,#7A0A3A 100%);border:1.5px solid rgba(240,201,135,.5);border-radius:16px;overflow:hidden;transition:box-shadow .25s var(--ease),transform .25s var(--ease),border-color .25s var(--ease);cursor:pointer;text-align:left;display:flex;flex-direction:column;box-shadow:0 14px 30px rgba(122,10,58,.25)}
+.pcard:hover{box-shadow:0 18px 40px rgba(122,10,58,.32);transform:translateY(-3px);border-color:#F0C987}
 .pcard::after{
   content:"";position:absolute;inset:0;pointer-events:none;opacity:.8;z-index:1;
   background-image:

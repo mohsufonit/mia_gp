@@ -292,11 +292,13 @@ body{padding-top:var(--header-h,127px)}
   .hero-tagline{margin-bottom:20px;font-size:14.5px}
   .hero-ctas{flex-wrap:nowrap;gap:8px}
   .hero-ctas .btn{flex:1;padding:12px 10px;font-size:10.5px;letter-spacing:.01em}
-  .gift-scene{aspect-ratio:.72/1;max-width:250px}
+  .gift-scene{aspect-ratio:.9/1;max-width:270px}
   .gwin-4,.gwin-5{display:none}
-  .gwin-2{left:20%;top:0%;width:60%;height:25%;z-index:1}
-  .gwin-1{left:8%;top:23%;width:84%;height:52%;z-index:2}
-  .gwin-3{left:20%;top:73%;width:60%;height:25%;z-index:1}
+  /* diagonal composition: small photo top-left, small photo bottom-right,
+     anchor centered between them — not both small ones stacked on one side */
+  .gwin-1{left:14%;top:16%;width:68%;height:60%;z-index:2}
+  .gwin-2{left:0%;top:2%;width:36%;height:30%;z-index:1}
+  .gwin-3{left:60%;top:66%;width:36%;height:30%;z-index:1}
 }
 .sparkle{position:absolute;color:#F0C987;opacity:.9;animation:sparkle 2.6s ease-in-out infinite;filter:drop-shadow(0 1px 3px rgba(0,0,0,.35));z-index:3}
 .sparkle.s2{animation-delay:.9s}
@@ -310,9 +312,11 @@ body{padding-top:var(--header-h,127px)}
 .tag-deliver{left:14%;bottom:0%}
 @media(max-width:639px){
   .tag{font-size:9.5px;padding:5px 11px}
-  .tag-wrap{left:0%;top:-3%}
-  .tag-note{right:0%;top:-3%;left:auto}
-  .tag-deliver{left:18%;bottom:-3%}
+  /* pulled in to sit inside the empty corners the diagonal photo layout
+     leaves free, instead of floating outside the composition */
+  .tag-wrap{left:2%;top:0%}
+  .tag-note{right:2%;top:2%;left:auto}
+  .tag-deliver{left:2%;bottom:2%}
 }
 
 /* ============ category + recommender — tightened, one view ============ */

@@ -107,9 +107,12 @@ h1,h2,h3,h4{margin:0;font-family:'Fraunces',Georgia,serif;font-weight:600;letter
 .band-cream{background:transparent}
 .band-line-top{border-top:1px solid var(--line)}
 .band-line{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:28px;flex-wrap:wrap}
+/* every section heading centered, not left-aligned — "View All"-style
+   links now live below their carousel's scroll track instead of sitting
+   beside the heading (see Shop By Category / Timeless Favorites) */
+.section-head{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;margin-bottom:28px}
 .section-head h2{font-size:clamp(22px,3vw,30px)}
-.section-head .eyebrow{margin-bottom:9px}
+.section-head .eyebrow{margin-bottom:0;justify-content:center}
 .section-link{font-size:12.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--pink-deep);display:inline-flex;align-items:center;gap:6px;border-bottom:1px solid var(--gold-line);padding-bottom:2px;white-space:nowrap}
 .section-link:hover{color:var(--pink)}
 
@@ -606,16 +609,28 @@ body{padding-top:var(--header-h,127px)}
 @media(prefers-reduced-motion:reduce){.pin-cta-dot::after{animation:none}}
 @media(max-width:480px){.pin-bar-cta{font-size:11px;padding:12px 18px}}
 .pin-icon{display:none}
-/* desktop: a circular icon button bottom-left, not a full-width bar —
-   a stopwatch icon so its "find a gift fast" meaning reads at a glance */
+.pin-widget{position:relative;display:inline-flex}
+.pin-close{display:none}
+/* desktop: a circular icon button bottom-right (not left) — a stopwatch
+   icon so its "find a gift fast" meaning reads at a glance. It also pops
+   open into the full label for a few seconds the first time it appears
+   (like a delivery-tracking widget), then settles back to icon-only; a
+   close (x) lets you dismiss that popped-open state early. */
 @media(min-width:900px){
-  .pin-sticky{justify-content:flex-start;padding-left:32px;padding-bottom:28px}
-  .pin-bar-cta{position:relative;width:58px;height:58px;padding:0;border-radius:50%;justify-content:center;gap:0}
-  .pin-bar-cta .pin-label,.pin-bar-cta .pin-arrow{display:none}
+  .pin-sticky{justify-content:flex-end;padding-right:32px;padding-bottom:28px}
+  .pin-bar-cta{position:relative;width:58px;height:58px;padding:0;border-radius:50%;justify-content:center;gap:0;
+    transition:transform .35s cubic-bezier(.16,1,.3,1),opacity .35s,background .2s,width .35s var(--ease),border-radius .35s var(--ease),padding .35s var(--ease)}
+  .pin-bar-cta .pin-label{display:none;white-space:nowrap}
+  .pin-bar-cta .pin-arrow{display:none}
   .pin-icon{display:block}
   .pin-cta-dot{position:absolute;top:6px;right:6px}
-  .pin-bar-cta:hover::after{
-    content:"Find A Gift In Under 30 Seconds";position:absolute;left:calc(100% + 12px);top:50%;transform:translateY(-50%);
+  .pin-sticky.expanded .pin-bar-cta{width:auto;border-radius:100px;padding:0 40px 0 18px;gap:10px}
+  .pin-sticky.expanded .pin-bar-cta .pin-label{display:inline}
+  .pin-sticky.expanded .pin-cta-dot{position:relative;top:0;right:0}
+  .pin-close{display:none;position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.25);color:#fff;align-items:center;justify-content:center;z-index:2}
+  .pin-sticky.expanded .pin-close{display:flex}
+  .pin-sticky:not(.expanded) .pin-bar-cta:hover::after{
+    content:"Find A Gift In Under 30 Seconds";position:absolute;right:calc(100% + 12px);top:50%;transform:translateY(-50%);
     background:var(--ink);color:#fff;font-size:11.5px;font-weight:600;text-transform:none;letter-spacing:0;
     padding:8px 14px;border-radius:8px;white-space:nowrap;pointer-events:none;
   }
@@ -1268,8 +1283,21 @@ footer .socials svg{width:14px;height:14px}
   .qv-img,.qv-thumbs{display:none}
   /* matches the modal's own 16px corners so the gallery column never
      squares off against them at the top/bottom-left */
-  .qv-gallery{border-radius:16px 0 0 16px;overflow:hidden}
-  .qv-gallery-stack{display:block;position:sticky;top:0;align-self:start;max-height:88vh;overflow-y:auto}
+  .qv-gallery{border-radius:16px 0 0 16px;overflow:hidden;align-self:stretch}
+  /* the grid row stretches .qv-gallery to match the (usually taller) info
+     column — but .qv-gallery-stack is a flex child inside it, and a flex
+     column's children size to their OWN content by default (only 3 photos
+     tall), not the stretched parent. That left a blank gap below the
+     photos whenever the info column was taller, and made the sticky box
+     "run out" partway through scrolling instead of staying frozen for the
+     full scroll range. height:100% forces it to actually fill the row, so
+     it scrolls its own real content flush, with no leftover space. */
+  /* a fixed viewport-relative height (not height:100%, not just max-height)
+     — sticky only has room to actually hold in place if this box is
+     shorter than its (often much taller, form-heavy) row, and a real
+     height means real product photos fill it via internal scroll instead
+     of leaving a blank gap the way an unconstrained/auto height did */
+  .qv-gallery-stack{display:block;position:sticky;top:0;height:88vh;overflow-y:auto;background:var(--cream)}
   /* Mia-pink themed scrollbar instead of the OS default */
   .qv-gallery-stack{scrollbar-width:thin;scrollbar-color:var(--pink) var(--cream)}
   .qv-gallery-stack::-webkit-scrollbar{width:8px}
@@ -1581,7 +1609,6 @@ footer .socials svg{width:14px;height:14px}
         <p class="eyebrow">Shop By Category</p>
         <h2>Picked For Gifting</h2>
       </div>
-      <a href="#" class="section-link">View All <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
 
     <!-- category = small icon chips, not full photography -->
@@ -1594,6 +1621,7 @@ footer .socials svg{width:14px;height:14px}
       <button type="button" class="rec-arrow rec-arrow-next" id="rec-next" aria-label="Scroll right"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg></button>
     </div>
     <div class="rec-track"><div class="rec-track-fill" id="rec-track-fill"></div></div>
+    <div style="text-align:center;margin-top:28px"><a href="#" class="section-link" id="rec-viewall">View All <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
   </div>
 </section>
 
@@ -2242,12 +2270,17 @@ footer .socials svg{width:14px;height:14px}
 
 <!-- sticky bottom CTA, appears once the finder has scrolled mostly past view -->
 <div class="pin-sticky" id="pin-sticky">
-  <a href="#finder" class="pin-bar-cta" title="Find A Gift In Under 30 Seconds">
-    <span class="pin-cta-dot"></span>
-    <svg class="pin-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 3h6M12 3v2"/></svg>
-    <span class="pin-label">Find A Gift In Under 30 Seconds</span>
-    <svg class="pin-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-  </a>
+  <div class="pin-widget">
+    <a href="#finder" class="pin-bar-cta" title="Find A Gift In Under 30 Seconds" id="pin-cta">
+      <span class="pin-cta-dot"></span>
+      <svg class="pin-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 3h6M12 3v2"/></svg>
+      <span class="pin-label">Find A Gift In Under 30 Seconds</span>
+      <svg class="pin-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
+    <button type="button" class="pin-close" id="pin-close" aria-label="Dismiss">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -2716,12 +2749,17 @@ footer .socials svg{width:14px;height:14px}
       trackUpdater();
     }, 400);
   }
+  const recViewAll = document.getElementById('rec-viewall');
   function renderRec(catKey){
     const items = catKey==='all' ? PRODUCTS : PRODUCTS.filter(p=>p.cat===catKey);
     recGrid.innerHTML = items.map(productCardHTML).join('');
     wireCards(recGrid);
     recGrid.classList.remove('centered');
     resetRailScroll(recGrid, updateRecTrack);
+    // "View All" reflects whichever category chip is active — "View All
+    // Rings", "View All Earrings", etc., not a generic link
+    const label = CATS.find(c=>c.key===catKey)?.label;
+    recViewAll.firstChild.textContent = catKey==='all' ? 'View All ' : `View All ${label} `;
   }
   renderRec('all');
 
@@ -3394,16 +3432,35 @@ footer .socials svg{width:14px;height:14px}
     document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && veil.classList.contains('show')) hide(); });
   })();
 
-  // ---- sticky "find a gift" bottom bar — appears once #finder scrolls mostly past view ----
+  // ---- sticky "find a gift" bottom bar — appears once #finder scrolls mostly
+  // past view. On desktop it also "pops open" into the full label for a few
+  // seconds the first time (like a delivery-tracking widget), then settles
+  // back to icon-only; closable early, and further scrolling collapses it too ----
   (function(){
     const pin = document.getElementById('pin-sticky');
     const gate = document.getElementById('finder');
     if(!gate) return;
+    let wasShown = false, expandTimer;
+    function collapse(){ pin.classList.remove('expanded'); clearTimeout(expandTimer); }
     function check(){
-      pin.classList.toggle('show', gate.getBoundingClientRect().bottom < window.innerHeight*0.6);
+      const nowShown = gate.getBoundingClientRect().bottom < window.innerHeight*0.6;
+      pin.classList.toggle('show', nowShown);
+      if(nowShown && !wasShown){
+        // just appeared — pop open, then settle back to icon-only on its own
+        pin.classList.add('expanded');
+        clearTimeout(expandTimer);
+        expandTimer = setTimeout(collapse, 3500);
+      } else if(nowShown && wasShown && pin.classList.contains('expanded')){
+        // still on screen, but the user kept scrolling — collapse early
+        collapse();
+      } else if(!nowShown){
+        collapse();
+      }
+      wasShown = nowShown;
     }
     window.addEventListener('scroll', check, {passive:true});
     window.addEventListener('resize', check);
+    document.getElementById('pin-close').addEventListener('click', (e)=>{ e.preventDefault(); collapse(); });
     check();
   })();
 })();

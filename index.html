@@ -90,7 +90,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 h1,h2,h3,h4{margin:0;font-family:'Fraunces',Georgia,serif;font-weight:600;letter-spacing:-.01em;line-height:1.14}
 .container{max-width:var(--max);margin:0 auto;padding:0 24px}
 @media(min-width:1024px){.container{padding:0 48px}}
-.eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--pink-deep);display:inline-flex;align-items:center;gap:9px}
+.eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--pink-deep);display:inline-flex;align-items:center;gap:10px}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
 .rv{opacity:0;transform:translateY(20px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
 .rv.in{opacity:1;transform:none}
@@ -110,9 +110,22 @@ h1,h2,h3,h4{margin:0;font-family:'Fraunces',Georgia,serif;font-weight:600;letter
 /* every section heading centered, not left-aligned — "View All"-style
    links now live below their carousel's scroll track instead of sitting
    beside the heading (see Shop By Category / Timeless Favorites) */
-.section-head{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;margin-bottom:28px}
+/* eyebrow-to-heading spacing and flanking lines matched exactly to the
+   finder's "Confused? Find Yours In 30 Seconds" treatment, applied to
+   every eyebrow site-wide (the hero's pill-style eyebrow opts out below) */
+/* currentColor so the lines automatically match whatever color that
+   eyebrow already uses (gold on the coin section, light pink on dark
+   breaker bands, etc.) without a separate override per section */
+.eyebrow::before,.eyebrow::after{content:"";width:22px;height:1px;background:currentColor;flex-shrink:0;opacity:.7}
+.hero-copy .eyebrow::before,.hero-copy .eyebrow::after{content:none}
+.section-head{display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:28px}
+/* the eyebrow+h2 pair sits in its own inner (unclassed) wrapper div — the
+   16px gap belongs there, matching the finder's own eyebrow-to-heading
+   spacing exactly, not on .section-head itself (which usually has only
+   that one wrapper as its single flex child) */
+.section-head > div{display:flex;flex-direction:column;align-items:center;gap:16px}
 .section-head h2{font-size:clamp(22px,3vw,30px)}
-.section-head .eyebrow{margin-bottom:0;justify-content:center}
+.section-head .eyebrow{margin-bottom:0;justify-content:center;gap:10px}
 .section-link{font-size:12.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--pink-deep);display:inline-flex;align-items:center;gap:6px;border-bottom:1px solid var(--gold-line);padding-bottom:2px;white-space:nowrap}
 .section-link:hover{color:var(--pink)}
 
@@ -773,19 +786,20 @@ body{padding-top:var(--header-h,127px)}
 }
 /* gold dust glitter texture — every pink breaker band gets this, not just
    the coin/gift-card section */
+/* exact same white dot texture as the hero card — every pink breaker band
+   uses the identical decoration instead of a separate gold-dot version */
 .meaning-section::after,.touches-section::after,.newsletter::after{
-  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.8;
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.9;
   background-image:
-    radial-gradient(1.6px 1.6px at 8% 22%, rgba(240,201,135,.9), transparent),
-    radial-gradient(1.2px 1.2px at 22% 68%, rgba(240,201,135,.6), transparent),
-    radial-gradient(1.4px 1.4px at 38% 12%, rgba(240,201,135,.8), transparent),
-    radial-gradient(1px 1px at 52% 78%, rgba(240,201,135,.55), transparent),
-    radial-gradient(1.6px 1.6px at 68% 32%, rgba(240,201,135,.85), transparent),
-    radial-gradient(1.1px 1.1px at 81% 60%, rgba(240,201,135,.6), transparent),
-    radial-gradient(1.4px 1.4px at 92% 18%, rgba(240,201,135,.75), transparent),
-    radial-gradient(1px 1px at 15% 90%, rgba(240,201,135,.5), transparent),
-    radial-gradient(1.3px 1.3px at 60% 95%, rgba(240,201,135,.65), transparent),
-    radial-gradient(1.5px 1.5px at 90% 85%, rgba(240,201,135,.6), transparent);
+    radial-gradient(1.6px 1.6px at 8% 22%, rgba(255,255,255,.95), transparent),
+    radial-gradient(1.2px 1.2px at 22% 68%, rgba(255,255,255,.7), transparent),
+    radial-gradient(1.4px 1.4px at 38% 12%, rgba(255,255,255,.85), transparent),
+    radial-gradient(1px 1px at 52% 78%, rgba(255,255,255,.6), transparent),
+    radial-gradient(1.6px 1.6px at 68% 32%, rgba(255,255,255,.9), transparent),
+    radial-gradient(1.1px 1.1px at 81% 60%, rgba(255,255,255,.65), transparent),
+    radial-gradient(1.4px 1.4px at 92% 18%, rgba(255,255,255,.8), transparent),
+    radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,.55), transparent),
+    radial-gradient(1.3px 1.3px at 60% 95%, rgba(255,255,255,.7), transparent);
   background-size:220px 220px;
 }
 .meaning-section .section-head,.meaning-section .coin-grid{position:relative;z-index:1}
@@ -1089,37 +1103,46 @@ body{padding-top:var(--header-h,127px)}
 .rv-bar-fill{display:block;height:100%;width:var(--w);background:var(--pink);border-radius:100px;transform:scaleX(0);transform-origin:left center;transition:transform 1.1s var(--ease)}
 .rv-bar-val{font-weight:700;color:var(--ink);text-align:right}
 .rv-score.in .rv-bar-fill{transform:scaleX(1)}
-/* ============ reviews carousel — approved editorial direction ============
-   Desktop: single large tactile photo, serif italic quote caption, small
-   spinning gold accent icon, category pill, circular ghost arrows + dot
-   row, floating circular "read all" corner button — dark editorial card.
-   Mobile: a real 3-card peek carousel in our brand pink instead of the
-   dark treatment — center review sharp, neighbors peek in blurred on
-   either side, arrows sit on the sides of the stage, not a separate row. */
-.rvc-card{position:relative;border-radius:18px;overflow:hidden;background:#000;
-  background:radial-gradient(120% 140% at 30% -10%,#3a1420 0%,#20090f 45%,#120508 100%)}
-.rvc-imgwrap{position:relative;aspect-ratio:16/11;overflow:hidden}
-.rvc-imgwrap img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .5s var(--ease)}
-.rvc-imgwrap::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,4,6,.92) 0%,rgba(10,4,6,.1) 45%,transparent 70%)}
-.rvc-sparkle{position:absolute;top:18px;right:18px;width:34px;height:34px;border-radius:50%;background:rgba(240,201,135,.16);border:1px solid rgba(240,201,135,.4);display:flex;align-items:center;justify-content:center;color:var(--gold);z-index:2;animation:rvcSpin 8s linear infinite}
-@keyframes rvcSpin{to{transform:rotate(360deg)}}
-@media(prefers-reduced-motion:reduce){.rvc-sparkle{animation:none}}
-.rvc-cat{position:absolute;top:18px;left:18px;font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:rgba(255,255,255,.14);backdrop-filter:blur(6px);border-radius:100px;padding:6px 13px;z-index:2}
-.rvc-body{position:relative;padding:0 26px 26px;margin-top:-8px;z-index:2;color:#fff}
-.rvc-quote{font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:clamp(18px,2.4vw,24px);line-height:1.35;margin:0 0 12px;max-width:560px}
-.rvc-name{font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:rgba(255,255,255,.55)}
-.rvc-nav{display:flex;align-items:center;gap:16px;padding:18px 26px 0}
-.rvc-dots{display:flex;gap:7px;flex:1}
-.rvc-dots span{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;transition:all .25s var(--ease)}
-.rvc-dots span.active{background:var(--gold);width:22px;border-radius:100px}
-.rvc-arrow{width:42px;height:42px;border-radius:50%;background:transparent;border:1.5px solid rgba(255,255,255,.3);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0}
-.rvc-arrow:hover{border-color:var(--gold);color:var(--gold)}
-.rvc-cue{position:absolute;bottom:24px;right:24px;width:46px;height:46px;border-radius:50%;background:#fff;color:var(--pink-deep);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(0,0,0,.35);z-index:3;text-decoration:none;transition:transform .2s}
-.rvc-cue:hover{transform:scale(1.08)}
+/* ============ reviews carousel ============
+   Desktop reverted to the original true circular conveyor (every card
+   stays visible, spread/shrunk/faded by distance from center) — the dark
+   editorial single-card direction was approved for mobile only, not to
+   replace this on desktop.
+   Mobile: a real 3-card peek carousel in our brand pink — center review
+   sharp, neighbors peek in blurred on either side, arrows sit on the
+   sides of the stage, not a separate row. */
+.tm-carousel-wrap{position:relative}
+.tm-track{position:relative;height:400px;margin:0 auto}
+.tm-portrait{width:150px;height:310px;border-radius:20px;position:absolute;left:50%;top:50%;margin-left:-75px;margin-top:-155px;overflow:hidden;cursor:pointer;box-shadow:0 24px 50px rgba(0,0,0,.4);transition:transform .6s cubic-bezier(.16,1,.3,1),width .6s cubic-bezier(.16,1,.3,1),height .6s cubic-bezier(.16,1,.3,1),margin .6s cubic-bezier(.16,1,.3,1),opacity .5s,z-index 0s .3s}
+.tm-portrait img{width:100%;height:100%;object-fit:cover;display:block}
+.tm-portrait::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 34%,rgba(61,6,32,.94) 100%)}
+.tm-cv0{transform:translateX(0) scale(1) translateY(0) rotate(0);z-index:6;opacity:1}
+.tm-cv1{transform:translateX(150px) scale(.84) translateY(16px) rotate(7deg);z-index:5;opacity:.9}
+.tm-cvn1{transform:translateX(-150px) scale(.84) translateY(16px) rotate(-7deg);z-index:5;opacity:.9}
+.tm-cv2{transform:translateX(268px) scale(.68) translateY(30px) rotate(12deg);z-index:4;opacity:.7}
+.tm-cvn2{transform:translateX(-268px) scale(.68) translateY(30px) rotate(-12deg);z-index:4;opacity:.7}
+.tm-cv3{transform:translateX(354px) scale(.54) translateY(40px) rotate(16deg);z-index:3;opacity:.45}
+.tm-cvn3{transform:translateX(-354px) scale(.54) translateY(40px) rotate(-16deg);z-index:3;opacity:.45}
+.tm-portrait.tm-cv0{width:220px;height:380px;margin-left:-110px;margin-top:-190px}
+.tm-cv0 .tm-cat-pill{display:block}
+.tm-cat-pill{display:none;position:absolute;top:14px;left:14px;font-size:9.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;background:rgba(255,255,255,.24);backdrop-filter:blur(12px);border-radius:100px;padding:5px 11px;z-index:2}
+.tm-portrait-body{position:absolute;left:0;right:0;bottom:0;padding:14px;z-index:2}
+.tm-portrait-name{display:block;font-size:9.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.tm-portrait-quote{font-family:'Fraunces',serif;font-style:italic;font-size:11.5px;line-height:1.45;color:#fff;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;opacity:.95}
+.tm-cv0 .tm-portrait-quote{font-size:15px;-webkit-line-clamp:4;line-clamp:4;opacity:1;transition:opacity .3s .2s}
+.tm-nav{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:24px}
+.tm-nav button{width:46px;height:46px;border-radius:50%;background:#fff;border:1.5px solid var(--line-2);color:var(--ink-2);display:flex;align-items:center;justify-content:center;transition:all .2s}
+.tm-nav button:hover{border-color:var(--pink)}
+.tm-nav-primary{background:var(--pink)!important;color:#fff!important;border-color:var(--pink)!important}
+.tm-nav-dots{font-size:12px;letter-spacing:.05em;color:var(--muted);font-variant-numeric:tabular-nums}
+.tm-nav-dots #tm-current{color:var(--pink-deep);font-weight:800}
+.tm-cta-row{text-align:center;margin-top:22px}
+.tm-cta-row .btn{background:transparent;border:1.5px solid var(--pink);color:var(--pink-deep)}
+.tm-cta-row .btn:hover{background:var(--pink);color:#fff}
 
 .mp-section{display:none}
 @media(max-width:899px){
-  .rvc-card{display:none}
+  .tm-carousel-wrap{display:none}
   .mp-section{display:block;background:radial-gradient(130% 150% at 50% -10%,var(--pink-hover) 0%,var(--pink) 45%,#3D0620 100%);
     border-radius:18px;padding:26px 0 22px;position:relative;overflow:hidden}
   .mp-stage{position:relative;height:300px}
@@ -1874,23 +1897,20 @@ footer .socials svg{width:14px;height:14px}
       </div>
     </div>
 
-    <!-- desktop: dark editorial single-card carousel -->
-    <div class="rvc-card">
-      <div class="rvc-imgwrap">
-        <span class="rvc-cat" id="rvc-cat"></span>
-        <span class="rvc-sparkle"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg></span>
-        <img id="rvc-img" src="" alt="">
+    <!-- desktop: original true circular conveyor (reverted from the
+         editorial single-card direction, which stays for mobile only) -->
+    <div class="tm-carousel-wrap">
+      <div class="tm-track" id="tm-track"></div>
+      <div class="tm-nav">
+        <button type="button" id="tm-prev" aria-label="Previous review">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="tm-nav-dots"><span id="tm-current">01</span><span>/</span><span id="tm-total">06</span></div>
+        <button type="button" id="tm-next" class="tm-nav-primary" aria-label="Next review">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
       </div>
-      <div class="rvc-body">
-        <p class="rvc-quote" id="rvc-quote"></p>
-        <span class="rvc-name" id="rvc-name"></span>
-      </div>
-      <div class="rvc-nav">
-        <div class="rvc-dots" id="rvc-dots"></div>
-        <button type="button" class="rvc-arrow" id="rvc-prev" aria-label="Previous review"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg></button>
-        <button type="button" class="rvc-arrow" id="rvc-next" aria-label="Next review"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg></button>
-      </div>
-      <a href="#" class="rvc-cue" aria-label="Read all reviews"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <div class="tm-cta-row"><a href="#" class="btn btn-secondary">Read All 12,432 Reviews →</a></div>
     </div>
 
     <!-- mobile: 3-card peek carousel, brand pink -->
@@ -1900,8 +1920,8 @@ footer .socials svg{width:14px;height:14px}
         <button type="button" class="mp-arrow mp-next" id="mp-next" aria-label="Next review"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg></button>
       </div>
       <div class="mp-dots" id="mp-dots"></div>
+      <div style="text-align:center;margin-top:18px"><a href="#" class="btn btn-secondary" style="background:transparent;border:1.5px solid #fff;color:#fff">Read All 12,432 Reviews →</a></div>
     </div>
-    <div class="tm-cta-row" style="text-align:center;margin-top:22px"><a href="#" class="btn btn-secondary">Read All 12,432 Reviews →</a></div>
   </div>
 </section>
 
@@ -2398,12 +2418,13 @@ footer .socials svg{width:14px;height:14px}
     }, {passive:true});
   })();
 
-  // ---- reviews carousel: approved editorial direction ----
-  // desktop = single dark card, crossfades on nav; mobile = 3-card peek
-  // carousel in brand pink. Both driven off the same review data.
+  // ---- reviews carousel ----
+  // desktop = original true circular conveyor (reverted — the editorial
+  // single-card direction was approved for mobile only); mobile = 3-card
+  // peek carousel in brand pink. Both driven off the same review data.
   (function(){
-    const rvcImg = document.getElementById('rvc-img');
-    if(!rvcImg) return;
+    const track = document.getElementById('tm-track');
+    if(!track) return;
     const reviews = [
       {cat:'Anniversary', name:'Rohit Mehta · Bangalore', quote:'Wrapped like a museum piece. She’s worn it every day since.', img:'assets/products/3026NFU.webp'},
       {cat:'Proposal', name:'Arjun Kapoor · Mumbai', quote:'Free resize took 15 minutes. Not a single question asked.', img:'assets/products/M5I2FDW.webp'},
@@ -2414,39 +2435,38 @@ footer .socials svg{width:14px;height:14px}
     ];
     const total = reviews.length;
 
-    // ---- desktop: dark single-card crossfade ----
-    const rvcCat = document.getElementById('rvc-cat');
-    const rvcQuote = document.getElementById('rvc-quote');
-    const rvcName = document.getElementById('rvc-name');
-    const rvcDots = document.getElementById('rvc-dots');
-    rvcDots.innerHTML = reviews.map((_,i)=>`<span class="${i===0?'active':''}" data-i="${i}"></span>`).join('');
-    let dIdx = 0, dSwitching = false;
-    function renderDesktop(next){
-      if(dSwitching) return;
-      dSwitching = true;
-      const r = reviews[next];
-      rvcImg.style.opacity = '0';
-      setTimeout(()=>{
-        rvcImg.src = r.img;
-        rvcCat.textContent = r.cat;
-        rvcQuote.textContent = `"${r.quote}"`;
-        rvcName.textContent = r.name;
-        rvcImg.style.opacity = '1';
-        dIdx = next;
-        rvcDots.querySelectorAll('span').forEach((d,i)=>d.classList.toggle('active', i===dIdx));
-        setTimeout(()=>{ dSwitching = false; }, 300);
-      }, 260);
+    // ---- desktop: true circular conveyor — every card stays visible and
+    // wraps endlessly, spread/shrunk/faded by distance from center ----
+    let activeIdx = 2;
+    track.innerHTML = reviews.map((r,i)=>`
+      <div class="tm-portrait" data-i="${i}">
+        <span class="tm-cat-pill">${r.cat}</span>
+        <img src="${r.img}" alt="${r.name}">
+        <div class="tm-portrait-body">
+          <span class="tm-portrait-name">${r.name}</span>
+          <p class="tm-portrait-quote">"${r.quote}"</p>
+        </div>
+      </div>`).join('');
+    const cards = [...track.querySelectorAll('.tm-portrait')];
+    const curEl = document.getElementById('tm-current');
+    const totEl = document.getElementById('tm-total');
+    totEl.textContent = String(total).padStart(2,'0');
+    function offsetClass(d){
+      return d===0 ? 'tm-cv0' : (d<0 ? 'tm-cvn'+(-d) : 'tm-cv'+d);
     }
-    rvcImg.src = reviews[0].img;
-    rvcCat.textContent = reviews[0].cat;
-    rvcQuote.textContent = `"${reviews[0].quote}"`;
-    rvcName.textContent = reviews[0].name;
-    document.getElementById('rvc-prev').addEventListener('click', ()=> renderDesktop((dIdx-1+total)%total));
-    document.getElementById('rvc-next').addEventListener('click', ()=> renderDesktop((dIdx+1)%total));
-    rvcDots.addEventListener('click', (e)=>{
-      const dot = e.target.closest('span'); if(!dot) return;
-      renderDesktop(+dot.dataset.i);
-    });
+    function updateDesktop(){
+      cards.forEach((c,i)=>{
+        let d = i - activeIdx;
+        if(d > total/2) d -= total;
+        if(d < -total/2) d += total;
+        c.className = 'tm-portrait ' + offsetClass(d);
+      });
+      curEl.textContent = String(activeIdx+1).padStart(2,'0');
+    }
+    cards.forEach((c,i)=> c.addEventListener('click', ()=>{ activeIdx = i; updateDesktop(); }));
+    document.getElementById('tm-prev').addEventListener('click', ()=>{ activeIdx = (activeIdx - 1 + total) % total; updateDesktop(); });
+    document.getElementById('tm-next').addEventListener('click', ()=>{ activeIdx = (activeIdx + 1) % total; updateDesktop(); });
+    updateDesktop();
 
     // ---- mobile: 3-card peek carousel ----
     const mpStage = document.getElementById('mp-stage');

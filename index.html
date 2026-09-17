@@ -95,6 +95,19 @@ h1,h2,h3,h4{margin:0;font-family:'Fraunces',Georgia,serif;font-weight:600;letter
 .rv{opacity:0;transform:translateY(20px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
 .rv.in{opacity:1;transform:none}
 
+/* skip layout/paint work for whatever's off-screen on a page this long,
+   with animated cards/sparkles running in several sections at once —
+   the browser only does full work once a section nears the viewport.
+   the hero is excluded since it's visible immediately on load. */
+#finder,#catrec,.trust-ticker,#recipient,.meaning-section,#favorites,.touches-section,
+#reviews,#faq,.newsletter,footer{
+  content-visibility:auto;
+  contain-intrinsic-size:1px 700px;
+}
+#reviews{contain-intrinsic-size:1px 1000px}
+.touches-section{contain-intrinsic-size:1px 500px}
+.trust-ticker{contain-intrinsic-size:1px 60px}
+
 /* ---- section rhythm: this is what creates visible separation ---- */
 .band{padding:60px 0}
 .band-tight{padding:36px 0}
@@ -246,7 +259,17 @@ body{padding-top:var(--header-h,127px)}
 @keyframes headlineShine{0%,18%{background-position:-90% 0}68%,100%{background-position:190% 0}}
 @media(prefers-reduced-motion:reduce){.hero-copy h1{animation:none;background-position:0 0}}
 @media(min-width:900px){.hero-copy h1{font-size:clamp(30px,2.7vw,40px);white-space:nowrap}}
-.hero-copy h1 em{font-style:italic;color:#F0C987}
+/* "Never" gets its own gold shine sweep instead of a flat color — a solid
+   color on the em overrode the parent's text-clip shine, which is why it
+   was missing here specifically */
+.hero-copy h1 em{
+  font-style:italic;
+  background-image:linear-gradient(100deg,var(--gold) 0%,var(--gold) 42%,#fff6d0 50%,var(--gold) 58%,var(--gold) 100%);
+  background-size:280% 100%;background-position:-90% 0;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:headlineShine 5.5s ease-in-out infinite;
+}
+@media(prefers-reduced-motion:reduce){.hero-copy h1 em{animation:none;background-position:0 0}}
 .hero-tagline{font-size:16px;color:rgba(255,255,255,.85);max-width:420px;margin:0 0 34px;line-height:1.65}
 .hero-tagline-short{display:none}
 .hero-ctas{display:flex;flex-wrap:wrap;gap:16px}
@@ -313,21 +336,25 @@ body{padding-top:var(--header-h,127px)}
   .gift-scene{aspect-ratio:.9/1;max-width:270px}
   .gwin-4,.gwin-5{display:none}
   /* diagonal composition: small photo top-left, small photo bottom-right,
-     anchor centered between them — not both small ones stacked on one side */
-  .gwin-1{left:14%;top:16%;width:68%;height:60%;z-index:2}
-  .gwin-2{left:0%;top:2%;width:36%;height:30%;z-index:1}
-  .gwin-3{left:60%;top:66%;width:36%;height:30%;z-index:1}
+     anchor centered between them — not both small ones stacked on one side.
+     Main photo enlarged ~12%, both small ones enlarged ~25% and shifted
+     further left so the main photo doesn't sit on top of them as much */
+  .gwin-1{left:14%;top:16%;width:76%;height:67%;z-index:2}
+  .gwin-2{left:-6%;top:2%;width:45%;height:37%;z-index:1}
+  .gwin-3{left:52%;top:66%;width:45%;height:37%;z-index:1}
 }
 .sparkle{position:absolute;color:#F0C987;opacity:.9;animation:sparkle 2.6s ease-in-out infinite;filter:drop-shadow(0 1px 3px rgba(0,0,0,.35));z-index:3}
 .sparkle.s2{animation-delay:.9s}
 .sparkle.s3{animation-delay:1.7s}
 @keyframes sparkle{0%,100%{opacity:.2;transform:scale(.8) rotate(0)}50%{opacity:1;transform:scale(1.05) rotate(8deg)}}
 /* value pills live on the collage itself, not as extra copy text */
-.tag{position:absolute;z-index:3;display:inline-flex;align-items:center;gap:6px;background:#fff;border-radius:100px;padding:6px 13px;font-size:10.5px;font-weight:700;color:#A80E5E;white-space:nowrap;box-shadow:0 8px 18px rgba(0,0,0,.18)}
+.tag{position:absolute;z-index:3;display:inline-flex;align-items:center;gap:6px;background:#fff;border-radius:100px;padding:6px 13px;font-size:10.5px;font-weight:700;color:#A80E5E;white-space:nowrap;box-shadow:0 8px 18px rgba(0,0,0,.18);animation:tagFloat 3.4s ease-in-out infinite}
 .tag svg{flex-shrink:0}
-.tag-wrap{left:1%;top:0%}
-.tag-note{right:-2%;top:20%}
-.tag-deliver{left:14%;bottom:0%}
+.tag-wrap{left:1%;top:0%;animation-delay:0s}
+.tag-note{right:-2%;top:20%;animation-delay:.7s}
+.tag-deliver{left:14%;bottom:0%;animation-delay:1.4s}
+@keyframes tagFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@media(prefers-reduced-motion:reduce){.tag{animation:none}}
 @media(max-width:639px){
   .tag{font-size:9.5px;padding:5px 11px}
   /* pulled in to sit inside the empty corners the diagonal photo layout
@@ -408,7 +435,25 @@ body{padding-top:var(--header-h,127px)}
 @media(min-width:1024px){.rec-arrow{display:flex}}
 .rec-arrow.hide{display:none!important}
 /* scroll progress indicator, matches the page's coral palette */
+.rec-viewall-wrap{text-align:center;margin-top:28px}
 .rec-track{width:100%;max-width:160px;height:4px;background:var(--line-2);border-radius:100px;margin:4px auto 0;overflow:hidden}
+/* on a typical laptop viewport (after browser chrome eats into it) this
+   section's cards + scroll indicator + View All were running past the
+   fold — tighten the vertical rhythm on desktop only, mobile untouched */
+@media(min-width:1024px){
+  #catrec{padding:36px 0 30px}
+  #catrec .section-head{margin-bottom:14px}
+  #catrec .cat-strip{padding-bottom:8px}
+  #catrec .rec-rail + .rec-track{margin-top:8px}
+  #catrec .rec-viewall-wrap{margin-top:14px}
+  #catrec .pcard-rail .pcard{flex-basis:200px}
+  #favorites{padding:36px 0 30px}
+  #favorites .section-head{margin-bottom:14px}
+  #favorites .tf-tabs{margin-bottom:14px}
+  #favorites .rec-rail + .rec-track{margin-top:8px}
+  #favorites .rec-viewall-wrap{margin-top:14px}
+  #favorites .pcard-rail .pcard{flex-basis:200px}
+}
 .rec-track-fill{width:20%;height:100%;background:linear-gradient(90deg,var(--pink-deep),var(--pink));border-radius:100px;transition:width .2s,transform .2s}
 /* product card — follows the format from index-gifting-page.html:
    ribbon tag, wishlist heart, rating pill on image; price + tax note,
@@ -419,6 +464,32 @@ body{padding-top:var(--header-h,127px)}
 /* "Sunkissed by Mia" cosmic banner — a bloomed glow near the top-right,
    deepening into near-black maroon at the corners, plus a denser,
    varied-size starfield instead of the earlier handful of flecks */
+
+/* ============ shine sweep — shared hover/active effect ============
+   a diagonal band of light sweeps across on hover (or briefly on click,
+   via .shined toggled in JS for non-hover/touch contexts); reused on
+   coin cards, category icons, tf-chip pills, touch cards, review cards */
+.shine-fx{position:relative;overflow:hidden}
+.shine-fx::after{
+  content:'';position:absolute;top:0;left:-75%;width:50%;height:100%;
+  background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.55) 50%,transparent 100%);
+  transform:skewX(-18deg);pointer-events:none;z-index:3;
+  transition:left .85s cubic-bezier(.22,.61,.36,1);
+}
+.shine-fx:hover::after,.shine-fx.shined::after{left:125%}
+@media(prefers-reduced-motion:reduce){.shine-fx::after{transition:none;display:none}}
+/* ::before variant for elements whose ::after is already spoken for
+   (the review portraits use ::after for their own dark gradient overlay) */
+.shine-fx-b{position:relative;overflow:hidden}
+.shine-fx-b::before{
+  content:'';position:absolute;top:0;left:-75%;width:50%;height:100%;
+  background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.5) 50%,transparent 100%);
+  transform:skewX(-18deg);pointer-events:none;z-index:3;
+  transition:left .85s cubic-bezier(.22,.61,.36,1);
+}
+.shine-fx-b:hover::before,.shine-fx-b.shined::before{left:125%}
+@media(prefers-reduced-motion:reduce){.shine-fx-b::before{transition:none;display:none}}
+
 .pcard{
   position:relative;
   background:
@@ -778,6 +849,11 @@ body{padding-top:var(--header-h,127px)}
    is meant to read as a break in the page, not a content block. The three
    cards inside each get their own material: gold, silver, dark maroon. */
 .meaning-section{position:relative;overflow:hidden;padding-top:56px;padding-bottom:56px}
+/* heading-to-cards gap (section-head's shared 28px margin-bottom) was
+   smaller than cards-to-section-end gap (this section's own 56px
+   padding-bottom) — match the top gap to the bottom one so the coin
+   cards sit dead-center in the section's vertical rhythm */
+.meaning-section .section-head{margin-bottom:56px}
 .meaning-section::before{
   content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
   background:
@@ -816,7 +892,11 @@ body{padding-top:var(--header-h,127px)}
    shadow (Direction A) instead of a bare flat coin cutout. */
 .coin-grid{display:grid;grid-template-columns:1fr;gap:14px}
 @media(min-width:760px){.coin-grid{grid-template-columns:1fr 1fr 1fr}}
-.coin-card{position:relative;border-radius:var(--radius-lg);padding:20px;display:flex;align-items:center;justify-content:space-between;gap:14px;overflow:hidden;isolation:isolate;text-align:left}
+.coin-card{position:relative;border-radius:var(--radius-lg);padding:20px;display:flex;align-items:center;justify-content:space-between;gap:14px;overflow:hidden;isolation:isolate;text-align:left;transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+/* same hover lift + visual zoom language as the product cards */
+.coin-card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(61,6,32,.28)}
+.coin-card .cc-visual{transition:transform .4s var(--ease)}
+.coin-card:hover .cc-visual{transform:scale(1.06)}
 .coin-card .cc-copy{flex:1;min-width:0}
 .coin-card h3{font-family:'Fraunces',serif;font-size:18px;margin-bottom:5px}
 .coin-card p{font-size:12px;margin:0 0 12px;line-height:1.45;opacity:.85}
@@ -1010,7 +1090,7 @@ body{padding-top:var(--header-h,127px)}
 /* this is the page's actual section breaker (same role as the coin/gift-card
    band) — pink full-bleed gradient, cream cards floating on top */
 .touches-section{background:radial-gradient(130% 150% at 50% -10%,#F26AA8 0%,#E4127D 45%,#3D0620 100%);position:relative;overflow:hidden}
-.touches-section .eyebrow{color:#F5A8C8}
+.touches-section .eyebrow{color:var(--gold)}
 .touches-section h2{color:#fff}
 .touch-strip{display:flex;gap:14px;overflow-x:auto;padding:4px 4px 10px;-ms-overflow-style:none;scrollbar-width:none}
 .touch-strip::-webkit-scrollbar{display:none}
@@ -1526,11 +1606,11 @@ footer .socials svg{width:14px;height:14px}
             <svg class="gift-ribbon-line" viewBox="0 0 640 556" fill="none" aria-hidden="true">
               <path d="M40 380 C 180 300, 340 480, 600 260" stroke="#fff" stroke-width="2" stroke-dasharray="1 10" stroke-linecap="round" opacity=".3"/>
             </svg>
-            <div class="gwin gwin-1"><img src="assets/editorial/hero-gift-frame.webp" alt="A ribboned Mia jewellery gift unwrapped, with a handwritten note that reads 'For my love'"></div>
-            <div class="gwin gwin-2"><img src="assets/editorial/gifts-her.webp" alt="A hand holding up a Mia necklace and hoop earrings"></div>
-            <div class="gwin gwin-3"><img src="assets/editorial/gifts-him.webp" alt="Two hands presenting a Mia necklace and rings in a gift tray"></div>
-            <div class="gwin gwin-4"><img src="assets/products/M5I2FDW.webp" alt="Mia sculpted distinct tsavorite gold ring"></div>
-            <div class="gwin gwin-5"><img src="assets/products/IKD5BDG.webp" alt="Mia little sunshine gold bracelet"></div>
+            <div class="gwin gwin-1"><img decoding="async" fetchpriority="high" src="assets/editorial/hero-gift-frame.webp" alt="A ribboned Mia jewellery gift unwrapped, with a handwritten note that reads 'For my love'"></div>
+            <div class="gwin gwin-2"><img decoding="async" src="assets/editorial/gifts-her.webp" alt="A hand holding up a Mia necklace and hoop earrings"></div>
+            <div class="gwin gwin-3"><img decoding="async" src="assets/editorial/gifts-him.webp" alt="Two hands presenting a Mia necklace and rings in a gift tray"></div>
+            <div class="gwin gwin-4"><img decoding="async" src="assets/products/M5I2FDW.webp" alt="Mia sculpted distinct tsavorite gold ring"></div>
+            <div class="gwin gwin-5"><img decoding="async" src="assets/products/IKD5BDG.webp" alt="Mia little sunshine gold bracelet"></div>
             <span class="tag tag-wrap"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V8H6a2 2 0 0 0-2 2v10h16v-4"/><path d="M2 12h20"/></svg>Free Gift Wrap</span>
             <span class="tag tag-note"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"/><path d="M14 3v5h5M8 13h8M8 17h5"/></svg>Handwritten Note</span>
             <span class="tag tag-deliver"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="14" height="11" rx="2"/><path d="M17 10h2.5a1 1 0 0 1 .9.55L22 13v4h-5"/><circle cx="7.5" cy="18.5" r="1.5"/><circle cx="16.5" cy="18.5" r="1.5"/></svg>Delivered On Your Chosen Day</span>
@@ -1655,7 +1735,7 @@ footer .socials svg{width:14px;height:14px}
       <button type="button" class="rec-arrow rec-arrow-next" id="rec-next" aria-label="Scroll right"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg></button>
     </div>
     <div class="rec-track"><div class="rec-track-fill" id="rec-track-fill"></div></div>
-    <div style="text-align:center;margin-top:28px"><a href="#" class="section-link" id="rec-viewall">View All <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+    <div class="rec-viewall-wrap"><a href="#" class="section-link" id="rec-viewall">View All <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
   </div>
 </section>
 
@@ -1717,19 +1797,19 @@ footer .socials svg{width:14px;height:14px}
         <div class="feat-carousel">
           <button type="button" class="rec-arrow rec-arrow-prev" id="feat-prev" aria-label="Previous collection"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg></button>
           <div class="feat-track" id="feat-track">
-            <a href="#" class="feat-slide" style="--bg:url('assets/collections/rhapsody-nav.jpg')"><img src="assets/collections/rhapsody-nav.jpg" alt="Rhapsody Of Colours collection"><h4>Rhapsody Of Colours</h4><span>Shop Now</span></a>
-            <a href="#" class="feat-slide" style="--bg:url('assets/collections/aurum-desktop.jpg')"><img src="assets/collections/aurum-desktop.jpg" alt="Aurum collection"><h4>Aurum</h4><span>Shop Now</span></a>
-            <a href="#" class="feat-slide" style="--bg:url('assets/collections/modern-polki-nav.jpg')"><img src="assets/collections/modern-polki-nav.jpg" alt="Modern Polki collection"><h4>Modern Polki</h4><span>Shop Now</span></a>
-            <a href="#" class="feat-slide" style="--bg:url('assets/collections/sunkissed-nav.jpg')"><img src="assets/collections/sunkissed-nav.jpg" alt="Sunkissed collection"><h4>Sunkissed</h4><span>Shop Now</span></a>
-            <a href="#" class="feat-slide" style="--bg:url('assets/collections/valentine-desktop.jpg')"><img src="assets/collections/valentine-desktop.jpg" alt="Be My Valentine collection"><h4>Be My Valentine</h4><span>Shop Now</span></a>
-            <a href="#" class="feat-slide" style="--bg:url('assets/collections/karat-range-desktop.jpg')"><img src="assets/collections/karat-range-desktop.jpg" alt="9 KT Range collection"><h4>9 KT Range</h4><span>Shop Now</span></a>
-            <a href="#" class="feat-slide" style="--bg:url('assets/collections/manifest-desktop.jpg')"><img src="assets/collections/manifest-desktop.jpg" alt="Manifest collection"><h4>Manifest</h4><span>Shop Now</span></a>
-            <a href="#" class="feat-slide" style="--bg:url('assets/collections/mia-minis-desktop.jpg')"><img src="assets/collections/mia-minis-desktop.jpg" alt="Mia Minis collection"><h4>Mia Minis</h4><span>Shop Now</span></a>
-            <a href="#" class="feat-slide" style="--bg:url('assets/collections/fiora-desktop.jpg')"><img src="assets/collections/fiora-desktop.jpg" alt="Fiora collection"><h4>Fiora</h4><span>Shop Now</span></a>
-            <a href="#" class="feat-slide" style="--bg:url('assets/collections/homecoming-desktop.jpg')"><img src="assets/collections/homecoming-desktop.jpg" alt="Homecoming collection"><h4>Homecoming</h4><span>Shop Now</span></a>
-            <a href="#" class="feat-slide" style="--bg:url('assets/collections/lovestruck-desktop.jpg')"><img src="assets/collections/lovestruck-desktop.jpg" alt="Love Struck collection"><h4>Love Struck</h4><span>Shop Now</span></a>
-            <a href="#" class="feat-slide" style="--bg:url('assets/collections/romani-desktop.jpg')"><img src="assets/collections/romani-desktop.jpg" alt="Romani collection"><h4>Romani</h4><span>Shop Now</span></a>
-            <a href="#" class="feat-slide" style="--bg:url('assets/collections/gifting-range-desktop.jpg')"><img src="assets/collections/gifting-range-desktop.jpg" alt="Gifting Essentials collection"><h4>Gifting Essentials</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide" style="--bg:url('assets/collections/rhapsody-nav.jpg')"><img loading="lazy" decoding="async" src="assets/collections/rhapsody-nav.jpg" alt="Rhapsody Of Colours collection"><h4>Rhapsody Of Colours</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide" style="--bg:url('assets/collections/aurum-desktop.jpg')"><img loading="lazy" decoding="async" src="assets/collections/aurum-desktop.jpg" alt="Aurum collection"><h4>Aurum</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide" style="--bg:url('assets/collections/modern-polki-nav.jpg')"><img loading="lazy" decoding="async" src="assets/collections/modern-polki-nav.jpg" alt="Modern Polki collection"><h4>Modern Polki</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide" style="--bg:url('assets/collections/sunkissed-nav.jpg')"><img loading="lazy" decoding="async" src="assets/collections/sunkissed-nav.jpg" alt="Sunkissed collection"><h4>Sunkissed</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide" style="--bg:url('assets/collections/valentine-desktop.jpg')"><img loading="lazy" decoding="async" src="assets/collections/valentine-desktop.jpg" alt="Be My Valentine collection"><h4>Be My Valentine</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide" style="--bg:url('assets/collections/karat-range-desktop.jpg')"><img loading="lazy" decoding="async" src="assets/collections/karat-range-desktop.jpg" alt="9 KT Range collection"><h4>9 KT Range</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide" style="--bg:url('assets/collections/manifest-desktop.jpg')"><img loading="lazy" decoding="async" src="assets/collections/manifest-desktop.jpg" alt="Manifest collection"><h4>Manifest</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide" style="--bg:url('assets/collections/mia-minis-desktop.jpg')"><img loading="lazy" decoding="async" src="assets/collections/mia-minis-desktop.jpg" alt="Mia Minis collection"><h4>Mia Minis</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide" style="--bg:url('assets/collections/fiora-desktop.jpg')"><img loading="lazy" decoding="async" src="assets/collections/fiora-desktop.jpg" alt="Fiora collection"><h4>Fiora</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide" style="--bg:url('assets/collections/homecoming-desktop.jpg')"><img loading="lazy" decoding="async" src="assets/collections/homecoming-desktop.jpg" alt="Homecoming collection"><h4>Homecoming</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide" style="--bg:url('assets/collections/lovestruck-desktop.jpg')"><img loading="lazy" decoding="async" src="assets/collections/lovestruck-desktop.jpg" alt="Love Struck collection"><h4>Love Struck</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide" style="--bg:url('assets/collections/romani-desktop.jpg')"><img loading="lazy" decoding="async" src="assets/collections/romani-desktop.jpg" alt="Romani collection"><h4>Romani</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide" style="--bg:url('assets/collections/gifting-range-desktop.jpg')"><img loading="lazy" decoding="async" src="assets/collections/gifting-range-desktop.jpg" alt="Gifting Essentials collection"><h4>Gifting Essentials</h4><span>Shop Now</span></a>
           </div>
           <button type="button" class="rec-arrow rec-arrow-next" id="feat-next" aria-label="Next collection"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg></button>
         </div>
@@ -1767,7 +1847,7 @@ footer .socials svg{width:14px;height:14px}
         <div class="cc-visual">
           <div class="coin-pack coin-pack-silver">
             <img class="cp-logo" src="assets/logo/mia-logo-pink.png" alt="Mia by Tanishq">
-            <div class="cp-window"><span class="cp-coin"><img src="assets/coins/silver-coin.jpg" alt="Mia fine silver coin"></span></div>
+            <div class="cp-window"><span class="cp-coin"><img loading="lazy" decoding="async" src="assets/coins/silver-coin.jpg" alt="Mia fine silver coin"></span></div>
             <div class="cp-purity">Silver &middot; 999 Purity</div>
           </div>
         </div>
@@ -1796,7 +1876,7 @@ footer .socials svg{width:14px;height:14px}
         <div class="cc-visual">
           <div class="coin-pack coin-pack-gold">
             <img class="cp-logo" src="assets/logo/mia-logo-pink.png" alt="Mia by Tanishq">
-            <div class="cp-window"><span class="cp-coin"><img src="assets/coins/gold-coin.jpg" alt="Mia 24 karat gold coin"></span></div>
+            <div class="cp-window"><span class="cp-coin"><img loading="lazy" decoding="async" src="assets/coins/gold-coin.jpg" alt="Mia 24 karat gold coin"></span></div>
             <div class="cp-purity">Gold &middot; 24 KT (9999)</div>
           </div>
         </div>
@@ -1817,19 +1897,19 @@ footer .socials svg{width:14px;height:14px}
     </div>
     <div class="tf-tabs rv" id="tf-tabs">
       <div class="tf-group">
-        <button type="button" class="tf-chip active" data-filter="most">Most Gifted</button>
-        <button type="button" class="tf-chip" data-filter="best">Best Sellers</button>
-        <button type="button" class="tf-chip" data-filter="new">New Arrivals</button>
+        <button type="button" class="tf-chip shine-fx active" data-filter="most">Most Gifted</button>
+        <button type="button" class="tf-chip shine-fx" data-filter="best">Best Sellers</button>
+        <button type="button" class="tf-chip shine-fx" data-filter="new">New Arrivals</button>
       </div>
       <span class="tf-div tf-div-1"></span>
       <div class="tf-group">
-        <button type="button" class="tf-chip" data-filter="w_under2">Under 2g</button>
-        <button type="button" class="tf-chip" data-filter="w_2to5">2g – 5g</button>
+        <button type="button" class="tf-chip shine-fx" data-filter="w_under2">Under 2g</button>
+        <button type="button" class="tf-chip shine-fx" data-filter="w_2to5">2g – 5g</button>
       </div>
       <span class="tf-div tf-div-2"></span>
       <div class="tf-group">
-        <button type="button" class="tf-chip" data-filter="k_18">18 Karat</button>
-        <button type="button" class="tf-chip" data-filter="k_22">22 Karat</button>
+        <button type="button" class="tf-chip shine-fx" data-filter="k_18">18 Karat</button>
+        <button type="button" class="tf-chip shine-fx" data-filter="k_22">22 Karat</button>
       </div>
     </div>
     <!-- same carousel as Shop By Category — horizontal scroll, never stacks
@@ -1840,7 +1920,7 @@ footer .socials svg{width:14px;height:14px}
       <button type="button" class="rec-arrow rec-arrow-next" id="tf-next" aria-label="Scroll right"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg></button>
     </div>
     <div class="rec-track"><div class="rec-track-fill" id="tf-track-fill"></div></div>
-    <div style="text-align:center;margin-top:28px"><a href="#catrec" class="section-link">View All Products <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+    <div class="rec-viewall-wrap"><a href="#catrec" class="section-link" id="tf-viewall">Shop Most Gifted <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
   </div>
 </section>
 
@@ -2364,7 +2444,7 @@ footer .socials svg{width:14px;height:14px}
        icon:'<rect x="5" y="11" width="14" height="9" rx="2"/><path class="ti-shackle" d="M8 11V7a4 4 0 0 1 8 0v4"/>'},
     ];
     rail.innerHTML = TOUCHES.map((t,i)=>`
-      <div class="touch-card ${i===0?'active':''}" data-i="${i}">
+      <div class="touch-card shine-fx ${i===0?'active':''}" data-i="${i}">
         <span class="touch-num">${t.tag}</span>
         <div class="touch-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${t.icon}</svg></div>
         <h4>${t.title}</h4>
@@ -2426,12 +2506,12 @@ footer .socials svg{width:14px;height:14px}
     const track = document.getElementById('tm-track');
     if(!track) return;
     const reviews = [
-      {cat:'Anniversary', name:'Rohit Mehta · Bangalore', quote:'Wrapped like a museum piece. She’s worn it every day since.', img:'assets/products/3026NFU.webp'},
-      {cat:'Proposal', name:'Arjun Kapoor · Mumbai', quote:'Free resize took 15 minutes. Not a single question asked.', img:'assets/products/M5I2FDW.webp'},
-      {cat:'Dhanteras', name:'Priya Nair · Kochi', quote:'BIS hallmark, Tata certificate. Trust matters with elders.', img:'assets/products/2826ZAD.webp'},
-      {cat:'Rakhi', name:'Sneha Rao · Hyderabad', quote:'Bracelet my sister has literally not taken off. Anonymous surprise, perfect.', img:'assets/products/IKD5BDG.webp'},
-      {cat:'Birthday', name:'Vikram Singh · Delhi', quote:'Dad’s 60th. Packaging and craftsmanship were spot on. He hasn’t stopped showing it off.', img:'assets/products/3826CDT.webp'},
-      {cat:'Just Because', name:'Neha Gupta · Pune', quote:'Gift card was the perfect out for someone impossible to shop for. Considered end-to-end.', img:'assets/products/M5I2GDY.webp'},
+      {cat:'Anniversary', name:'Rohit Mehta · Bangalore', quote:'Wrapped like a museum piece. She’s worn it every day since.', img:'assets/lifestyle/r4.jpg'},
+      {cat:'Proposal', name:'Arjun Kapoor · Mumbai', quote:'Free resize took 15 minutes. Not a single question asked.', img:'assets/lifestyle/r1.jpg'},
+      {cat:'Dhanteras', name:'Priya Nair · Kochi', quote:'BIS hallmark, Tata certificate. Trust matters with elders.', img:'assets/lifestyle/r2.jpg'},
+      {cat:'Rakhi', name:'Sneha Rao · Hyderabad', quote:'Bracelet my sister has literally not taken off. Anonymous surprise, perfect.', img:'assets/lifestyle/r3.jpg'},
+      {cat:'Birthday', name:'Vikram Singh · Delhi', quote:'Dad’s 60th. Packaging and craftsmanship were spot on. He hasn’t stopped showing it off.', img:'assets/lifestyle/r5.jpg'},
+      {cat:'Just Because', name:'Neha Gupta · Pune', quote:'Gift card was the perfect out for someone impossible to shop for. Considered end-to-end.', img:'assets/lifestyle/r1.jpg'},
     ];
     const total = reviews.length;
 
@@ -2439,9 +2519,9 @@ footer .socials svg{width:14px;height:14px}
     // wraps endlessly, spread/shrunk/faded by distance from center ----
     let activeIdx = 2;
     track.innerHTML = reviews.map((r,i)=>`
-      <div class="tm-portrait" data-i="${i}">
+      <div class="tm-portrait shine-fx-b" data-i="${i}">
         <span class="tm-cat-pill">${r.cat}</span>
-        <img src="${r.img}" alt="${r.name}">
+        <img loading="lazy" decoding="async" src="${r.img}" alt="${r.name}">
         <div class="tm-portrait-body">
           <span class="tm-portrait-name">${r.name}</span>
           <p class="tm-portrait-quote">"${r.quote}"</p>
@@ -2459,7 +2539,7 @@ footer .socials svg{width:14px;height:14px}
         let d = i - activeIdx;
         if(d > total/2) d -= total;
         if(d < -total/2) d += total;
-        c.className = 'tm-portrait ' + offsetClass(d);
+        c.className = 'tm-portrait shine-fx-b ' + offsetClass(d);
       });
       curEl.textContent = String(activeIdx+1).padStart(2,'0');
     }
@@ -2476,7 +2556,7 @@ footer .socials svg{width:14px;height:14px}
     mpStage.insertAdjacentHTML('afterbegin', reviews.map((r,i)=>`
       <div class="mp-card" data-i="${i}">
         <span class="mp-cat">${r.cat}</span>
-        <img src="${r.img}" alt="${r.name}">
+        <img loading="lazy" decoding="async" src="${r.img}" alt="${r.name}">
         <p class="mp-quote">"${r.quote}"</p>
       </div>`).join(''));
     const mpCards = [...mpStage.querySelectorAll('.mp-card')];
@@ -2546,6 +2626,26 @@ footer .socials svg{width:14px;height:14px}
     {code:'3826CEM', name:'Refined Figaro Gold Chain', price:24600, cat:'chains', tag:'18 KARAT', kt:'18 KT', metal:'Yellow Gold', r:4.8, c:342},
     {code:'3826CDX', name:'Twisted Fluid Gold Chain', price:23400, cat:'chains', tag:'BEST SELLER', kt:'18 KT', metal:'Yellow Gold', r:4.6, c:298},
     {code:'3826CEF', name:'Contemporary Paperclip Curb Gold Chain', price:25800, cat:'chains', tag:'BEST SELLER', kt:'18 KT', metal:'Yellow Gold', r:4.7, c:224},
+    {code:'5924FUG', name:'Dreamy Curve Diamond Ring', price:16885, cat:'rings', tag:'14 KARAT', kt:'14 KT', metal:'Yellow Gold', r:4.8, c:112},
+    {code:'3026FGC', name:'Petite Grace Polki Ring', price:10475, cat:'rings', tag:'NEW ARRIVAL', kt:'14 KT', metal:'Yellow Gold', r:4.7, c:58},
+    {code:'M5I2FEZ', name:'Lustrous Verdant Onyx Ring', price:9880, cat:'rings', tag:'UNDER 2G', kt:'9 KT', metal:'Yellow Gold', r:4.6, c:203},
+    {code:'3025FJI', name:'Chic Lattice Gold Ring', price:10454, cat:'rings', tag:'14 KARAT', kt:'14 KT', metal:'Yellow Gold', r:4.5, c:167},
+    {code:'3025SOC', name:'Lustrous Layers Gold Stud Earrings', price:10336, cat:'earrings', tag:'14 KARAT', kt:'14 KT', metal:'Yellow Gold', r:4.7, c:94},
+    {code:'M5I2SEA', name:'Graceful Subtle Amethyst Gold Stud Earrings', price:6232, cat:'earrings', tag:'UNDER 2G', kt:'9 KT', metal:'Yellow Gold', r:4.6, c:286},
+    {code:'3026HMH', name:'Fluid Twist Gold Hoop Earrings', price:19698, cat:'earrings', tag:'14 KARAT', kt:'14 KT', metal:'Yellow Gold', r:4.8, c:121},
+    {code:'3025DJV', name:'Radiant Lotus Gold Drop Earrings', price:16597, cat:'earrings', tag:'14 KARAT', kt:'14 KT', metal:'Yellow Gold', r:4.7, c:77},
+    {code:'M5I2GEZ', name:'Lustrous Verdant Onyx Necklace', price:14636, cat:'necklaces', tag:'UNDER 2G', kt:'9 KT', metal:'Yellow Gold', r:4.9, c:149},
+    {code:'3025PKI', name:'Arch Elegance Gold Pendant', price:15669, cat:'necklaces', tag:'14 KARAT', kt:'14 KT', metal:'Yellow Gold', r:4.6, c:63},
+    {code:'M5I2GAP', name:'Verdant Whisper Diamond Necklace', price:16340, cat:'necklaces', tag:'UNDER 2G', kt:'9 KT', metal:'Yellow Gold', r:4.5, c:88},
+    {code:'3026PCV', name:'Radiant Sculpted Gold Pendant', price:22282, cat:'necklaces', tag:'MOST GIFTED', kt:'14 KT', metal:'Yellow Gold', r:4.8, c:205},
+    {code:'3026BLZ', name:'Interwoven Harmony Gold Bracelet', price:20238, cat:'bracelets', tag:'14 KARAT', kt:'14 KT', metal:'Yellow Gold', r:4.7, c:141},
+    {code:'IKD5BBR', name:'Berrylicious Strawberry Gold Bracelet', price:23175, cat:'bracelets', tag:'2G – 5G', kt:'14 KT', metal:'Yellow Gold', r:4.6, c:39},
+    {code:'IKD5BAM', name:'Sacred Sparkle Gold Bracelet', price:23950, cat:'bracelets', tag:'2G – 5G', kt:'14 KT', metal:'Yellow Gold', r:4.5, c:52},
+    {code:'3025BJV', name:'Radiant Lotus Gold Bracelet', price:31808, cat:'bracelets', tag:'14 KARAT', kt:'14 KT', metal:'Yellow Gold', r:4.7, c:118},
+    {code:'3025CHD', name:'Indigo Glow Gemstone Chain', price:13421, cat:'chains', tag:'14 KARAT', kt:'14 KT', metal:'Yellow Gold', r:4.6, c:174},
+    {code:'3826CEH', name:'Classic Figaro Link Gold Chain', price:45867, cat:'chains', tag:'BEST SELLER', kt:'14 KT', metal:'Yellow Gold', r:4.7, c:233},
+    {code:'D6H4CCH', name:'Ethereal Spark Gold Chain', price:7352, cat:'chains', tag:'9 KARAT', kt:'9 KT', metal:'Yellow Gold', r:4.5, c:96},
+    {code:'2822CXQ', name:'Gleam Pop Gold Chain', price:40911, cat:'chains', tag:'14 KARAT', kt:'14 KT', metal:'Yellow Gold', r:4.6, c:161},
   ];
   const imgSrc = p => `assets/products/${p.code}.webp`;
   // real second/third angles pulled from the live site for every product
@@ -2560,7 +2660,7 @@ footer .socials svg{width:14px;height:14px}
 
   function paintCmpTray(){
     cmpSlots.innerHTML = cmpPicked.map(p=>`
-      <span class="cmp-slot"><img src="${imgSrc(p)}" alt="${p.name}"><span class="cmp-remove" onclick="removeCompare('${p.code}')">&times;</span></span>
+      <span class="cmp-slot"><img loading="lazy" decoding="async" src="${imgSrc(p)}" alt="${p.name}"><span class="cmp-remove" onclick="removeCompare('${p.code}')">&times;</span></span>
     `).join('') + (cmpPicked.length < 2 ? `<span class="cmp-slot empty">${cmpPicked.length===0?'Pick two pieces':'Pick one more'}</span>` : '');
     cmpGo.disabled = cmpPicked.length < 2;
     cmpTray.classList.toggle('show', cmpPicked.length > 0);
@@ -2604,7 +2704,7 @@ footer .socials svg{width:14px;height:14px}
     if(cmpPicked.length < 2) return;
     const [a,b] = cmpPicked;
     document.getElementById('cmp-cols').innerHTML = '<div></div>' + [a,b].map(p=>`
-      <div class="cmp-col-head"><img src="${imgSrc(p)}" alt="${p.name}"><h4>${p.name}</h4></div>
+      <div class="cmp-col-head"><img loading="lazy" decoding="async" src="${imgSrc(p)}" alt="${p.name}"><h4>${p.name}</h4></div>
     `).join('');
     document.getElementById('cmp-specs').innerHTML =
       specRow('Price', '₹'+a.price.toLocaleString('en-IN'), '₹'+b.price.toLocaleString('en-IN'), 'low') +
@@ -2682,7 +2782,7 @@ footer .socials svg{width:14px;height:14px}
   const catStrip = document.getElementById('cat-strip');
   catStrip.innerHTML = CATS.map((c,i)=>`
     <button class="cat-chip ${i===0?'active':''}" data-cat="${c.key}">
-      <span class="cat-chip-ic">${c.icon}</span>
+      <span class="cat-chip-ic shine-fx">${c.icon}</span>
       <span>${c.label}</span>
     </button>`).join('');
 
@@ -2745,7 +2845,11 @@ footer .socials svg{width:14px;height:14px}
       prevBtn.classList.toggle('hide', max <= 1 || grid.scrollLeft <= 1);
       nextBtn.classList.toggle('hide', max <= 1 || grid.scrollLeft >= max - 1);
     }
-    grid.addEventListener('scroll', update);
+    let railTrackRAF;
+    grid.addEventListener('scroll', ()=>{
+      cancelAnimationFrame(railTrackRAF);
+      railTrackRAF = requestAnimationFrame(update);
+    }, {passive:true});
     window.addEventListener('resize', update);
     prevBtn.addEventListener('click', ()=>{
       grid.scrollBy({left:-grid.querySelector('.pcard').offsetWidth - 14, behavior:'smooth'});
@@ -2805,6 +2909,11 @@ footer .socials svg{width:14px;height:14px}
       catStrip.querySelectorAll('.cat-chip').forEach(c=>c.classList.remove('active'));
       chip.classList.add('active');
       renderRec(chip.dataset.cat);
+      // touch devices have no :hover — replay the shine sweep on tap instead
+      const icon = chip.querySelector('.shine-fx');
+      icon.classList.remove('shined');
+      void icon.offsetWidth;
+      icon.classList.add('shined');
     });
   });
 
@@ -2822,12 +2931,20 @@ footer .socials svg{width:14px;height:14px}
     return false;
   }
   const updateTfTrack = wireRail(tfGrid, document.getElementById('tf-track-fill'), document.getElementById('tf-prev'), document.getElementById('tf-next'));
+  const TF_LABELS = {
+    most:'Most Gifted', best:'Best Sellers', new:'New Arrivals',
+    w_under2:'Under 2g', w_2to5:'2g – 5g', k_18:'18 Karat', k_22:'22 Karat'
+  };
+  const tfViewAll = document.getElementById('tf-viewall');
   function renderFav(key){
     const items = PRODUCTS.filter(p=>favMatch(p,key)).slice(0,8);
     tfGrid.innerHTML = items.map(productCardHTML).join('');
     wireCards(tfGrid);
     tfGrid.classList.remove('centered');
     resetRailScroll(tfGrid, updateTfTrack);
+    // "Shop Most Gifted" / "Shop Best Sellers" / etc. — reflects whichever
+    // pill is active, not a generic "View All Products"
+    tfViewAll.firstChild.textContent = `Shop ${TF_LABELS[key]} `;
   }
   renderFav('most');
   tfTabs.querySelectorAll('.tf-chip').forEach(chip=>{
@@ -2857,7 +2974,7 @@ footer .socials svg{width:14px;height:14px}
     drawerFoot.style.display = 'block';
     drawerBody.innerHTML = bag.map((item,i)=>`
       <div class="bag-item">
-        <img src="${imgSrc(item.product)}" alt="${item.product.name}">
+        <img loading="lazy" decoding="async" src="${imgSrc(item.product)}" alt="${item.product.name}">
         <div class="bi-info">
           <h5>${item.product.name}</h5>
           <div class="bi-meta">
@@ -2915,7 +3032,7 @@ footer .socials svg{width:14px;height:14px}
   const qvGiftSub = document.getElementById('qv-gift-sub');
 
   qvWraps.innerHTML = WRAPS.map((w,i)=>`<div class="qv-wrap-swatch ${w.cls}" data-w="${i}" title="${w.name}"><span class="qv-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span></div>`).join('');
-  qvStickersEl.innerHTML = STICKERS.map((src,i)=>`<button type="button" class="sticker-btn" data-s="${i}"><img src="${src}" alt="Sticker ${i+1}"><span class="qv-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span></button>`).join('');
+  qvStickersEl.innerHTML = STICKERS.map((src,i)=>`<button type="button" class="sticker-btn" data-s="${i}"><img loading="lazy" decoding="async" src="${src}" alt="Sticker ${i+1}"><span class="qv-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></span></button>`).join('');
 
   function updateAddBtnGate(){
     const needsGift = qvWrapToggle.checked;
@@ -3114,7 +3231,7 @@ footer .socials svg{width:14px;height:14px}
     qvImgEl.alt = p.name;
     qvImgEl.style.opacity = '1';
     qvImgEl.dataset.switching = '0';
-    qvThumbs.innerHTML = imgs.map((im,i)=>`<div class="qv-thumb ${i===0?'active':''}" data-src="${im}"><img src="${im}" alt=""></div>`).join('');
+    qvThumbs.innerHTML = imgs.map((im,i)=>`<div class="qv-thumb ${i===0?'active':''}" data-src="${im}"><img loading="lazy" decoding="async" src="${im}" alt=""></div>`).join('');
     qvThumbs.querySelectorAll('.qv-thumb').forEach(th=>{
       th.addEventListener('click', ()=>{
         qvThumbs.querySelectorAll('.qv-thumb').forEach(t=>t.classList.remove('active'));
@@ -3123,7 +3240,7 @@ footer .socials svg{width:14px;height:14px}
       });
     });
     // desktop gallery — every real photo stacked, scrollable in place
-    qvGalleryStack.innerHTML = imgs.map((im,i)=>`<div class="qv-gallery-item" data-i="${i}"><img src="${im}" alt="${p.name} photo ${i+1}"></div>`).join('');
+    qvGalleryStack.innerHTML = imgs.map((im,i)=>`<div class="qv-gallery-item" data-i="${i}"><img loading="lazy" decoding="async" src="${im}" alt="${p.name} photo ${i+1}"></div>`).join('');
     qvGalleryStack.scrollTop = 0;
     qvGalleryStack.querySelectorAll('.qv-gallery-item').forEach(item=>{
       item.addEventListener('click', ()=> openLightbox(imgs, +item.dataset.i));

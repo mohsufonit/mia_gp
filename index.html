@@ -310,6 +310,11 @@ body{padding-top:var(--header-h,127px)}
   width:100%;
   padding:2px 0 10px;overflow-x:auto;-webkit-overflow-scrolling:touch;
   scroll-snap-type:x proximity;scroll-padding-left:0;
+  /* soft fade at the crop line instead of a hard cut — mask is fixed to
+     this box's own edge, so it stays put on whichever card is at the
+     boundary as the row scrolls underneath it */
+  -webkit-mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 60px),rgba(0,0,0,.75) 100%);
+  mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 60px),rgba(0,0,0,.75) 100%);
 }
 /* centers the row when it fits (e.g. filtered to one category with few
    results) — set by JS after render, since CSS justify-content:center

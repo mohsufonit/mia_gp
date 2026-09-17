@@ -803,6 +803,18 @@ body{padding-top:var(--header-h,127px)}
 #fr-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}
 #fr-grid .pcard{width:calc(50% - 8px)}
 @media(min-width:640px){#fr-grid .pcard{width:calc(33.333% - 11px)}}
+/* ============ timeless favorites ============ */
+.tf-tabs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:620px;margin:0 auto 26px}
+.tf-chip{padding:9px 17px;border-radius:100px;font-size:12px;font-weight:700;color:var(--muted);background:#fff;border:1.5px solid var(--line-2);transition:all .15s}
+.tf-chip.active,.tf-chip:hover{background:var(--pink);color:#fff;border-color:var(--pink)}
+@media(max-width:639px){
+  .tf-tabs{gap:6px;max-width:320px}
+  .tf-chip{padding:7px 12px;font-size:10px}
+}
+.tf-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}
+.tf-grid .pcard{width:calc(50% - 8px)}
+@media(min-width:640px){.tf-grid .pcard{width:calc(25% - 12px)}}
+
 .finder-restart-wrap{margin-top:20px;text-align:center}
 .finder-restart{display:inline-flex;align-items:center;gap:8px;padding:12px 26px;border-radius:100px;border:1.5px solid var(--line-2);font-size:12.5px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:var(--ink-2);transition:all .2s}
 .finder-restart:hover{border-color:var(--pink);color:var(--pink-deep);background:var(--blush-2)}
@@ -1169,6 +1181,30 @@ footer .socials svg{width:14px;height:14px}
       <span class="trust-sep"></span>
       <span class="trust-tick"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 16v-4h4"/></svg>30 Day Return</span>
     </div>
+  </div>
+</section>
+
+<!-- Timeless Favorites — single-select filter chips (one active at a time,
+     not independent toggles), wraps to at most two rows on mobile. -->
+<section class="band" id="favorites">
+  <div class="container">
+    <div class="section-head rv">
+      <div>
+        <p class="eyebrow">Timeless Favorites</p>
+        <h2>Loved Again And Again</h2>
+      </div>
+    </div>
+    <div class="tf-tabs rv" id="tf-tabs">
+      <button type="button" class="tf-chip active" data-filter="most">Most Gifted</button>
+      <button type="button" class="tf-chip" data-filter="best">Best Sellers</button>
+      <button type="button" class="tf-chip" data-filter="new">New Arrivals</button>
+      <button type="button" class="tf-chip" data-filter="w_under2">Under 2g</button>
+      <button type="button" class="tf-chip" data-filter="w_2to5">2g – 5g</button>
+      <button type="button" class="tf-chip" data-filter="k_18">18 Karat</button>
+      <button type="button" class="tf-chip" data-filter="k_22">22 Karat</button>
+    </div>
+    <div class="tf-grid rv" id="tf-grid"></div>
+    <div style="text-align:center;margin-top:28px"><a href="#catrec" class="section-link">View All Products <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
   </div>
 </section>
 
@@ -1806,6 +1842,33 @@ footer .socials svg{width:14px;height:14px}
       catStrip.querySelectorAll('.cat-chip').forEach(c=>c.classList.remove('active'));
       chip.classList.add('active');
       renderRec(chip.dataset.cat);
+    });
+  });
+
+  // ---- timeless favorites: single-select chips, one active at a time ----
+  const tfGrid = document.getElementById('tf-grid');
+  const tfTabs = document.getElementById('tf-tabs');
+  function favMatch(p, key){
+    if(key==='most') return p.tag==='MOST GIFTED';
+    if(key==='best') return p.tag==='BEST SELLER';
+    if(key==='new') return p.tag==='NEW ARRIVAL';
+    if(key==='w_under2') return p.tag==='UNDER 2G';
+    if(key==='w_2to5') return p.tag==='2G – 5G';
+    if(key==='k_18') return p.kt==='18 KT';
+    if(key==='k_22') return p.kt==='22 KT';
+    return false;
+  }
+  function renderFav(key){
+    const items = PRODUCTS.filter(p=>favMatch(p,key)).slice(0,8);
+    tfGrid.innerHTML = items.map(productCardHTML).join('');
+    wireCards(tfGrid);
+  }
+  renderFav('most');
+  tfTabs.querySelectorAll('.tf-chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      tfTabs.querySelectorAll('.tf-chip').forEach(c=>c.classList.remove('active'));
+      chip.classList.add('active');
+      renderFav(chip.dataset.filter);
     });
   });
 

@@ -511,17 +511,24 @@ body{padding-top:var(--header-h,127px)}
 @media(prefers-reduced-motion:reduce){.trust-marquee-track{animation:none}}
 
 /* ============ recipient grid ============ */
-/* Featured tile is now itself a one-at-a-time carousel that cycles through
-   Mia's named collections (Rhapsody, Aurum, Modern Polki, Sunkissed...),
-   with minimal prev/next arrows — replaces the separate "Shop By
-   Collection" strip entirely. Shorter than the old static tile (~30% less
-   height) but full section width instead of one column, so it doesn't
-   read as small. "For Her"/"For Him" move to their own row underneath. */
-.feat-carousel{position:relative;border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:16/10}
-@media(min-width:720px){.feat-carousel{aspect-ratio:2.8/1}}
+/* Back to the original shape: one portrait featured tile + two stacked
+   landscape tiles — same layout as before, just scaled down (~30% less
+   height) and widened to bleed out to exactly where the product
+   carousel's cards start/crop (same breakout formula as .rec-rail, so
+   the edges line up precisely, not just "close"). The featured tile is
+   now the collection carousel (arrows built into it), still portrait-
+   shaped, not flattened into a banner. */
+.spotlight-rail{position:relative;width:var(--vw,100vw);left:50%;right:50%;margin-left:calc(var(--vw,100vw) * -0.5);margin-right:calc(var(--vw,100vw) * -0.5);padding:0 60px;box-sizing:border-box}
+@media(max-width:639px){.spotlight-rail{padding:0 15px}}
+.spotlight-grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:720px){.spotlight-grid{grid-template-columns:1.05fr 1fr;align-items:stretch}}
+.spotlight-stack{display:grid;grid-template-rows:1fr 1fr;gap:14px}
+
+.feat-carousel{position:relative;border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:1.05/1}
+@media(min-width:720px){.feat-carousel{aspect-ratio:auto;height:100%}}
 .feat-track{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;-ms-overflow-style:none;scrollbar-width:none}
 .feat-track::-webkit-scrollbar{display:none}
-.feat-slide{position:relative;flex:0 0 100%;height:100%;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:26px;color:#fff;isolation:isolate;scroll-snap-align:start}
+.feat-slide{position:relative;flex:0 0 100%;height:100%;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:22px;color:#fff;isolation:isolate;scroll-snap-align:start}
 .feat-slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:-2}
 .feat-slide::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,14,15,.8) 0%,rgba(20,14,15,.12) 55%,rgba(20,14,15,0) 75%);z-index:-1}
 .feat-slide h4{font-family:'Fraunces',serif;font-size:24px;margin-bottom:6px}
@@ -530,15 +537,12 @@ body{padding-top:var(--header-h,127px)}
 .feat-carousel .rec-arrow-prev{left:14px}
 .feat-carousel .rec-arrow-next{right:14px}
 
-/* "For Her" / "For Him" — their own full-width row below the carousel */
-.spotlight-row{display:grid;grid-template-columns:1fr;gap:14px;margin-top:14px}
-@media(min-width:720px){.spotlight-row{grid-template-columns:1fr 1fr}}
-.spotlight-card{position:relative;border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:16/10;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:22px;color:#fff;isolation:isolate;transition:transform .3s var(--ease)}
+.spotlight-card{position:relative;border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:2.5/1;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:22px;color:#fff;isolation:isolate;transition:transform .3s var(--ease)}
 .spotlight-card:hover{transform:translateY(-4px)}
 .spotlight-card::before{content:"";position:absolute;inset:0;z-index:-2;background-size:cover;background-position:center}
 .spotlight-card::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,14,15,.82) 0%,rgba(20,14,15,.15) 55%,rgba(20,14,15,0) 75%);z-index:-1}
-.spotlight-row .spotlight-card:nth-child(1)::before{background-image:url('assets/editorial/gifts-her.webp')}
-.spotlight-row .spotlight-card:nth-child(2)::before{background-image:url('assets/editorial/gifts-him.webp')}
+.spotlight-stack .spotlight-card:nth-child(1)::before{background-image:url('assets/editorial/gifts-her.webp')}
+.spotlight-stack .spotlight-card:nth-child(2)::before{background-image:url('assets/editorial/gifts-him.webp')}
 .spotlight-card h4{font-family:'Fraunces',serif;font-size:19px;margin-bottom:5px}
 .spotlight-card span{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;opacity:.92;display:flex;align-items:center;gap:6px}
 
@@ -1020,33 +1024,36 @@ footer .socials svg{width:14px;height:14px}
         <h2>Skip Straight To Their Picks</h2>
       </div>
     </div>
-    <!-- Featured tile IS the collection carousel now — one banner at a
-         time, minimal prev/next arrows. Rhapsody Of Colours' real banner
-         is pending from the user; the rest are Mia's actual collection
-         photography. -->
-    <div class="feat-carousel rv">
-      <button type="button" class="rec-arrow rec-arrow-prev" id="feat-prev" aria-label="Previous collection"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg></button>
-      <div class="feat-track" id="feat-track">
-        <a href="#" class="feat-slide"><img src="assets/collections/rhapsody-nav.jpg" alt="Rhapsody Of Colours collection"><h4>Rhapsody Of Colours</h4><span>Shop Now</span></a>
-        <a href="#" class="feat-slide"><img src="assets/collections/aurum-desktop.jpg" alt="Aurum collection"><h4>Aurum</h4><span>Shop Now</span></a>
-        <a href="#" class="feat-slide"><img src="assets/collections/modern-polki-nav.jpg" alt="Modern Polki collection"><h4>Modern Polki</h4><span>Shop Now</span></a>
-        <a href="#" class="feat-slide"><img src="assets/collections/sunkissed-nav.jpg" alt="Sunkissed collection"><h4>Sunkissed</h4><span>Shop Now</span></a>
-        <a href="#" class="feat-slide"><img src="assets/collections/valentine-desktop.jpg" alt="Be My Valentine collection"><h4>Be My Valentine</h4><span>Shop Now</span></a>
-        <a href="#" class="feat-slide"><img src="assets/collections/karat-range-desktop.jpg" alt="9 KT Range collection"><h4>9 KT Range</h4><span>Shop Now</span></a>
-        <a href="#" class="feat-slide"><img src="assets/collections/manifest-desktop.jpg" alt="Manifest collection"><h4>Manifest</h4><span>Shop Now</span></a>
-        <a href="#" class="feat-slide"><img src="assets/collections/mia-minis-desktop.jpg" alt="Mia Minis collection"><h4>Mia Minis</h4><span>Shop Now</span></a>
-        <a href="#" class="feat-slide"><img src="assets/collections/fiora-desktop.jpg" alt="Fiora collection"><h4>Fiora</h4><span>Shop Now</span></a>
-        <a href="#" class="feat-slide"><img src="assets/collections/homecoming-desktop.jpg" alt="Homecoming collection"><h4>Homecoming</h4><span>Shop Now</span></a>
-        <a href="#" class="feat-slide"><img src="assets/collections/lovestruck-desktop.jpg" alt="Love Struck collection"><h4>Love Struck</h4><span>Shop Now</span></a>
-        <a href="#" class="feat-slide"><img src="assets/collections/romani-desktop.jpg" alt="Romani collection"><h4>Romani</h4><span>Shop Now</span></a>
-        <a href="#" class="feat-slide"><img src="assets/collections/gifting-range-desktop.jpg" alt="Gifting Essentials collection"><h4>Gifting Essentials</h4><span>Shop Now</span></a>
+    <div class="spotlight-rail">
+      <div class="spotlight-grid rv">
+        <!-- featured tile IS the collection carousel — one banner at a time,
+             minimal prev/next arrows, still a portrait tile like before.
+             Rhapsody Of Colours' real banner is pending from the user; the
+             rest are Mia's actual collection photography. -->
+        <div class="feat-carousel">
+          <button type="button" class="rec-arrow rec-arrow-prev" id="feat-prev" aria-label="Previous collection"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <div class="feat-track" id="feat-track">
+            <a href="#" class="feat-slide"><img src="assets/collections/rhapsody-nav.jpg" alt="Rhapsody Of Colours collection"><h4>Rhapsody Of Colours</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide"><img src="assets/collections/aurum-desktop.jpg" alt="Aurum collection"><h4>Aurum</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide"><img src="assets/collections/modern-polki-nav.jpg" alt="Modern Polki collection"><h4>Modern Polki</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide"><img src="assets/collections/sunkissed-nav.jpg" alt="Sunkissed collection"><h4>Sunkissed</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide"><img src="assets/collections/valentine-desktop.jpg" alt="Be My Valentine collection"><h4>Be My Valentine</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide"><img src="assets/collections/karat-range-desktop.jpg" alt="9 KT Range collection"><h4>9 KT Range</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide"><img src="assets/collections/manifest-desktop.jpg" alt="Manifest collection"><h4>Manifest</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide"><img src="assets/collections/mia-minis-desktop.jpg" alt="Mia Minis collection"><h4>Mia Minis</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide"><img src="assets/collections/fiora-desktop.jpg" alt="Fiora collection"><h4>Fiora</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide"><img src="assets/collections/homecoming-desktop.jpg" alt="Homecoming collection"><h4>Homecoming</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide"><img src="assets/collections/lovestruck-desktop.jpg" alt="Love Struck collection"><h4>Love Struck</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide"><img src="assets/collections/romani-desktop.jpg" alt="Romani collection"><h4>Romani</h4><span>Shop Now</span></a>
+            <a href="#" class="feat-slide"><img src="assets/collections/gifting-range-desktop.jpg" alt="Gifting Essentials collection"><h4>Gifting Essentials</h4><span>Shop Now</span></a>
+          </div>
+          <button type="button" class="rec-arrow rec-arrow-next" id="feat-next" aria-label="Next collection"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg></button>
+        </div>
+        <div class="spotlight-stack">
+          <a href="#finder" class="spotlight-card" data-relation="Her"><h4>For Her</h4><span>Get Picks <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+          <a href="#finder" class="spotlight-card" data-relation="Him"><h4>For Him</h4><span>Get Picks <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+        </div>
       </div>
-      <button type="button" class="rec-arrow rec-arrow-next" id="feat-next" aria-label="Next collection"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg></button>
-    </div>
-
-    <div class="spotlight-row rv">
-      <a href="#finder" class="spotlight-card" data-relation="Her"><h4>For Her</h4><span>Get Picks <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-      <a href="#finder" class="spotlight-card" data-relation="Him"><h4>For Him</h4><span>Get Picks <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
     </div>
   </div>
 </section>

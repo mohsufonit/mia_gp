@@ -1835,7 +1835,7 @@ footer .socials svg{width:14px;height:14px}
         <div class="cc-visual">
           <div class="coin-pack coin-pack-silver">
             <img class="cp-logo" src="assets/logo/mia-logo-pink.png" alt="Mia by Tanishq">
-            <div class="cp-window"><span class="cp-coin"><img loading="lazy" decoding="async" src="assets/coins/silver-coin.jpg" alt="Mia fine silver coin"></span></div>
+            <div class="cp-window"><span class="cp-coin"><img loading="lazy" decoding="async" src="assets/coins/silver-coin.webp" alt="Mia fine silver coin"></span></div>
             <div class="cp-purity">Silver &middot; 999 Purity</div>
           </div>
         </div>
@@ -1864,7 +1864,7 @@ footer .socials svg{width:14px;height:14px}
         <div class="cc-visual">
           <div class="coin-pack coin-pack-gold">
             <img class="cp-logo" src="assets/logo/mia-logo-pink.png" alt="Mia by Tanishq">
-            <div class="cp-window"><span class="cp-coin"><img loading="lazy" decoding="async" src="assets/coins/gold-coin.jpg" alt="Mia 24 karat gold coin"></span></div>
+            <div class="cp-window"><span class="cp-coin"><img loading="lazy" decoding="async" src="assets/coins/gold-coin.webp" alt="Mia 24 karat gold coin"></span></div>
             <div class="cp-purity">Gold &middot; 24 KT (9999)</div>
           </div>
         </div>
@@ -2637,7 +2637,7 @@ footer .socials svg{width:14px;height:14px}
   ];
   const imgSrc = p => `assets/products/${p.code}.webp`;
   // real second/third angles pulled from the live site for every product
-  const imgSrcList = p => [imgSrc(p), `assets/products/${p.code}_2.jpg`, `assets/products/${p.code}_3.jpg`];
+  const imgSrcList = p => [imgSrc(p), `assets/products/${p.code}_2.webp`, `assets/products/${p.code}_3.webp`];
 
   // ---- compare (max 2, FIFO eviction) + zoom lightbox ----
   // exposed on window since the cards call these from inline onclick attrs
@@ -2858,9 +2858,9 @@ footer .socials svg{width:14px;height:14px}
   // photo carousel with no products attached
   (function(){
     const FEAT_COLLECTIONS = [
-      {name:'Rhapsody Of Colours', img:'assets/collections/rhapsody-nav.jpg', codes:['3025CHD','M5I2SEA','M5I2FEZ']},
-      {name:'Aurum', img:'assets/collections/aurum-desktop.jpg', codes:['3826CEL','3826CDX','3826CEM']},
-      {name:'Sunkissed', img:'assets/collections/sunkissed-nav.jpg', codes:['3025PKI','3026HMH','IKD5BDG']},
+      {name:'Rhapsody Of Colours', img:'assets/collections/rhapsody-nav.webp', codes:['3025CHD','M5I2SEA','M5I2FEZ']},
+      {name:'Aurum', img:'assets/collections/aurum-desktop.webp', codes:['3826CEL','3826CDX','3826CEM']},
+      {name:'Sunkissed', img:'assets/collections/sunkissed-nav.webp', codes:['3025PKI','3026HMH','IKD5BDG']},
     ];
     const featBanner = document.getElementById('feat-banner-img');
     const featName = document.getElementById('feat-name');

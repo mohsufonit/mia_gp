@@ -799,16 +799,16 @@ body{padding-top:var(--header-h,127px)}
     display:grid;grid-template-columns:1.05fr 1fr;grid-template-rows:1fr 1fr;
     grid-template-areas:"feat her" "feat him";gap:14px;align-items:stretch;
   }
-  .feat-module{grid-area:feat}
-  .spotlight-card[data-rel="her"]{grid-area:her}
-  .spotlight-card[data-rel="him"]{grid-area:him}
+  .feat-module{grid-area:feat;min-width:0}
+  .spotlight-card[data-rel="her"]{grid-area:her;min-width:0;width:100%;height:100%;aspect-ratio:auto}
+  .spotlight-card[data-rel="him"]{grid-area:him;min-width:0;width:100%;height:100%;aspect-ratio:auto}
 }
 
 /* one collection at a time — the banner photo stays clean (no dark
    scrim laid over it); the name/CTA/arrows live in their own solid
    plate below the photo instead of floating on top of it */
 .feat-module{display:flex;flex-direction:column;border-radius:var(--radius-lg);overflow:hidden;background:var(--cream)}
-.feat-banner-img{position:relative;flex:0 0 auto;height:150px;background-size:cover;background-position:center;transition:background-image .25s ease}
+.feat-banner-img{position:relative;flex:0 0 auto;height:150px;margin:10px 10px 0;border-radius:14px;background-size:cover;background-position:center;transition:background-image .25s ease}
 @media(max-width:639px){.feat-banner-img{height:130px}}
 .feat-caption{display:flex;align-items:center;gap:9px;padding:11px 12px;background:#3D0620}
 .feat-arrow{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.14);border:none;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s}

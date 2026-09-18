@@ -508,7 +508,8 @@ body{padding-top:var(--header-h,127px)}
    slight lift on hover now. */
 .pcard:hover{box-shadow:0 10px 20px rgba(61,6,32,.22);transform:translateY(-3px);border-color:#F0C987}
 .pcard::after{
-  content:"";position:absolute;inset:0;pointer-events:none;opacity:.95;z-index:1;
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:0;z-index:1;
+  transition:opacity .35s ease;
   /* was 38, then 16, stacked radial-gradients per card — on a mid-range
      phone GPU (not just a "slow network"), every one of these is real
      paint work multiplied by every card rendered across the rails,
@@ -524,6 +525,11 @@ body{padding-top:var(--header-h,127px)}
     radial-gradient(1.3px 1.3px at 20% 88%, rgba(240,201,135,.89), transparent),
     radial-gradient(1.2px 1.2px at 55% 28%, rgba(240,201,135,.89), transparent);
 }
+/* the card itself (photo, price, name) paints the instant it's in the
+   DOM; the decorative texture only fades in once .decor-on is added
+   in wireCardsList — right when the card's own photo finishes
+   loading, not the moment a filter/category switch renders it */
+.pcard.decor-on::after{opacity:.95}
 /* a few larger 4-point star sparkles on top of the fine glitter dust,
    same twinkle used on the hero banner */
 /* off-screen cards (most of a 30+ card rail, at any given scroll
@@ -2824,11 +2830,59 @@ footer .socials svg{width:14px;height:14px}
   const sparkleObserver = new IntersectionObserver((entries)=>{
     entries.forEach(e => e.target.classList.toggle('spark-on', e.isIntersecting));
   }, {threshold:0.1});
-  function wireCards(container){
-    container.querySelectorAll('.pcard').forEach(card=>{
+  // wires a specific list of card elements (used for a freshly-appended
+  // batch) rather than re-querying/re-binding a whole container every time —
+  // wireCards(container) below is the same thing for a one-shot full render
+  function wireCardsList(cards){
+    cards.forEach(card=>{
       card.addEventListener('click', ()=> openQuickView(card.dataset.code));
       sparkleObserver.observe(card);
+      // the card itself (photo, price, name) paints immediately; the
+      // decorative glitter texture fades in only once the card's own
+      // photo has actually loaded, instead of every card's full visual
+      // weight landing on the page in one paint the moment a filter or
+      // category changes
+      const img = card.querySelector('.pthumb img');
+      const activate = ()=> card.classList.add('decor-on');
+      if(img){
+        if(img.complete) requestAnimationFrame(activate);
+        else img.addEventListener('load', activate, {once:true});
+      } else {
+        requestAnimationFrame(activate);
+      }
     });
+  }
+  function wireCards(container){
+    wireCardsList([...container.querySelectorAll('.pcard')]);
+  }
+  // sets up a rail that renders its item list a few cards at a time — the
+  // rest only get built once the user actually scrolls near the end of
+  // what's rendered, instead of every product in the category being
+  // built, laid out and painted the instant a filter is clicked. call
+  // once per grid at setup time; call the returned function on every
+  // filter/category change instead of setting innerHTML directly.
+  function makeProgressiveRail(grid, batchSize=6){
+    const state = {items:[], rendered:0};
+    function loadMore(){
+      if(state.rendered >= state.items.length) return;
+      const batch = state.items.slice(state.rendered, state.rendered + batchSize);
+      const start = grid.children.length;
+      grid.insertAdjacentHTML('beforeend', batch.map(productCardHTML).join(''));
+      wireCardsList([...grid.children].slice(start));
+      state.rendered += batch.length;
+    }
+    grid.addEventListener('scroll', onScrollRAF(()=>{
+      const buffer = grid.clientWidth; // start loading ~one screen-width early
+      if(grid.scrollLeft + grid.clientWidth + buffer >= grid.scrollWidth){
+        loadMore();
+      }
+    }), {passive:true});
+    return function render(items){
+      grid.innerHTML = '';
+      state.items = items;
+      state.rendered = 0;
+      loadMore();
+    };
   }
 
   const recGrid = document.getElementById('rec-grid');
@@ -2917,10 +2971,10 @@ footer .socials svg{width:14px;height:14px}
   }
   window.addEventListener('load', ()=> _railsToReset.forEach(r=>r.reassert()));
   const recViewAll = document.getElementById('rec-viewall');
+  const renderRecCards = makeProgressiveRail(recGrid, 6);
   function renderRec(catKey){
     const items = catKey==='all' ? PRODUCTS : PRODUCTS.filter(p=>p.cat===catKey);
-    recGrid.innerHTML = items.map(productCardHTML).join('');
-    wireCards(recGrid);
+    renderRecCards(items);
     recGrid.classList.remove('centered');
     resetRailScroll(recGrid, updateRecTrack);
     // "View All" reflects whichever category chip is active — "View All

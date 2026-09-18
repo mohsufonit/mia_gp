@@ -818,9 +818,9 @@ body{padding-top:var(--header-h,127px)}
    scrim laid over it); the name/CTA/arrows live in their own solid
    plate below the photo instead of floating on top of it */
 .feat-module{display:flex;flex-direction:column;border-radius:var(--radius-lg);overflow:hidden;background:var(--cream)}
-.feat-banner-img{position:relative;flex:0 0 auto;height:150px;margin:10px 10px 0;border-radius:14px;background-size:cover;background-position:center;transition:background-image .25s ease}
+.feat-banner-img{position:relative;flex:0 0 auto;height:150px;background-size:cover;background-position:center;transition:background-image .25s ease}
 @media(max-width:639px){.feat-banner-img{height:130px}}
-.feat-caption{display:flex;align-items:center;gap:9px;padding:11px 12px;background:#3D0620}
+.feat-caption{display:flex;align-items:center;gap:9px;padding:10px 12px;background:var(--pink-deep);border-radius:0 0 var(--radius-lg) var(--radius-lg)}
 .feat-arrow{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.14);border:none;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s}
 .feat-arrow:hover{background:rgba(255,255,255,.26)}
 .feat-caption-text{flex:1;min-width:0}
@@ -1397,30 +1397,32 @@ footer .socials svg{width:14px;height:14px}
   background-repeat:no-repeat;background-position:center;background-size:14px}
 .qv-gallery-item:hover::after{opacity:1}
 @media(min-width:680px){
+  /* the gallery "freeze" was built on position:sticky inside a modal
+     that ALSO scrolled itself — two nested scroll contexts fighting
+     each other, which is what let blank space open up in the gallery
+     (sticky losing track of where it should hold) and made the outer
+     modal's own scrollbar sit right in two of its rounded corners.
+     Cleaner fix: the modal itself doesn't scroll at all (fixed height,
+     overflow:hidden — this is also what makes all 4 corners actually
+     round now, nothing paints its own scrollbar into a corner). The
+     gallery and the info column each get their own independent
+     internal scroll, so the gallery pages through its real photos and
+     then simply stops — never blank — while the info column scrolls
+     on its own, completely unrelated to the gallery's scroll. */
+  .qv-modal{height:88vh;overflow:hidden}
+  .qv-body{height:100%}
   .qv-img,.qv-thumbs{display:none}
   /* matches the modal's own 16px corners so the gallery column never
      squares off against them at the top/bottom-left */
-  .qv-gallery{border-radius:16px 0 0 16px;overflow:hidden;align-self:stretch}
-  /* the grid row stretches .qv-gallery to match the (usually taller) info
-     column — but .qv-gallery-stack is a flex child inside it, and a flex
-     column's children size to their OWN content by default (only 3 photos
-     tall), not the stretched parent. That left a blank gap below the
-     photos whenever the info column was taller, and made the sticky box
-     "run out" partway through scrolling instead of staying frozen for the
-     full scroll range. height:100% forces it to actually fill the row, so
-     it scrolls its own real content flush, with no leftover space. */
-  /* a fixed viewport-relative height (not height:100%, not just max-height)
-     — sticky only has room to actually hold in place if this box is
-     shorter than its (often much taller, form-heavy) row, and a real
-     height means real product photos fill it via internal scroll instead
-     of leaving a blank gap the way an unconstrained/auto height did */
-  .qv-gallery-stack{display:block;position:sticky;top:0;height:88vh;overflow-y:auto;background:var(--cream)}
+  .qv-gallery{border-radius:16px 0 0 16px;overflow:hidden;height:100%}
+  .qv-gallery-stack{display:block;height:100%;overflow-y:auto;background:var(--cream)}
   /* Mia-pink themed scrollbar instead of the OS default */
   .qv-gallery-stack{scrollbar-width:thin;scrollbar-color:var(--pink) var(--cream)}
   .qv-gallery-stack::-webkit-scrollbar{width:8px}
   .qv-gallery-stack::-webkit-scrollbar-track{background:var(--cream)}
   .qv-gallery-stack::-webkit-scrollbar-thumb{background:var(--pink);border-radius:100px}
   .qv-gallery-stack::-webkit-scrollbar-thumb:hover{background:var(--pink-deep)}
+  .qv-info{height:100%;overflow-y:auto}
 }
 .qv-info{padding:26px 26px 28px;min-width:0}
 /* product title + a small "view full details" link inline, replacing the
@@ -1452,7 +1454,11 @@ footer .socials svg{width:14px;height:14px}
 .qv-gift-heading{font-family:'Fraunces',serif;font-size:15px;font-weight:600;margin:0 0 14px}
 .qv-req-label{font-size:11.5px;font-weight:700;color:var(--ink);display:block;margin:0 0 8px}
 .qv-req-label .req{color:var(--pink);margin-left:2px}
-.qv-check{position:absolute;top:-2px;right:-2px;width:16px;height:16px;border-radius:50%;background:var(--pink-deep);display:none;align-items:center;justify-content:center;z-index:2;box-shadow:0 0 0 2px #fff}
+/* was top/right:-2px, sitting half outside the swatch's own box — both
+   parents (.qv-wrap-swatch, .sticker-btn) need overflow:hidden for
+   their own clip-path/circle crop, which was cutting the badge off.
+   kept fully inside the box instead so it's never clipped. */
+.qv-check{position:absolute;top:3px;right:3px;width:16px;height:16px;border-radius:50%;background:var(--pink-deep);display:none;align-items:center;justify-content:center;z-index:2;box-shadow:0 0 0 2px #fff}
 .qv-check svg{width:9px;height:9px;color:#fff}
 
 .qv-wrap-row{display:flex;gap:10px;margin-bottom:18px}

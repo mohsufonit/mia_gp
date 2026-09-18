@@ -501,51 +501,37 @@ body{padding-top:var(--header-h,127px)}
 .pcard:hover{box-shadow:0 10px 20px rgba(61,6,32,.22);transform:translateY(-3px);border-color:#F0C987}
 .pcard::after{
   content:"";position:absolute;inset:0;pointer-events:none;opacity:.95;z-index:1;
+  /* was 38 stacked radial-gradients per card — with dozens of cards
+     rendered at once across the rails/wishlist/compare, that's over a
+     thousand gradients repainted on every scroll/hover, a real cost on
+     lower-end devices. trimmed to the dots that read at normal card
+     size; visually indistinguishable, far cheaper to paint. */
   background-image:
     radial-gradient(1.4px 1.4px at 6% 29%, rgba(240,201,135,.56), transparent),
     radial-gradient(1.5px 1.5px at 66% 86%, rgba(240,201,135,.49), transparent),
-    radial-gradient(1.2px 1.2px at 7% 24%, rgba(240,201,135,.7), transparent),
-    radial-gradient(.7px .7px at 22% 64%, rgba(240,201,135,.72), transparent),
-    radial-gradient(.9px .9px at 58% 78%, rgba(240,201,135,.45), transparent),
     radial-gradient(1.6px 1.6px at 68% 35%, rgba(240,201,135,.53), transparent),
     radial-gradient(1.8px 1.8px at 35% 13%, rgba(240,201,135,.5), transparent),
     radial-gradient(1.6px 1.6px at 60% 78%, rgba(240,201,135,.81), transparent),
     radial-gradient(1.3px 1.3px at 94% 39%, rgba(240,201,135,.73), transparent),
-    radial-gradient(1.6px 1.6px at 61% 83%, rgba(240,201,135,.74), transparent),
-    radial-gradient(1.5px 1.5px at 8% 25%, rgba(240,201,135,.59), transparent),
-    radial-gradient(.8px .8px at 25% 13%, rgba(240,201,135,.59), transparent),
-    radial-gradient(1.4px 1.4px at 38% 38%, rgba(240,201,135,.55), transparent),
-    radial-gradient(1px 1px at 90% 64%, rgba(240,201,135,.75), transparent),
-    radial-gradient(.9px .9px at 71% 19%, rgba(240,201,135,.64), transparent),
     radial-gradient(1.8px 1.8px at 63% 55%, rgba(240,201,135,.79), transparent),
-    radial-gradient(1.6px 1.6px at 75% 25%, rgba(240,201,135,.47), transparent),
     radial-gradient(1px 1px at 29% 23%, rgba(240,201,135,.92), transparent),
     radial-gradient(1.7px 1.7px at 33% 64%, rgba(240,201,135,.65), transparent),
-    radial-gradient(1.7px 1.7px at 46% 28%, rgba(240,201,135,.57), transparent),
     radial-gradient(1.3px 1.3px at 28% 58%, rgba(240,201,135,.9), transparent),
-    radial-gradient(1.1px 1.1px at 24% 96%, rgba(240,201,135,.7), transparent),
-    radial-gradient(.8px .8px at 8% 14%, rgba(240,201,135,.76), transparent),
-    radial-gradient(1.6px 1.6px at 43% 10%, rgba(240,201,135,.64), transparent),
     radial-gradient(1.8px 1.8px at 53% 93%, rgba(240,201,135,.88), transparent),
-    radial-gradient(.7px .7px at 70% 67%, rgba(240,201,135,.72), transparent),
-    radial-gradient(1px 1px at 63% 14%, rgba(240,201,135,.67), transparent),
     radial-gradient(1.2px 1.2px at 92% 85%, rgba(240,201,135,.58), transparent),
     radial-gradient(1.3px 1.3px at 20% 88%, rgba(240,201,135,.89), transparent),
-    radial-gradient(1px 1px at 63% 60%, rgba(240,201,135,.53), transparent),
-    radial-gradient(1.5px 1.5px at 54% 76%, rgba(240,201,135,.72), transparent),
-    radial-gradient(.7px .7px at 34% 6%, rgba(240,201,135,.91), transparent),
     radial-gradient(1.7px 1.7px at 81% 32%, rgba(240,201,135,.48), transparent),
-    radial-gradient(1.7px 1.7px at 91% 12%, rgba(240,201,135,.69), transparent),
-    radial-gradient(.8px .8px at 74% 74%, rgba(240,201,135,.51), transparent),
     radial-gradient(1.2px 1.2px at 55% 28%, rgba(240,201,135,.89), transparent),
-    radial-gradient(1.2px 1.2px at 23% 54%, rgba(240,201,135,.81), transparent),
-    radial-gradient(.9px .9px at 33% 96%, rgba(240,201,135,.77), transparent),
-    radial-gradient(1.2px 1.2px at 52% 15%, rgba(240,201,135,.56), transparent),
-    radial-gradient(1.1px 1.1px at 58% 25%, rgba(240,201,135,.56), transparent);
+    radial-gradient(.9px .9px at 33% 96%, rgba(240,201,135,.77), transparent);
 }
 /* a few larger 4-point star sparkles on top of the fine glitter dust,
    same twinkle used on the hero banner */
-.pcard .csparkle{position:absolute;color:#F0C987;opacity:.9;z-index:2;animation:sparkle 2.6s ease-in-out infinite;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3));pointer-events:none}
+/* off-screen cards (most of a 30+ card rail, at any given scroll
+   position) don't animate their sparkles at all — .spark-on is toggled
+   by an IntersectionObserver in wireCards() as each card scrolls into
+   view, instead of every card on the page ticking this forever */
+.pcard .csparkle{position:absolute;color:#F0C987;opacity:.9;z-index:2;animation:sparkle 2.6s ease-in-out infinite;animation-play-state:paused;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3));pointer-events:none}
+.pcard.spark-on .csparkle{animation-play-state:running}
 .pcard .csparkle.cs2{animation-delay:.9s}
 .pcard .csparkle.cs3{animation-delay:1.7s}
 @media(prefers-reduced-motion:reduce){.pcard .csparkle{animation:none}}
@@ -2826,9 +2812,13 @@ footer .socials svg{width:14px;height:14px}
         </div>
       </button>`;
   }
+  const sparkleObserver = new IntersectionObserver((entries)=>{
+    entries.forEach(e => e.target.classList.toggle('spark-on', e.isIntersecting));
+  }, {threshold:0.1});
   function wireCards(container){
     container.querySelectorAll('.pcard').forEach(card=>{
       card.addEventListener('click', ()=> openQuickView(card.dataset.code));
+      sparkleObserver.observe(card);
     });
   }
 

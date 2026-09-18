@@ -467,14 +467,18 @@ body{padding-top:var(--header-h,127px)}
    a diagonal band of light sweeps across on hover (or briefly on click,
    via .shined toggled in JS for non-hover/touch contexts); reused on
    coin cards, category icons, tf-chip pills, touch cards, review cards */
+/* animates transform (compositor-only) instead of left (a layout
+   property) — left was forcing this element to repaint every frame
+   of the sweep; translateX of a static-positioned band is free */
 .shine-fx{position:relative;overflow:hidden}
 .shine-fx::after{
   content:'';position:absolute;top:0;left:-75%;width:50%;height:100%;
   background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.55) 50%,transparent 100%);
-  transform:skewX(-18deg);pointer-events:none;z-index:3;
-  transition:left .85s cubic-bezier(.22,.61,.36,1);
+  transform:skewX(-18deg) translateX(0%);pointer-events:none;z-index:3;
+  transition:transform .85s cubic-bezier(.22,.61,.36,1);
+  will-change:transform;
 }
-.shine-fx:hover::after,.shine-fx.shined::after{left:125%}
+.shine-fx:hover::after,.shine-fx.shined::after{transform:skewX(-18deg) translateX(400%)}
 @media(prefers-reduced-motion:reduce){.shine-fx::after{transition:none;display:none}}
 /* ::before variant for elements whose ::after is already spoken for
    (the review portraits use ::after for their own dark gradient overlay) */
@@ -482,10 +486,11 @@ body{padding-top:var(--header-h,127px)}
 .shine-fx-b::before{
   content:'';position:absolute;top:0;left:-75%;width:50%;height:100%;
   background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.5) 50%,transparent 100%);
-  transform:skewX(-18deg);pointer-events:none;z-index:3;
-  transition:left .85s cubic-bezier(.22,.61,.36,1);
+  transform:skewX(-18deg) translateX(0%);pointer-events:none;z-index:3;
+  transition:transform .85s cubic-bezier(.22,.61,.36,1);
+  will-change:transform;
 }
-.shine-fx-b:hover::before,.shine-fx-b.shined::before{left:125%}
+.shine-fx-b:hover::before,.shine-fx-b.shined::before{transform:skewX(-18deg) translateX(400%)}
 @media(prefers-reduced-motion:reduce){.shine-fx-b::before{transition:none;display:none}}
 
 .pcard{
@@ -540,7 +545,12 @@ body{padding-top:var(--header-h,127px)}
 .pcard:hover .pthumb img{transform:scale(1.05)}
 /* pushed flush into the corner (not inset over the jewelry) and given
    some transparency so the product photo still reads through it */
-.pcard .pribbon{position:absolute;top:0;left:0;background:rgba(240,201,135,.82);color:#3a2410;font-size:9.5px;font-weight:800;letter-spacing:.08em;padding:6px 16px 6px 10px;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%);z-index:2;backdrop-filter:blur(2px)}
+/* backdrop-filter here was continuously re-sampling whatever's behind
+   it on every one of the 30-40+ cards rendered in a rail — one of the
+   most expensive properties on a mobile GPU, multiplied by every
+   card. A slightly more opaque solid fill reads the same at this size
+   without the compositing cost. */
+.pcard .pribbon{position:absolute;top:0;left:0;background:rgba(240,201,135,.94);color:#3a2410;font-size:9.5px;font-weight:800;letter-spacing:.08em;padding:6px 16px 6px 10px;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%);z-index:2}
 .pcard .pwish{position:absolute;top:10px;right:10px;width:30px;height:30px;background:rgba(255,255,255,.92);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.18);transition:background .2s}
 .pcard .pwish svg{width:14px;height:14px;stroke:var(--pink-deep);fill:none;stroke-width:1.8;transition:fill .2s,stroke .2s}
 .pcard .pwish.active{background:var(--pink)}
@@ -1198,7 +1208,7 @@ body{padding-top:var(--header-h,127px)}
 .tm-cvn3{transform:translateX(-354px) scale(.54) translateY(40px) rotate(-16deg);z-index:3;opacity:.45}
 .tm-portrait.tm-cv0{width:220px;height:380px;margin-left:-110px;margin-top:-190px}
 .tm-cv0 .tm-cat-pill{display:block}
-.tm-cat-pill{display:none;position:absolute;top:14px;left:14px;font-size:9.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;background:rgba(255,255,255,.24);backdrop-filter:blur(12px);border-radius:100px;padding:5px 11px;z-index:2}
+.tm-cat-pill{display:none;position:absolute;top:14px;left:14px;font-size:9.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;background:rgba(255,255,255,.4);border-radius:100px;padding:5px 11px;z-index:2}
 .tm-portrait-body{position:absolute;left:0;right:0;bottom:0;padding:14px;z-index:2}
 .tm-portrait-name{display:block;font-size:9.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
 .tm-portrait-quote{font-family:'Fraunces',serif;font-style:italic;font-size:11.5px;line-height:1.45;color:#fff;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;opacity:.95}
@@ -1224,7 +1234,7 @@ body{padding-top:var(--header-h,127px)}
     transition:transform .5s var(--ease),filter .5s var(--ease),opacity .5s var(--ease)}
   .mp-card img{width:100%;height:100%;object-fit:cover;display:block}
   .mp-card::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(61,6,32,.92) 100%)}
-  .mp-cat{position:absolute;top:10px;left:10px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:#fff;background:rgba(255,255,255,.24);backdrop-filter:blur(8px);border-radius:100px;padding:4px 10px;z-index:2}
+  .mp-cat{position:absolute;top:10px;left:10px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:#fff;background:rgba(255,255,255,.4);border-radius:100px;padding:4px 10px;z-index:2}
   .mp-quote{position:absolute;left:14px;right:14px;bottom:14px;z-index:2;font-family:'Fraunces',serif;font-style:italic;font-size:12.5px;line-height:1.4;color:#fff;margin:0}
   .mp-c0{transform:translateX(0) scale(1);z-index:5;opacity:1;filter:none}
   .mp-c1{transform:translateX(150px) scale(.78);z-index:4;opacity:.55;filter:blur(1.5px) brightness(.85)}
@@ -3536,6 +3546,19 @@ footer .socials svg{width:14px;height:14px}
     showToast('Gift card added to bag ✨');
   });
 
+  // rAF-throttle a scroll handler so its layout-reading work (getBoundingClientRect
+  // etc.) runs at most once per animation frame instead of once per raw scroll
+  // event — on mobile, scroll fires far more often than frames render, so an
+  // unthrottled handler that reads layout is a classic scroll-jank source
+  function onScrollRAF(fn){
+    let ticking = false;
+    return ()=>{
+      if(ticking) return;
+      ticking = true;
+      requestAnimationFrame(()=>{ fn(); ticking = false; });
+    };
+  }
+
   // ---- nudge: "still browsing?" — scroll-gated on #recipient, once a session ----
   (function(){
     if(sessionStorage.getItem('mia-nudge')==='1') return;
@@ -3551,10 +3574,11 @@ footer .socials svg{width:14px;height:14px}
       if(gate.getBoundingClientRect().bottom < window.innerHeight*0.5){
         nudge.classList.add('show');
         nudge.setAttribute('aria-hidden','false');
-        window.removeEventListener('scroll', check);
+        window.removeEventListener('scroll', scrollHandler);
       }
     }
-    window.addEventListener('scroll', check, {passive:true});
+    const scrollHandler = onScrollRAF(check);
+    window.addEventListener('scroll', scrollHandler, {passive:true});
     document.getElementById('nudge-close').addEventListener('click', ()=>hide(true));
     document.getElementById('nudge-skip').addEventListener('click', ()=>hide(true));
     document.getElementById('nudge-cta').addEventListener('click', ()=>hide(true));
@@ -3580,11 +3604,12 @@ footer .socials svg{width:14px;height:14px}
     function check(){
       const scrolled = (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight;
       if(scrolled > 0.55){
-        window.removeEventListener('scroll', check);
+        window.removeEventListener('scroll', scrollHandler);
         setTimeout(open, 600);
       }
     }
-    window.addEventListener('scroll', check, {passive:true});
+    const scrollHandler = onScrollRAF(check);
+    window.addEventListener('scroll', scrollHandler, {passive:true});
     function validate(){
       const hasDate = bday.value || anniv.value;
       const c = contact.value.trim();
@@ -3629,8 +3654,8 @@ footer .socials svg{width:14px;height:14px}
       }
       wasShown = nowShown;
     }
-    window.addEventListener('scroll', check, {passive:true});
-    window.addEventListener('resize', check);
+    window.addEventListener('scroll', onScrollRAF(check), {passive:true});
+    window.addEventListener('resize', onScrollRAF(check));
     document.getElementById('pin-close').addEventListener('click', (e)=>{ e.preventDefault(); collapse(); });
     check();
   })();

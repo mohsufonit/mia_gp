@@ -469,14 +469,18 @@ body{padding-top:var(--header-h,127px)}
    coin cards, category icons, tf-chip pills, touch cards, review cards */
 /* animates transform (compositor-only) instead of left (a layout
    property) — left was forcing this element to repaint every frame
-   of the sweep; translateX of a static-positioned band is free */
+   of the sweep; translateX of a static-positioned band is free.
+   deliberately no will-change here: it's used on ~28 elements
+   (category icons, coin cards, chips, touch cards, review cards) and
+   promoting all of them to their own GPU layer permanently costs more
+   on a mid-range phone's compositing budget than the brief warm-up
+   cost of promoting one layer right when a hover/tap actually starts. */
 .shine-fx{position:relative;overflow:hidden}
 .shine-fx::after{
   content:'';position:absolute;top:0;left:-75%;width:50%;height:100%;
   background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.55) 50%,transparent 100%);
   transform:skewX(-18deg) translateX(0%);pointer-events:none;z-index:3;
   transition:transform .85s cubic-bezier(.22,.61,.36,1);
-  will-change:transform;
 }
 .shine-fx:hover::after,.shine-fx.shined::after{transform:skewX(-18deg) translateX(400%)}
 @media(prefers-reduced-motion:reduce){.shine-fx::after{transition:none;display:none}}
@@ -488,7 +492,6 @@ body{padding-top:var(--header-h,127px)}
   background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.5) 50%,transparent 100%);
   transform:skewX(-18deg) translateX(0%);pointer-events:none;z-index:3;
   transition:transform .85s cubic-bezier(.22,.61,.36,1);
-  will-change:transform;
 }
 .shine-fx-b:hover::before,.shine-fx-b.shined::before{transform:skewX(-18deg) translateX(400%)}
 @media(prefers-reduced-motion:reduce){.shine-fx-b::before{transition:none;display:none}}
@@ -506,28 +509,20 @@ body{padding-top:var(--header-h,127px)}
 .pcard:hover{box-shadow:0 10px 20px rgba(61,6,32,.22);transform:translateY(-3px);border-color:#F0C987}
 .pcard::after{
   content:"";position:absolute;inset:0;pointer-events:none;opacity:.95;z-index:1;
-  /* was 38 stacked radial-gradients per card — with dozens of cards
-     rendered at once across the rails/wishlist/compare, that's over a
-     thousand gradients repainted on every scroll/hover, a real cost on
-     lower-end devices. trimmed to the dots that read at normal card
-     size; visually indistinguishable, far cheaper to paint. */
+  /* was 38, then 16, stacked radial-gradients per card — on a mid-range
+     phone GPU (not just a "slow network"), every one of these is real
+     paint work multiplied by every card rendered across the rails,
+     wishlist and compare. cut again to the 8 that still read as
+     "glitter dust" at normal card size. */
   background-image:
     radial-gradient(1.4px 1.4px at 6% 29%, rgba(240,201,135,.56), transparent),
-    radial-gradient(1.5px 1.5px at 66% 86%, rgba(240,201,135,.49), transparent),
     radial-gradient(1.6px 1.6px at 68% 35%, rgba(240,201,135,.53), transparent),
-    radial-gradient(1.8px 1.8px at 35% 13%, rgba(240,201,135,.5), transparent),
     radial-gradient(1.6px 1.6px at 60% 78%, rgba(240,201,135,.81), transparent),
-    radial-gradient(1.3px 1.3px at 94% 39%, rgba(240,201,135,.73), transparent),
     radial-gradient(1.8px 1.8px at 63% 55%, rgba(240,201,135,.79), transparent),
     radial-gradient(1px 1px at 29% 23%, rgba(240,201,135,.92), transparent),
-    radial-gradient(1.7px 1.7px at 33% 64%, rgba(240,201,135,.65), transparent),
-    radial-gradient(1.3px 1.3px at 28% 58%, rgba(240,201,135,.9), transparent),
     radial-gradient(1.8px 1.8px at 53% 93%, rgba(240,201,135,.88), transparent),
-    radial-gradient(1.2px 1.2px at 92% 85%, rgba(240,201,135,.58), transparent),
     radial-gradient(1.3px 1.3px at 20% 88%, rgba(240,201,135,.89), transparent),
-    radial-gradient(1.7px 1.7px at 81% 32%, rgba(240,201,135,.48), transparent),
-    radial-gradient(1.2px 1.2px at 55% 28%, rgba(240,201,135,.89), transparent),
-    radial-gradient(.9px .9px at 33% 96%, rgba(240,201,135,.77), transparent);
+    radial-gradient(1.2px 1.2px at 55% 28%, rgba(240,201,135,.89), transparent);
 }
 /* a few larger 4-point star sparkles on top of the fine glitter dust,
    same twinkle used on the hero banner */
@@ -2796,8 +2791,6 @@ footer .socials svg{width:14px;height:14px}
     return `
       <button class="pcard" data-code="${p.code}">
         <svg class="csparkle cs1" style="top:2%;left:50%" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6l2 6-2 6-2-6z"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-        <svg class="csparkle cs2" style="top:66%;right:8%" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6l2 6-2 6-2-6z"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-        <svg class="csparkle cs3" style="bottom:16%;left:10%" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6l2 6-2 6-2-6z"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
         <div class="pthumb">
           <span class="pribbon">${p.tag}</span>
           <span class="pwish" aria-label="wishlist" onclick="this.classList.toggle('active');event.stopPropagation();">

@@ -818,6 +818,31 @@ body{padding-top:var(--header-h,127px)}
 .spotlight-card h4{font-family:'Fraunces',serif;font-size:19px;margin-bottom:5px}
 .spotlight-card span{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;opacity:.92;display:flex;align-items:center;gap:6px}
 
+/* ============ For Her / For Him — Gift By Price panels ============
+   Two lifestyle-photo panels side by side (David Yurman "Gift By Price"
+   pattern), each with a row of budget-tier pills instead of a single
+   CTA — clicking a pill jumps into the finder with recipient + that
+   budget band pre-filled. */
+.recip-panels{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:767px){.recip-panels{grid-template-columns:1fr;gap:12px}}
+.recip-panel{position:relative;border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:3/4;display:flex;flex-direction:column;justify-content:flex-end;isolation:isolate}
+@media(max-width:767px){.recip-panel{aspect-ratio:4/5}}
+.recip-panel::before{content:"";position:absolute;inset:0;z-index:-2;background-size:cover;background-position:center;transition:transform .5s var(--ease)}
+.recip-panel:hover::before{transform:scale(1.04)}
+.recip-panel::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(20,14,15,.86) 0%,rgba(20,14,15,.28) 48%,rgba(20,14,15,0) 70%)}
+.recip-panel[data-rel="her"]::before{background-image:url('assets/editorial/gifts-her.webp')}
+.recip-panel[data-rel="him"]::before{background-image:url('assets/editorial/gifts-him.webp')}
+.recip-panel-body{padding:22px;color:#fff}
+.recip-sub{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.88;margin:0 0 6px}
+.recip-panel h4{font-family:'Fraunces',serif;font-size:clamp(19px,2.6vw,24px);font-weight:600;margin:0 0 14px;max-width:22ch}
+.recip-price-row{display:flex;gap:7px;flex-wrap:wrap}
+.recip-price-pill{background:rgba(255,255,255,.14);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.32);color:#fff;font-size:11px;font-weight:700;padding:7px 13px;border-radius:100px;cursor:pointer;transition:background .18s,transform .18s;font-family:inherit}
+.recip-price-pill:hover{background:rgba(255,255,255,.28);transform:translateY(-2px)}
+
+/* ============ Collections rail — its own section, split out from the
+   For Her/For Him panels above ============ */
+.feat-module-wrap{max-width:560px;margin:0 auto}
+
 /* ============ coin & gift card section breaker ============
    Full-bleed satin pink (same gradient family as the product cards and
    hero), same glitter dust + sequin sparkles carried over — this section
@@ -1835,42 +1860,81 @@ footer .socials svg{width:14px;height:14px}
 </section>
 
 
-<!-- CRO: NOT a second decision surface — this is a one-tap shortcut into the
-     same finder above, for visitors who already know "who" and don't want to
-     fill a form. Clicking a tile pre-fills the finder and runs it instantly,
-     so recipient/occasion/budget stay the single source of truth. -->
+<!-- CRO: NOT a second decision surface — a one-tap shortcut into the same
+     finder above, styled on David Yurman's "Gift By Price" pattern
+     (davidyurman.com/gifts.html): a For Her / For Him photo panel each,
+     with budget-tier pills instead of a single CTA. Picking a pill jumps
+     into the finder with recipient + that budget pre-filled; occasion is
+     still filled at random, same spirit as Surprise Me. -->
 <section class="band" id="recipient">
   <div class="container">
     <div class="section-head rv">
       <div>
-        <p class="eyebrow">Already Know Who?</p>
-        <h2>Skip Straight To Their Picks</h2>
+        <p class="eyebrow">Gift By Price</p>
+        <h2>For Her, For Him</h2>
       </div>
     </div>
-    <div class="spotlight-rail">
-      <div class="spotlight-grid rv" id="spotlight-grid">
-          <a href="#finder" class="spotlight-card" data-relation="Spouse" data-rel="her"><h4>For Her</h4><span>Get Picks <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-
-          <!-- one collection at a time — arrow cycles the banner photo AND
-               the 3 real products from that collection together. banner
-               photo stays clean (no dark scrim on top of it); name/CTA/
-               arrows live in their own solid plate below it instead. -->
-          <div class="feat-module">
-            <div class="feat-banner-img" id="feat-banner-img"></div>
-            <div class="feat-caption">
-              <button type="button" class="feat-arrow" id="feat-prev" aria-label="Previous collection"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M15 18l-6-6 6-6"/></svg></button>
-              <div class="feat-caption-text">
-                <p class="feat-eyebrow">Collection</p>
-                <h4 class="feat-name" id="feat-name"></h4>
-              </div>
-              <a href="#" class="feat-cta" id="feat-cta">Shop Now <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-              <button type="button" class="feat-arrow" id="feat-next" aria-label="Next collection"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M9 6l6 6-6 6"/></svg></button>
-            </div>
-            <div class="feat-dots" id="feat-dots"></div>
-            <div class="feat-products pcard-rail" id="feat-products"></div>
+    <div class="recip-panels rv">
+      <div class="recip-panel" data-rel="her">
+        <div class="recip-panel-body">
+          <p class="recip-sub">For Her</p>
+          <h4>Gifts She'll Reach For Every Day</h4>
+          <div class="recip-price-row">
+            <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="Under ₹10k">Under ₹10k</button>
+            <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="₹10k–50k">₹10k – 50k</button>
+            <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="₹50k–1L">₹50k – 1L</button>
+            <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="Above ₹1L">Above ₹1L</button>
           </div>
+        </div>
+      </div>
+      <div class="recip-panel" data-rel="him">
+        <div class="recip-panel-body">
+          <p class="recip-sub">For Him</p>
+          <h4>Understated Pieces He'll Actually Wear</h4>
+          <div class="recip-price-row">
+            <button type="button" class="recip-price-pill" data-relation="Father" data-budget="Under ₹10k">Under ₹10k</button>
+            <button type="button" class="recip-price-pill" data-relation="Father" data-budget="₹10k–50k">₹10k – 50k</button>
+            <button type="button" class="recip-price-pill" data-relation="Father" data-budget="₹50k–1L">₹50k – 1L</button>
+            <button type="button" class="recip-price-pill" data-relation="Father" data-budget="Above ₹1L">Above ₹1L</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-          <a href="#finder" class="spotlight-card" data-relation="Father" data-rel="him"><h4>For Him</h4><span>Get Picks <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+<!-- BIRTHSTONE MODULE — placeholder. This is deliberately left unbuilt:
+     the section breaker for "gift by birthstone/month" belongs here,
+     between the For Her/For Him panels above and the Collections rail
+     below, once its design is worked out as an Artifact (no real
+     birthstone-to-product data mapping exists in PRODUCTS yet). -->
+
+<section class="band band-cream" id="collections">
+  <div class="container">
+    <div class="section-head rv">
+      <div>
+        <p class="eyebrow">Collections</p>
+        <h2>Shop By Collection</h2>
+      </div>
+    </div>
+    <div class="feat-module-wrap rv">
+      <!-- one collection at a time — arrow cycles the banner photo AND
+           the 3 real products from that collection together. banner
+           photo stays clean (no dark scrim on top of it); name/CTA/
+           arrows live in their own solid plate below it instead. -->
+      <div class="feat-module">
+        <div class="feat-banner-img" id="feat-banner-img"></div>
+        <div class="feat-caption">
+          <button type="button" class="feat-arrow" id="feat-prev" aria-label="Previous collection"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <div class="feat-caption-text">
+            <p class="feat-eyebrow">Collection</p>
+            <h4 class="feat-name" id="feat-name"></h4>
+          </div>
+          <a href="#" class="feat-cta" id="feat-cta">Shop Now <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <button type="button" class="feat-arrow" id="feat-next" aria-label="Next collection"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M9 6l6 6-6 6"/></svg></button>
+        </div>
+        <div class="feat-dots" id="feat-dots"></div>
+        <div class="feat-products pcard-rail" id="feat-products"></div>
       </div>
     </div>
   </div>
@@ -3811,11 +3875,14 @@ footer .socials svg{width:14px;height:14px}
       root.querySelector('#gf-respin').addEventListener('click', renderVaultB);
     }
 
-    // exposed so the #recipient "For Her"/"For Him" tiles can jump
-    // straight to a pre-answered slot-machine spin
-    root.__gfPrefill = function(whoLabel){
+    // exposed so the #recipient "For Her"/"For Him" price-pill panels can
+    // jump straight to a pre-answered slot-machine spin — budget is
+    // optional (occasion is always left to land randomly, same spirit
+    // as Surprise Me)
+    root.__gfPrefill = function(whoLabel, budgetLabel){
       step = GF_STEPS.length - 1;
       answers.who = whoLabel;
+      if(budgetLabel) answers.budget = budgetLabel;
       renderSlot();
       root.scrollIntoView({behavior:'smooth', block:'center'});
     };
@@ -3826,14 +3893,14 @@ footer .socials svg{width:14px;height:14px}
   const gfShell = document.getElementById('gf-shell');
   if(gfShell) mountGiftFinder(gfShell);
 
-  // recipient tiles are a quick-entry into the SAME finder — they jump
-  // straight to the slot machine with "who" pre-filled, occasion/budget
-  // filled at random, same spirit as Surprise Me
-  document.querySelectorAll('.spotlight-card[data-relation]').forEach(card=>{
-    card.addEventListener('click', (e)=>{
-      e.preventDefault();
-      const who = card.dataset.relation === 'Spouse' ? 'Partner' : card.dataset.relation;
-      if(gfShell && gfShell.__gfPrefill) gfShell.__gfPrefill(who);
+  // "For Her"/"For Him" price pills are a quick-entry into the SAME
+  // finder — they jump straight to the slot machine with "who" and
+  // budget pre-filled, occasion filled at random, same spirit as
+  // Surprise Me
+  document.querySelectorAll('.recip-price-pill[data-relation]').forEach(pill=>{
+    pill.addEventListener('click', ()=>{
+      const who = pill.dataset.relation === 'Spouse' ? 'Partner' : pill.dataset.relation;
+      if(gfShell && gfShell.__gfPrefill) gfShell.__gfPrefill(who, pill.dataset.budget);
     });
   });
 

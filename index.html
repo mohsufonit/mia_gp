@@ -1196,9 +1196,14 @@ body{padding-top:var(--header-h,127px)}
 .gf-single-wrap{position:relative;flex:0 0 auto;display:flex;align-items:center;justify-content:center;padding:4px 0}
 .gf-single-wrap .rec-arrow{position:static}
 #gf-single-holder{display:flex;justify-content:center;margin:0 8px;overflow:visible}
-#gf-single-holder .pcard{flex-basis:200px}
-@media(min-width:640px){#gf-single-holder .pcard{flex-basis:230px}}
-@media(min-width:1024px){#gf-single-holder .pcard{flex-basis:250px}}
+/* flex-basis alone isn't enough — .pcard's bare-class default is
+   flex-shrink:1 (only .pcard-rail's own rule sets shrink:0), so
+   without an explicit shrink:0 here the card was free to compress
+   below its real size whenever the holder ran short on room */
+#gf-single-holder .pcard{flex:0 0 200px}
+@media(max-width:639px){#gf-single-holder .pcard{flex:0 0 270px}}
+@media(min-width:640px){#gf-single-holder .pcard{flex:0 0 230px}}
+@media(min-width:1024px){#gf-single-holder .pcard{flex:0 0 250px}}
 .gf-single-dots{flex:0 0 auto;display:flex;gap:5px;justify-content:center;padding:10px 0 2px}
 .gf-single-dots span{width:5px;height:5px;border-radius:50%;background:var(--line)}
 .gf-single-dots span.on{background:var(--pink-deep);width:14px;border-radius:3px;transition:all .2s}

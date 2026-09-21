@@ -1091,6 +1091,121 @@ body{padding-top:var(--header-h,127px)}
 .finder-restart{display:inline-flex;align-items:center;gap:8px;padding:12px 26px;border-radius:100px;border:1.5px solid var(--line-2);font-size:12.5px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:var(--ink-2);transition:all .2s}
 .finder-restart:hover{border-color:var(--pink);color:var(--pink-deep);background:var(--blush-2)}
 
+/* ============ gift finder v2 — a question at a time, not a form ============
+   a white app frame; the pink question is its own rounded CARD inset
+   within it (not full-bleed), with two offset "peek" cards behind it
+   to read as a stack. arrows/CTAs live on the white frame below the
+   card, not inside it. */
+.gf-embed{width:100%;max-width:480px;margin:0 auto}
+.gf-shell{position:relative;border-radius:28px;overflow:hidden;isolation:isolate;
+  box-shadow:0 30px 70px rgba(61,6,32,.14);background:#fff;display:flex;flex-direction:column;
+  padding:18px 18px 16px;height:600px}
+@media(max-width:639px){.gf-shell{height:580px}}
+
+.gf-top{flex:0 0 auto;display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.gf-back-nav{width:32px;height:32px;border-radius:50%;background:var(--cream);border:none;color:var(--pink-deep);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:background .2s}
+.gf-back-nav:hover{background:var(--blush-2)}
+.gf-crumb{font-size:11px;font-weight:700;letter-spacing:.03em;color:var(--ink-2)}
+.gf-crumb b{color:var(--ink)}
+
+.gf-stack{flex:1;position:relative;min-height:0}
+.gf-peek{position:absolute;border-radius:22px;pointer-events:none}
+.gf-peek-2{inset:18px -8px -14px 8px;background:rgba(240,201,135,.3);transform:rotate(-2.2deg)}
+.gf-peek-1{inset:9px -4px -7px 4px;background:rgba(228,18,125,.22);transform:rotate(-1.1deg)}
+
+.gf-card{position:absolute;inset:0;border-radius:22px;overflow:hidden;display:flex;flex-direction:column}
+.gf-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0}
+.gf-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(175deg,rgba(228,18,125,.88) 0%,rgba(168,14,94,.93) 55%,rgba(61,6,32,.97) 100%);z-index:1}
+
+.gf-card-body{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;padding:24px;color:#fff}
+.gf-spacer-a{flex:.7}
+.gf-spacer-b{flex:1.3}
+.gf-step-num{font-family:'Fraunces',serif;font-size:13px;font-weight:600;color:var(--gold);margin:0 0 10px;letter-spacing:.02em}
+.gf-question{font-family:'Fraunces',serif;font-size:clamp(22px,3.4vw,28px);font-weight:600;line-height:1.22;margin:0 0 22px;max-width:19ch}
+.gf-chips{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.gf-chip{border:1.5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.08);color:#fff;
+  font-family:inherit;font-size:12.5px;font-weight:700;padding:10px 12px;border-radius:100px;cursor:pointer;
+  transition:all .18s var(--ease);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;text-align:center}
+.gf-chip:hover{border-color:#fff;background:rgba(255,255,255,.16)}
+.gf-chip.sel{background:#fff;color:var(--pink-deep);border-color:#fff}
+
+.gf-step-anim{animation:gfIn .35s var(--ease)}
+@keyframes gfIn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}
+
+.gf-dots{flex:0 0 auto;display:flex;gap:6px;justify-content:center;padding:14px 0 12px}
+.gf-dots span{width:5px;height:5px;border-radius:50%;background:var(--line)}
+.gf-dots span.on{background:var(--pink-deep);width:16px;border-radius:3px;transition:all .2s}
+.gf-foot{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between}
+.gf-arrow{width:44px;height:44px;border-radius:50%;background:var(--cream);border:none;color:var(--pink-deep);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0}
+.gf-arrow:hover{background:var(--blush-2)}
+.gf-arrow[disabled]{opacity:.3;pointer-events:none}
+.gf-cta-row{flex:1;display:flex;gap:8px;margin:0 12px}
+.gf-surprise,.gf-notsure{flex:1;font-family:inherit;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;padding:12px 10px;border-radius:100px;cursor:pointer;transition:all .15s;white-space:nowrap;border:none}
+.gf-surprise{background:var(--pink);color:#fff}
+.gf-surprise:hover{transform:translateY(-2px);background:var(--pink-hover)}
+.gf-notsure{background:none;color:var(--pink-deep);border:1.5px solid rgba(228,18,125,.35)}
+.gf-notsure:hover{border-color:var(--pink);background:rgba(228,18,125,.06)}
+@media(max-width:639px){.gf-cta-row{flex-direction:column;gap:6px}}
+
+/* ---- the slot machine ---- */
+.slot-wrap{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;min-height:0;align-items:center;padding:6px 4px 0}
+.slot-cabinet{position:relative;width:100%;max-width:340px;background:linear-gradient(180deg,#F26AA8 0%,var(--pink) 40%,var(--pink-deep) 100%);
+  border:3px solid var(--gold);border-radius:20px;padding:16px 14px 14px;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.25),0 14px 30px rgba(61,6,32,.35)}
+.slot-cabinet::before,.slot-cabinet::after{content:'';position:absolute;top:8px;bottom:8px;width:6px;
+  background:repeating-linear-gradient(180deg,var(--gold) 0 6px,rgba(240,201,135,.35) 6px 12px);border-radius:3px}
+.slot-cabinet::before{left:6px}
+.slot-cabinet::after{right:6px}
+.slot-crest{width:52px;height:52px;margin:-38px auto 8px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff8ea,var(--gold) 70%);
+  border:3px solid #fff;box-shadow:0 6px 14px rgba(61,6,32,.35);display:flex;align-items:center;justify-content:center;position:relative;z-index:3}
+.slot-crest svg{width:24px;height:24px;color:var(--pink-deep)}
+.slot-banner{text-align:center;font-family:'Fraunces',serif;font-weight:700;font-size:15px;color:#fff;
+  text-shadow:0 2px 4px rgba(61,6,32,.4);letter-spacing:.02em;margin:0 0 12px;text-transform:uppercase}
+.slot-reels{display:flex;gap:8px;background:rgba(61,6,32,.3);border-radius:12px;padding:8px;
+  border:1.5px solid rgba(255,255,255,.3);box-shadow:inset 0 3px 10px rgba(0,0,0,.35)}
+.reel{position:relative;flex:1;height:92px;border-radius:8px;overflow:hidden;background:var(--cream);box-shadow:inset 0 3px 8px rgba(0,0,0,.25)}
+.reel::before,.reel::after{content:'';position:absolute;left:0;right:0;height:26px;z-index:2;pointer-events:none}
+.reel::before{top:0;background:linear-gradient(180deg,var(--cream),transparent)}
+.reel::after{bottom:0;background:linear-gradient(0deg,var(--cream),transparent)}
+.reel-strip{display:flex;flex-direction:column;will-change:transform}
+.reel-cell{height:92px;flex:0 0 92px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.reel-emoji{display:flex;align-items:center;justify-content:center;color:var(--pink-deep)}
+.reel-emoji svg{width:24px;height:24px}
+.reel-label{font-size:8.5px;font-weight:800;text-transform:uppercase;letter-spacing:.02em;color:var(--pink-deep);text-align:center;padding:0 4px}
+.reel.landed{animation:reelPop .4s var(--ease)}
+@keyframes reelPop{0%{transform:scale(1)}35%{transform:scale(1.07)}100%{transform:scale(1)}}
+.slot-hint{text-align:center;font-size:11px;color:rgba(255,255,255,.8);margin:10px 0 0}
+
+/* ---- the reveal ---- */
+.gf-results{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;min-height:0;align-items:stretch;text-align:center;padding-top:4px}
+.gf-r-eyebrow{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--pink-deep);margin:0 0 6px}
+.gf-r-title{font-family:'Fraunces',serif;font-size:clamp(17px,2.4vw,20px);font-weight:600;margin:0 0 14px;color:var(--ink);max-width:26ch;margin-left:auto;margin-right:auto}
+.gf-r-reveal{animation:gfIn .4s var(--ease)}
+.gf-result-rail-wrap{position:relative;flex:0 0 auto;display:flex;align-items:center}
+/* .rec-arrow is display:none below 1024px everywhere else on the page
+   (those wide rails rely on native swipe on mobile) — this is a small
+   embedded card that needs working prev/next at every width */
+.gf-result-rail-wrap .rec-arrow,.gf-single-wrap .rec-arrow{display:flex!important;width:30px;height:30px}
+.gf-result-rail-wrap .rec-arrow{position:absolute;top:44%}
+.gf-result-rail-wrap .rec-arrow.rec-arrow-prev{left:-6px}
+.gf-result-rail-wrap .rec-arrow.rec-arrow-next{right:-6px}
+.gf-result-rail-wrap .pcard-rail{padding:4px 32px 6px;gap:12px}
+.gf-result-rail-wrap .pcard-rail .pcard{flex-basis:132px}
+.gf-single-wrap{position:relative;flex:0 0 auto;display:flex;align-items:center;justify-content:center;padding:4px 0}
+.gf-single-wrap .rec-arrow{position:static}
+#gf-single-holder{flex:0 0 172px;width:172px;margin:0 8px}
+#gf-single-holder .pcard{width:100%}
+.gf-single-dots{flex:0 0 auto;display:flex;gap:5px;justify-content:center;padding:10px 0 2px}
+.gf-single-dots span{width:5px;height:5px;border-radius:50%;background:var(--line)}
+.gf-single-dots span.on{background:var(--pink-deep);width:14px;border-radius:3px;transition:all .2s}
+.gf-r-actions{display:flex;gap:10px;margin:12px auto 0;width:100%;max-width:280px;flex-shrink:0}
+.gf-r-btn{flex:1;font-family:inherit;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;
+  padding:12px 10px;border-radius:100px;cursor:pointer;transition:all .15s;border:none}
+.gf-r-btn.primary{background:var(--pink);color:#fff}
+.gf-r-btn.primary:hover{background:var(--pink-hover);transform:translateY(-2px)}
+.gf-r-btn.ghost{background:none;border:1.5px solid var(--line-2);color:var(--ink-2)}
+.gf-r-btn.ghost:hover{border-color:var(--pink)}
+
 /* ============ six touches — compact section breaker ============ */
 /* condensed on purpose: reference page runs this as a full sticky-timeline
    scrollytelling section — here it's a single horizontal strip, same weight
@@ -1661,78 +1776,8 @@ footer .socials svg{width:14px;height:14px}
       </div>
       <h2 class="finder-title">Tell Us Three Things. We'll Curate The Rest.</h2>
     </div>
-    <div class="rv finder-card">
-      <form id="finder-form" class="finder-form">
-        <div class="finder-row">
-          <div class="finder-field">
-            <label id="f-relation-label">Who's It For</label>
-            <div class="cselect" data-target="f-relation" aria-labelledby="f-relation-label">
-              <button type="button" class="cselect-btn"><span class="cselect-val placeholder">Select</span><svg class="cselect-chevron" width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-              <div class="cselect-menu">
-                <button type="button" class="cselect-opt" data-value="Spouse">Spouse</button>
-                <button type="button" class="cselect-opt" data-value="Mother">Mother</button>
-                <button type="button" class="cselect-opt" data-value="Father">Father</button>
-                <button type="button" class="cselect-opt" data-value="Sister">Sister</button>
-                <button type="button" class="cselect-opt" data-value="Brother">Brother</button>
-                <button type="button" class="cselect-opt" data-value="Daughter">Daughter</button>
-                <button type="button" class="cselect-opt" data-value="Son">Son</button>
-                <button type="button" class="cselect-opt" data-value="Friend">Friend</button>
-                <button type="button" class="cselect-opt" data-value="Self">Self</button>
-              </div>
-            </div>
-            <input type="hidden" id="f-relation">
-          </div>
-          <div class="finder-field">
-            <label id="f-occasion-label">The Occasion</label>
-            <div class="cselect" data-target="f-occasion" aria-labelledby="f-occasion-label">
-              <button type="button" class="cselect-btn"><span class="cselect-val placeholder">Select</span><svg class="cselect-chevron" width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-              <div class="cselect-menu">
-                <button type="button" class="cselect-opt" data-value="Birthday">Birthday</button>
-                <button type="button" class="cselect-opt" data-value="Anniversary">Anniversary</button>
-                <button type="button" class="cselect-opt" data-value="Wedding">Wedding</button>
-                <button type="button" class="cselect-opt" data-value="Raksha Bandhan">Raksha Bandhan</button>
-                <button type="button" class="cselect-opt" data-value="Engagement">Engagement</button>
-                <button type="button" class="cselect-opt" data-value="Festival">Festival</button>
-                <button type="button" class="cselect-opt" data-value="Milestone">Milestone</button>
-                <button type="button" class="cselect-opt" data-value="Just Because">Just Because</button>
-              </div>
-            </div>
-            <input type="hidden" id="f-occasion">
-          </div>
-          <div class="finder-field">
-            <label id="f-budget-label">Your Budget</label>
-            <div class="cselect" data-target="f-budget" aria-labelledby="f-budget-label">
-              <button type="button" class="cselect-btn"><span class="cselect-val placeholder">Select</span><svg class="cselect-chevron" width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-              <div class="cselect-menu">
-                <button type="button" class="cselect-opt" data-value="Under ₹10,000">Under ₹10,000</button>
-                <button type="button" class="cselect-opt" data-value="₹10,000 – ₹20,000">₹10,000 – ₹20,000</button>
-                <button type="button" class="cselect-opt" data-value="₹20,000 – ₹50,000">₹20,000 – ₹50,000</button>
-                <button type="button" class="cselect-opt" data-value="₹50,000 – ₹1,00,000">₹50,000 – ₹1,00,000</button>
-                <button type="button" class="cselect-opt" data-value="Above ₹1,00,000">Above ₹1,00,000</button>
-                <button type="button" class="cselect-opt" data-value="Show Me Everything">Show Me Everything</button>
-              </div>
-            </div>
-            <input type="hidden" id="f-budget">
-          </div>
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">Find Their Gift</button>
-      </form>
-      <div id="finder-result" class="finder-result">
-        <p class="finder-result-title" id="fr-title"></p>
-        <div class="finder-cats" id="fr-cats"></div>
-        <div class="fr-rail-wrap">
-          <button type="button" class="rec-arrow rec-arrow-prev" id="fr-prev" aria-label="Scroll left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg></button>
-          <div class="pcard-rail" id="fr-grid"></div>
-          <button type="button" class="rec-arrow rec-arrow-next" id="fr-next" aria-label="Scroll right"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg></button>
-        </div>
-        <div class="rec-track"><div class="rec-track-fill" id="fr-track-fill"></div></div>
-        <div class="finder-restart-wrap">
-          <button type="button" class="finder-restart" id="finder-restart">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 16v-4h4"/></svg>
-            Start Over
-          </button>
-        </div>
-      </div>
+    <div class="rv gf-embed">
+      <div class="gf-shell" data-w="desktop" id="gf-shell"></div>
     </div>
   </div>
 </section>
@@ -3426,157 +3471,316 @@ footer .socials svg{width:14px;height:14px}
     });
   });
 
-  // ---- gift finder — genuinely filters the real catalogue, not just display copy ----
-  // recipient = hard filter (which categories are even relevant to them)
-  const RELATION_CATS = {
-    Spouse:['necklaces','earrings','rings'],
-    Mother:['necklaces','earrings'],
-    Father:['chains','rings'],
-    Sister:['bracelets','earrings'],
-    Brother:['chains','rings'],
-    Daughter:['earrings','bracelets'],
-    Son:['chains','rings'],
-    Friend:['bracelets','earrings'],
-    Self:['rings','necklaces']
+  // ---- gift finder v2 — one question at a time, ending in a
+  // Mia-branded slot machine, still genuinely filtering the real
+  // catalogue (not just swapping display copy) ----
+  const GF_ICONS = {
+    person: '<circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-4 3-6.5 7-6.5s7 2.5 7 6.5"/>',
+    people: '<circle cx="8.3" cy="8" r="2.7"/><circle cx="15.7" cy="8" r="2.7"/><path d="M2.8 19c0-3 2.4-5 5.5-5s5.5 2 5.5 5M10.2 19c0-3 2.4-5 5.5-5s5.5 2 5.5 5"/>',
+    heart: '<path d="M12 20s-7-4.3-9.3-8.7C1.3 8 2.8 4.6 6.1 4c2-.4 4 .6 5.9 3 1.9-2.4 3.9-3.4 5.9-3 3.3.6 4.8 4 3.4 7.3C19 15.7 12 20 12 20z"/>',
+    handshake: '<path d="M2 12l4-4 3 3 4-4 3 3 4-4 2 2"/><path d="M8 11l3.5 3.5a1.6 1.6 0 0 0 2.3 0l.2-.2a1.6 1.6 0 0 0 0-2.3"/><path d="M12 11l2 2a1.6 1.6 0 0 0 2.3 0l.2-.2"/>',
+    gift: '<rect x="3.5" y="9.5" width="17" height="11" rx="1"/><path d="M3.5 13.5h17"/><path d="M12 9.5v11"/><path d="M12 9.5C9 9.5 7.5 8 7.5 6.3A2 2 0 0 1 11.6 6c.2.7.4 1.8.4 3.5Z"/><path d="M12 9.5c3 0 4.5-1.5 4.5-3.2A2 2 0 0 0 12.4 6c-.2.7-.4 1.8-.4 3.5Z"/>',
+    cake: '<rect x="4" y="12.5" width="16" height="7.5" rx="1.3"/><path d="M4 16.3h16"/><path d="M9 12.5V9.3a1 1 0 0 1 2 0v3.2M13 12.5V9.3a1 1 0 0 1 2 0v3.2"/><path d="M10 5.5c0-.9.9-.9.9-1.8S10 2.9 10 2M14 5.5c0-.9.9-.9.9-1.8S14 2.9 14 2" stroke-linecap="round"/>',
+    flower: '<circle cx="12" cy="12" r="2"/><circle cx="12" cy="6.3" r="2.4"/><circle cx="12" cy="17.7" r="2.4"/><circle cx="6.3" cy="12" r="2.4"/><circle cx="17.7" cy="12" r="2.4"/>',
+    rings2: '<circle cx="9" cy="13.5" r="4.7"/><circle cx="15" cy="13.5" r="4.7"/>',
+    sparkle: '<path d="M12 6l2 6-2 6-2-6z"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke-width="1.4" stroke-linecap="round"/>',
+    ribbon: '<circle cx="8.3" cy="6.3" r="2.6"/><circle cx="15.7" cy="6.3" r="2.6"/><path d="M12 6.3V16"/><path d="M8.5 15.5l-3 5.2 4-1.5M15.5 15.5l3 5.2-4-1.5"/>',
+    coin: '<circle cx="12" cy="12" r="8.2"/><path d="M9 12h6M12 9v6" stroke-linecap="round"/>',
+    coins: '<circle cx="9" cy="10" r="6.3"/><circle cx="15.3" cy="14.3" r="6.3"/>',
+    diamond: '<path d="M6 3h12l3 5-9 13L3 8Z"/><path d="M3 8h18M9 3l-2 5 5 13 5-13-2-5"/>',
+    crown: '<path d="M4 18h16l1.4-8.5-5 3.5L12 6.3l-4.4 6.7-5-3.5z"/><path d="M4 18v2.3h16V18"/>',
+    ring: '<circle cx="12" cy="15" r="5"/><path d="M9.3 10.2 12 4l2.7 6.2z"/><path d="M9.6 9.3h4.8l-1 1.8h-2.8z"/>',
   };
-  // occasion = soft preference (ranks matching categories first, never excludes)
-  const OCCASION_CATS = {
-    Birthday:['earrings','bracelets'],
-    Anniversary:['necklaces','rings'],
-    Wedding:['rings','necklaces'],
-    'Raksha Bandhan':['bracelets','chains'],
-    Engagement:['rings','necklaces'],
-    Festival:['chains','earrings'],
-    Milestone:['necklaces','rings'],
-    'Just Because':['bracelets','chains']
-  };
-  // budget = hard filter on real price
-  const BUDGET_RANGE = {
-    'Under ₹10,000':[0,10000],
-    '₹10,000 – ₹20,000':[10000,20000],
-    '₹20,000 – ₹50,000':[20000,50000],
-    '₹50,000 – ₹1,00,000':[50000,100000],
-    'Above ₹1,00,000':[100000,Infinity],
-    'Show Me Everything':[0,Infinity]
-  };
-
-  // category labels for the post-result refinement chips — mirrors the
-  // "shop by category" chips from index-gifting-page.html's quiz results
-  const FINDER_CAT_LABELS = {rings:'Rings', earrings:'Earrings', necklaces:'Necklaces', bracelets:'Bracelets', chains:'Chains'};
-  let finderAllPicks = [];
-  let finderActiveCat = 'All';
-
-  function paintFinderCats(){
-    const catsRow = document.getElementById('fr-cats');
-    const present = Object.keys(FINDER_CAT_LABELS).filter(c => finderAllPicks.some(p => p.cat === c));
-    const chips = ['All', ...present];
-    catsRow.innerHTML = chips.map(c => `<button type="button" class="finder-cat-chip ${c===finderActiveCat?'active':''}" data-cat="${c}">${c==='All'?'All':FINDER_CAT_LABELS[c]}</button>`).join('');
-    catsRow.querySelectorAll('.finder-cat-chip').forEach(chip=>{
-      chip.addEventListener('click', ()=>{
-        finderActiveCat = chip.dataset.cat;
-        paintFinderCats();
-        paintFinderGrid();
-      });
-    });
-  }
-  const updateFrTrack = wireRail(document.getElementById('fr-grid'), document.getElementById('fr-track-fill'), document.getElementById('fr-prev'), document.getElementById('fr-next'));
-  function paintFinderGrid(){
-    const grid = document.getElementById('fr-grid');
-    const list = finderActiveCat === 'All' ? finderAllPicks : finderAllPicks.filter(p => p.cat === finderActiveCat);
-    grid.innerHTML = list.slice(0, 6).map(productCardHTML).join('');
-    wireCards(grid);
-    grid.classList.remove('centered');
-    resetRailScroll(grid, updateFrTrack);
+  function gfIconSvg(name, size=22){
+    return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${GF_ICONS[name]}</svg>`;
   }
 
-  function runFinder(rel, occ, bud){
-    const result = document.getElementById('finder-result');
-    const cats = RELATION_CATS[rel] || null;
-    const range = BUDGET_RANGE[bud] || null;
-    const occPref = OCCASION_CATS[occ] || [];
+  const GF_STEPS = [
+    {q:'Who is this gift for?', key:'who', bg:'assets/editorial/gifts-her.webp', options:[
+      {label:'Mother', icon:'person', cats:['necklaces','earrings']},
+      {label:'Father', icon:'person', cats:['chains','rings']},
+      {label:'Partner', icon:'heart', cats:['necklaces','rings','earrings']},
+      {label:'Sister', icon:'people', cats:['bracelets','earrings']},
+      {label:'Friend', icon:'handshake', cats:['bracelets','earrings']},
+      {label:'Kids', icon:'gift', cats:['bracelets','earrings']},
+    ]},
+    {q:"What's the occasion?", key:'occasion', bg:'assets/editorial/hero-gift-frame.webp', options:[
+      {label:'Birthday', icon:'cake', cats:['earrings','bracelets']},
+      {label:'Anniversary', icon:'flower', cats:['necklaces','rings']},
+      {label:'Wedding', icon:'rings2', cats:['rings','necklaces']},
+      {label:'Valentine’s', icon:'heart', cats:['necklaces','rings']},
+      {label:'Just Because', icon:'sparkle', cats:['bracelets','chains']},
+      {label:'Rakhi', icon:'ribbon', cats:['bracelets','chains']},
+    ]},
+    {q:'What is your budget?', key:'budget', bg:'assets/editorial/gifts-him.webp', options:[
+      {label:'Under ₹10k', icon:'coin', range:[0,10000]},
+      {label:'₹10k–50k', icon:'coins', range:[10000,50000]},
+      {label:'₹50k–1L', icon:'diamond', range:[50000,100000]},
+      {label:'Above ₹1L', icon:'crown', range:[100000,Infinity]},
+    ]},
+  ];
 
+  // "Not Sure" vault — real Mia taxonomy (Style, Collection, Karatage,
+  // verified against the live site's own nav). Karatage genuinely
+  // filters the catalogue (PRODUCTS.kt is real data); Style/Collection
+  // aren't fields the catalogue tracks, so they're shown for flavour
+  // rather than pretending to filter on data that doesn't exist.
+  const GF_VAULT_B_REELS = [
+    {label:'Style', options:[
+      {label:'Classic', icon:'ring'}, {label:'Everyday', icon:'sparkle'}, {label:'Party', icon:'diamond'},
+      {label:'Cocktail', icon:'coins'}, {label:'Minimal', icon:'coin'},
+    ]},
+    {label:'Collection', options:[
+      {label:'Aurum', icon:'sparkle'}, {label:'Rhapsody', icon:'flower'}, {label:'Sunkissed', icon:'ribbon'},
+      {label:'Zen', icon:'heart'}, {label:'Manifest', icon:'diamond'},
+    ]},
+    {label:'Karatage', options:[
+      {label:'9 KT', icon:'coin', kt:'9 KT'}, {label:'14 KT', icon:'coins', kt:'14 KT'},
+      {label:'18 KT', icon:'diamond', kt:'18 KT'}, {label:'22 KT', icon:'crown', kt:'22 KT'},
+    ]},
+  ];
+
+  function gfPickMulti(answers){
+    const whoOpt = GF_STEPS[0].options.find(o=>o.label===answers.who);
+    const occOpt = GF_STEPS[1].options.find(o=>o.label===answers.occasion);
+    const budOpt = GF_STEPS[2].options.find(o=>o.label===answers.budget);
+    const cats = whoOpt ? whoOpt.cats : null;
+    const range = budOpt ? budOpt.range : null;
+    const occPref = occOpt ? occOpt.cats : [];
+    // recipient category is a hard filter, but only when it leaves
+    // enough real products to fill a 6-up carousel — budget is a soft
+    // ranking preference, not a hard cutoff, so a narrow band (e.g.
+    // "Under ₹10k") never collapses the result down to one item
     let pool = PRODUCTS.filter(p => !cats || cats.includes(p.cat));
-    let priced = range ? pool.filter(p => p.price >= range[0] && p.price < range[1]) : pool;
-    // relax budget first if it kills the result, then relax recipient — always show something
-    let final = priced.length ? priced : pool;
-    if(!final.length) final = PRODUCTS;
-
-    finderAllPicks = final.slice().sort((a,b)=>{
+    if(pool.length < 6) pool = PRODUCTS;
+    return pool.slice().sort((a,b)=>{
+      const aIn = range && a.price >= range[0] && a.price < range[1] ? 0 : 1;
+      const bIn = range && b.price >= range[0] && b.price < range[1] ? 0 : 1;
+      if(aIn !== bIn) return aIn - bIn;
       const aPref = occPref.includes(a.cat) ? 0 : 1;
       const bPref = occPref.includes(b.cat) ? 0 : 1;
       if(aPref !== bPref) return aPref - bPref;
       return b.r - a.r;
-    });
-    finderActiveCat = 'All';
-
-    document.getElementById('fr-title').textContent = `Curated for ${rel.toLowerCase()}, this ${occ.toLowerCase()}, ${priced.length ? 'within ' + bud.toLowerCase() : 'closest to ' + bud.toLowerCase()}`;
-    paintFinderCats();
-    paintFinderGrid();
-    result.classList.add('show');
-    result.scrollIntoView({behavior:'smooth', block:'nearest'});
+    }).slice(0, 6);
   }
 
-  // ---- custom dropdowns (native <select> option lists can't be themed) ----
-  function setCSelectValue(targetId, value){
-    const wrap = document.querySelector(`.cselect[data-target="${targetId}"]`);
-    if(!wrap) return;
-    document.getElementById(targetId).value = value;
-    const label = wrap.querySelector('.cselect-val');
-    label.textContent = value;
-    label.classList.remove('placeholder');
-    wrap.querySelectorAll('.cselect-opt').forEach(o=> o.classList.toggle('selected', o.dataset.value === value));
+  function gfPickSingle(bAnswers){
+    const karatOpt = GF_VAULT_B_REELS[2].options.find(o=>o.label===bAnswers[2]);
+    let pool = karatOpt ? PRODUCTS.filter(p=>p.kt===karatOpt.kt) : PRODUCTS;
+    if(!pool.length) pool = PRODUCTS;
+    const seed = bAnswers.join('').split('').reduce((n,c)=>n+c.charCodeAt(0),0);
+    const arr = pool.slice();
+    for(let i=arr.length-1;i>0;i--){ const j=(seed*(i+7))%(i+1); [arr[i],arr[j]]=[arr[j],arr[i]]; }
+    return arr.slice(0, 4);
   }
-  function resetCSelect(targetId){
-    const wrap = document.querySelector(`.cselect[data-target="${targetId}"]`);
-    if(!wrap) return;
-    document.getElementById(targetId).value = '';
-    const label = wrap.querySelector('.cselect-val');
-    label.textContent = 'Select';
-    label.classList.add('placeholder');
-    wrap.querySelectorAll('.cselect-opt').forEach(o=> o.classList.remove('selected'));
-  }
-  document.querySelectorAll('.cselect').forEach(wrap=>{
-    const btn = wrap.querySelector('.cselect-btn');
-    btn.addEventListener('click', (e)=>{
-      e.stopPropagation();
-      const willOpen = !wrap.classList.contains('open');
-      document.querySelectorAll('.cselect.open').forEach(w=> w.classList.remove('open'));
-      wrap.classList.toggle('open', willOpen);
-    });
-    wrap.querySelectorAll('.cselect-opt').forEach(opt=>{
-      opt.addEventListener('click', ()=>{
-        setCSelectValue(wrap.dataset.target, opt.dataset.value);
-        wrap.classList.remove('open');
+
+  function mountGiftFinder(root){
+    let step = 0;
+    const answers = {};
+
+    function renderStep(){
+      root.classList.remove('results');
+      const s = GF_STEPS[step];
+      root.innerHTML = `
+        <div class="gf-top">
+          <button class="gf-back-nav" id="gf-x" aria-label="Close">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+          <span class="gf-crumb">Explore &middot; <b>Gift Finder</b></span>
+        </div>
+        <div class="gf-stack">
+          <div class="gf-peek gf-peek-2"></div>
+          <div class="gf-peek gf-peek-1"></div>
+          <div class="gf-card gf-step-anim" id="gf-body">
+            <div class="gf-bg" style="background-image:url('${s.bg}')"></div>
+            <div class="gf-card-body">
+              <div class="gf-spacer-a"></div>
+              <p class="gf-step-num">${step+1}/${GF_STEPS.length}</p>
+              <h2 class="gf-question">${s.q}</h2>
+              <div class="gf-chips">
+                ${s.options.map(o=>`<button type="button" class="gf-chip" data-opt="${o.label}">${o.label}</button>`).join('')}
+              </div>
+              <div class="gf-spacer-b"></div>
+            </div>
+          </div>
+        </div>
+        <div class="gf-dots">${GF_STEPS.map((_,i)=>`<span class="${i===step?'on':''}"></span>`).join('')}</div>
+        <div class="gf-foot">
+          <button type="button" class="gf-arrow" id="gf-prev" ${step===0?'disabled':''} aria-label="Back">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <div class="gf-cta-row">
+            <button type="button" class="gf-surprise" id="gf-surprise">Surprise Me</button>
+            <button type="button" class="gf-notsure" id="gf-notsure">Not Sure</button>
+          </div>
+          <button type="button" class="gf-arrow" id="gf-next" aria-label="Next">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+        </div>`;
+
+      root.querySelectorAll('.gf-chip').forEach(chip=>{
+        if(answers[s.key] === chip.dataset.opt) chip.classList.add('sel');
+        chip.addEventListener('click', ()=>{
+          root.querySelectorAll('.gf-chip').forEach(c=>c.classList.remove('sel'));
+          chip.classList.add('sel');
+          answers[s.key] = chip.dataset.opt;
+          setTimeout(()=> step < GF_STEPS.length-1 ? goNext() : renderSlot(), 260);
+        });
       });
-    });
-  });
-  document.addEventListener('click', ()=> document.querySelectorAll('.cselect.open').forEach(w=> w.classList.remove('open')));
-  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') document.querySelectorAll('.cselect.open').forEach(w=> w.classList.remove('open')); });
+      root.querySelector('#gf-prev').addEventListener('click', ()=>{ step = Math.max(0, step-1); renderStep(); });
+      root.querySelector('#gf-next').addEventListener('click', goNext);
+      root.querySelector('#gf-surprise').addEventListener('click', renderSlot);
+      root.querySelector('#gf-notsure').addEventListener('click', renderVaultB);
+      root.querySelector('#gf-x').addEventListener('click', ()=>{ step = 0; Object.keys(answers).forEach(k=>delete answers[k]); renderStep(); });
+    }
 
-  document.getElementById('finder-form').addEventListener('submit', (e)=>{
-    e.preventDefault();
-    const rel = document.getElementById('f-relation').value;
-    const occ = document.getElementById('f-occasion').value;
-    const bud = document.getElementById('f-budget').value;
-    if(!rel || !occ || !bud){ showToast('Pick all three to find their gift'); return; }
-    runFinder(rel, occ, bud);
-  });
+    function goNext(){
+      if(step < GF_STEPS.length-1){ step++; renderStep(); }
+      else renderSlot();
+    }
 
-  document.getElementById('finder-restart').addEventListener('click', ()=>{
-    resetCSelect('f-relation'); resetCSelect('f-occasion'); resetCSelect('f-budget');
-    document.getElementById('finder-result').classList.remove('show');
-    document.getElementById('finder-form').scrollIntoView({behavior:'smooth', block:'center'});
-  });
+    function spinToLabel(stripEl, options, landLabel, duration, loops=3, cellH=92){
+      const land = options.find(o=>o.label===landLabel) || options[0];
+      let seq = [];
+      for(let l=0;l<loops;l++) seq = seq.concat(options);
+      seq.push(land);
+      stripEl.innerHTML = seq.map(o=>`<div class="reel-cell"><span class="reel-emoji">${gfIconSvg(o.icon)}</span><span class="reel-label">${o.label}</span></div>`).join('');
+      const targetY = -(seq.length-1)*cellH;
+      requestAnimationFrame(()=>{
+        stripEl.style.transition = `transform ${duration}ms cubic-bezier(.13,.82,.2,1)`;
+        stripEl.style.transform = `translateY(${targetY}px)`;
+      });
+    }
 
-  // recipient tiles are a quick-entry into the SAME finder, not a separate
-  // decision surface — they pre-fill the form and run it immediately
+    function cabinetShell(bannerText){
+      return `
+        <div class="slot-crest">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10V6l7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <p class="slot-banner">${bannerText}</p>
+        <div class="slot-reels" id="slot-reels">
+          <div class="reel"><div class="reel-strip" id="reel-0"></div></div>
+          <div class="reel"><div class="reel-strip" id="reel-1"></div></div>
+          <div class="reel"><div class="reel-strip" id="reel-2"></div></div>
+        </div>
+        <p class="slot-hint">Finding their perfect match…</p>`;
+    }
+
+    function renderSlot(){
+      root.classList.add('results');
+      GF_STEPS.forEach(s=>{
+        if(!answers[s.key]) answers[s.key] = s.options[Math.floor(Math.random()*s.options.length)].label;
+      });
+      root.innerHTML = `<div class="slot-wrap gf-r-reveal"><div class="slot-cabinet">${cabinetShell("Mia's Gift Vault")}</div></div>`;
+      const durations = [900, 1200, 1550];
+      GF_STEPS.forEach((s,i)=> spinToLabel(document.getElementById('reel-'+i), s.options, answers[s.key], durations[i]));
+      const reels = [...document.querySelectorAll('#slot-reels .reel')];
+      durations.forEach((d,i)=> setTimeout(()=> reels[i].classList.add('landed'), d+40));
+      setTimeout(renderRevealMulti, Math.max(...durations) + 500);
+    }
+
+    function wireSimpleRail(grid, prevBtn, nextBtn){
+      function update(){
+        const max = grid.scrollWidth - grid.clientWidth;
+        prevBtn.classList.toggle('hide', max <= 1 || grid.scrollLeft <= 1);
+        nextBtn.classList.toggle('hide', max <= 1 || grid.scrollLeft >= max - 1);
+      }
+      grid.addEventListener('scroll', update, {passive:true});
+      prevBtn.addEventListener('click', ()=> grid.scrollBy({left:-146, behavior:'smooth'}));
+      nextBtn.addEventListener('click', ()=> grid.scrollBy({left:146, behavior:'smooth'}));
+      update();
+    }
+
+    function renderRevealMulti(){
+      const who = (answers.who || 'them').toLowerCase();
+      const products = gfPickMulti(answers);
+      root.innerHTML = `
+        <div class="gf-results gf-r-reveal">
+          <p class="gf-r-eyebrow">Jackpot!</p>
+          <h3 class="gf-r-title">${products.length} gifts matched for your ${who}</h3>
+          <div class="gf-result-rail-wrap">
+            <button type="button" class="rec-arrow rec-arrow-prev" id="gf-result-prev" aria-label="Previous"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <div class="pcard-rail" id="gf-result-grid"></div>
+            <button type="button" class="rec-arrow rec-arrow-next" id="gf-result-next" aria-label="Next"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg></button>
+          </div>
+          <div class="gf-r-actions">
+            <button type="button" class="gf-r-btn ghost" id="gf-respin">Spin Again</button>
+            <button type="button" class="gf-r-btn primary" id="gf-restart">Start Over</button>
+          </div>
+        </div>`;
+      const grid = document.getElementById('gf-result-grid');
+      grid.innerHTML = products.map(productCardHTML).join('');
+      wireCards(grid);
+      wireSimpleRail(grid, document.getElementById('gf-result-prev'), document.getElementById('gf-result-next'));
+      root.querySelector('#gf-restart').addEventListener('click', ()=>{ step=0; Object.keys(answers).forEach(k=>delete answers[k]); renderStep(); });
+      root.querySelector('#gf-respin').addEventListener('click', renderSlot);
+    }
+
+    function renderVaultB(){
+      root.classList.add('results');
+      const bAnswers = GF_VAULT_B_REELS.map(r => r.options[Math.floor(Math.random()*r.options.length)].label);
+      root.innerHTML = `<div class="slot-wrap gf-r-reveal"><div class="slot-cabinet">${cabinetShell("Not Sure? We’ve Got You")}</div></div>`;
+      const durations = [900, 1200, 1550];
+      GF_VAULT_B_REELS.forEach((r,i)=> spinToLabel(document.getElementById('reel-'+i), r.options, bAnswers[i], durations[i]));
+      const reels = [...document.querySelectorAll('#slot-reels .reel')];
+      durations.forEach((d,i)=> setTimeout(()=> reels[i].classList.add('landed'), d+40));
+      setTimeout(()=> renderRevealSingle(bAnswers), Math.max(...durations) + 500);
+    }
+
+    function renderRevealSingle(bAnswers){
+      const pool = gfPickSingle(bAnswers);
+      let idx = 0;
+      function paint(){
+        const holder = root.querySelector('#gf-single-holder');
+        holder.innerHTML = productCardHTML(pool[idx]);
+        wireCards(holder);
+        root.querySelectorAll('.gf-single-dots span').forEach((d,i)=> d.classList.toggle('on', i===idx));
+      }
+      root.innerHTML = `
+        <div class="gf-results gf-r-reveal">
+          <p class="gf-r-eyebrow">A Place To Start</p>
+          <h3 class="gf-r-title">In ${bAnswers[0]}, from ${bAnswers[1]}, ${bAnswers[2]}</h3>
+          <div class="gf-single-wrap">
+            <button type="button" class="rec-arrow rec-arrow-prev" id="gf-single-prev" aria-label="Previous"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <div id="gf-single-holder"></div>
+            <button type="button" class="rec-arrow rec-arrow-next" id="gf-single-next" aria-label="Next"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg></button>
+          </div>
+          <div class="gf-single-dots">${pool.map((_,i)=>`<span class="${i===0?'on':''}"></span>`).join('')}</div>
+          <div class="gf-r-actions">
+            <button type="button" class="gf-r-btn ghost" id="gf-respin">Spin Again</button>
+            <button type="button" class="gf-r-btn primary" id="gf-restart">Start Over</button>
+          </div>
+        </div>`;
+      paint();
+      root.querySelector('#gf-single-prev').addEventListener('click', ()=>{ idx = (idx - 1 + pool.length) % pool.length; paint(); });
+      root.querySelector('#gf-single-next').addEventListener('click', ()=>{ idx = (idx + 1) % pool.length; paint(); });
+      root.querySelector('#gf-restart').addEventListener('click', ()=>{ step=0; Object.keys(answers).forEach(k=>delete answers[k]); renderStep(); });
+      root.querySelector('#gf-respin').addEventListener('click', renderVaultB);
+    }
+
+    // exposed so the #recipient "For Her"/"For Him" tiles can jump
+    // straight to a pre-answered slot-machine spin
+    root.__gfPrefill = function(whoLabel){
+      step = GF_STEPS.length - 1;
+      answers.who = whoLabel;
+      renderSlot();
+      root.scrollIntoView({behavior:'smooth', block:'center'});
+    };
+
+    renderStep();
+  }
+
+  const gfShell = document.getElementById('gf-shell');
+  if(gfShell) mountGiftFinder(gfShell);
+
+  // recipient tiles are a quick-entry into the SAME finder — they jump
+  // straight to the slot machine with "who" pre-filled, occasion/budget
+  // filled at random, same spirit as Surprise Me
   document.querySelectorAll('.spotlight-card[data-relation]').forEach(card=>{
     card.addEventListener('click', (e)=>{
       e.preventDefault();
-      setCSelectValue('f-relation', card.dataset.relation);
-      setCSelectValue('f-occasion', 'Birthday');
-      setCSelectValue('f-budget', '₹20,000 – ₹50,000');
-      runFinder(card.dataset.relation, 'Birthday', '₹15,000 – ₹35,000');
+      const who = card.dataset.relation === 'Spouse' ? 'Partner' : card.dataset.relation;
+      if(gfShell && gfShell.__gfPrefill) gfShell.__gfPrefill(who);
     });
   });
 

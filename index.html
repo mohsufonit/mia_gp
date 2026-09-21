@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#FFFFFF" />
 <title>Gifts They'll Never Take Off | Mia by Tanishq</title>
-<meta name="description" content="Curated jewellery gifts for every person, price and occasion. Wrapped, noted and delivered — the art of gifting, by Mia." />
+<meta name="description" content="Curated jewellery gifts for every person, price and occasion. Wrapped, noted and delivered: the art of gifting, by Mia." />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -533,7 +533,7 @@ body{padding-top:var(--header-h,127px)}
    most expensive properties on a mobile GPU, multiplied by every
    card. A slightly more opaque solid fill reads the same at this size
    without the compositing cost. */
-.pcard .pribbon{position:absolute;top:0;left:0;background:rgba(240,201,135,.94);color:#3a2410;font-size:9.5px;font-weight:800;letter-spacing:.08em;padding:6px 16px 6px 10px;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%);z-index:2}
+.pcard .pribbon{position:absolute;top:0;left:0;background:var(--ink);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.08em;padding:6px 16px 6px 10px;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%);z-index:2}
 .pcard .pwish{position:absolute;top:10px;right:10px;width:30px;height:30px;background:rgba(255,255,255,.92);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.18);transition:background .2s}
 .pcard .pwish svg{width:14px;height:14px;stroke:var(--pink-deep);fill:none;stroke-width:1.8;transition:fill .2s,stroke .2s}
 .pcard .pwish.active{background:var(--pink)}
@@ -794,20 +794,20 @@ body{padding-top:var(--header-h,127px)}
 /* one collection at a time — the banner photo stays clean (no dark
    scrim laid over it); the name/CTA/arrows live in their own solid
    plate below the photo instead of floating on top of it */
-.feat-module{display:flex;flex-direction:column;border-radius:var(--radius-lg);overflow:hidden;background:var(--cream)}
-.feat-banner-img{position:relative;flex:0 0 auto;height:150px;background-size:cover;background-position:center;transition:background-image .25s ease}
-@media(max-width:639px){.feat-banner-img{height:130px}}
-.feat-caption{display:flex;align-items:center;gap:9px;padding:10px 12px;background:var(--pink-deep);border-radius:0 0 var(--radius-lg) var(--radius-lg)}
-.feat-arrow{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.14);border:none;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s}
-.feat-arrow:hover{background:rgba(255,255,255,.26)}
+.feat-module{display:flex;flex-direction:column;border-radius:var(--radius-lg);overflow:hidden}
+.feat-banner-img{position:relative;flex:0 0 auto;height:220px;border-radius:var(--radius-lg);background-size:cover;background-position:center;transition:background-image .25s ease}
+@media(max-width:639px){.feat-banner-img{height:150px}}
+.feat-caption{display:flex;align-items:center;gap:9px;padding:12px 4px 4px}
+.feat-arrow{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--cream);border:none;color:var(--pink-deep);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s}
+.feat-arrow:hover{background:var(--blush-2)}
 .feat-caption-text{flex:1;min-width:0}
-.feat-eyebrow{font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin:0 0 2px}
-.feat-name{font-family:'Fraunces',serif;font-size:16px;color:#fff;margin:0;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.feat-cta{flex-shrink:0;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;color:var(--gold);text-decoration:none;display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
-.feat-dots{display:flex;gap:5px;justify-content:center;padding:9px 0 0;background:var(--cream)}
+.feat-eyebrow{font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--pink-deep);margin:0 0 2px}
+.feat-name{font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin:0;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.feat-cta{flex-shrink:0;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;color:var(--pink-deep);text-decoration:none;display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.feat-dots{display:flex;gap:5px;justify-content:center;padding:4px 0 14px}
 .feat-dots span{width:5px;height:5px;border-radius:50%;background:var(--line-2)}
 .feat-dots span.on{background:var(--pink-deep);width:14px;border-radius:3px;transition:all .2s}
-.feat-products{flex:1;padding:10px 10px 12px !important}
+.feat-products{flex:1}
 
 .spotlight-card{position:relative;border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:2.5/1;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding:22px;color:#fff;isolation:isolate;transition:transform .3s var(--ease)}
 .spotlight-card:hover{transform:translateY(-4px)}
@@ -825,8 +825,8 @@ body{padding-top:var(--header-h,127px)}
    budget band pre-filled. */
 .recip-panels{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media(max-width:767px){.recip-panels{grid-template-columns:1fr;gap:12px}}
-.recip-panel{position:relative;border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:3/4;display:flex;flex-direction:column;justify-content:flex-end;isolation:isolate}
-@media(max-width:767px){.recip-panel{aspect-ratio:4/5}}
+.recip-panel{position:relative;border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:4/3;display:flex;flex-direction:column;justify-content:flex-end;isolation:isolate}
+@media(max-width:767px){.recip-panel{aspect-ratio:16/10}}
 .recip-panel::before{content:"";position:absolute;inset:0;z-index:-2;background-size:cover;background-position:center;transition:transform .5s var(--ease)}
 .recip-panel:hover::before{transform:scale(1.04)}
 .recip-panel::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(20,14,15,.86) 0%,rgba(20,14,15,.28) 48%,rgba(20,14,15,0) 70%)}
@@ -840,8 +840,10 @@ body{padding-top:var(--header-h,127px)}
 .recip-price-pill:hover{background:rgba(255,255,255,.28);transform:translateY(-2px)}
 
 /* ============ Collections rail — its own section, split out from the
-   For Her/For Him panels above ============ */
-.feat-module-wrap{max-width:560px;margin:0 auto}
+   For Her/For Him panels above — same full-bleed rail padding as Shop
+   By Category, no boxed/cream background behind it */
+.feat-module-wrap{--rail-gutter:60px;position:relative;width:var(--vw,100vw);left:50%;right:50%;margin-left:calc(var(--vw,100vw) * -0.5);margin-right:calc(var(--vw,100vw) * -0.5);padding:0 var(--rail-gutter);box-sizing:border-box}
+@media(max-width:639px){.feat-module-wrap{--rail-gutter:15px}}
 
 /* ============ Birthstone filter strip ============
    A row of faceted gem chips (real per-stone colour), one active at a
@@ -849,12 +851,13 @@ body{padding-top:var(--header-h,127px)}
    product rail (months with a name-keyword match in PRODUCTS) or a
    plain "Coming Soon" state — never a dead click. */
 .bs-wrap{position:relative;display:flex;align-items:center;gap:8px;margin:4px 0 4px}
-.bs-strip{display:flex;gap:24px;overflow-x:auto;scroll-behavior:smooth;padding:24px 4px 12px;flex:1;scrollbar-width:none;-ms-overflow-style:none}
+.bs-strip{display:flex;gap:22px;overflow-x:auto;scroll-behavior:smooth;padding:28px 6px 14px;flex:1;scrollbar-width:none;-ms-overflow-style:none;justify-content:flex-start}
+.bs-strip.centered{justify-content:center}
 .bs-strip::-webkit-scrollbar{display:none}
-.bs-chip{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:9px;background:none;border:none;cursor:pointer;padding:0;font-family:inherit}
-.bs-gem{width:24px;height:24px;transform:rotate(45deg);border-radius:5px;transition:all .25s var(--ease);box-shadow:inset 0 0 0 1px rgba(255,255,255,.45),0 2px 5px rgba(0,0,0,.12)}
+.bs-chip{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:none;cursor:pointer;padding:0;font-family:inherit}
+.bs-gem{width:26px;height:auto;filter:drop-shadow(0 2px 4px rgba(0,0,0,.15));transition:all .25s var(--ease)}
 .bs-chip-label{font-size:8.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-2);transition:color .2s;white-space:nowrap}
-.bs-chip.active .bs-gem{width:38px;height:38px;transform:rotate(45deg) translateY(-7px);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.6),0 10px 18px rgba(0,0,0,.2)}
+.bs-chip.active .bs-gem{width:42px;transform:translateY(-6px);filter:drop-shadow(0 8px 14px rgba(0,0,0,.25))}
 .bs-chip.active .bs-chip-label{color:var(--pink-deep);font-weight:800}
 .bs-chip.soon{opacity:.5}
 .bs-arrow{flex-shrink:0;width:30px;height:30px;border-radius:50%;border:1px solid var(--line-2);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-2);transition:all .2s}
@@ -1231,6 +1234,20 @@ body{padding-top:var(--header-h,127px)}
 .gf-r-btn.primary:hover{background:var(--pink-hover);transform:translateY(-2px)}
 .gf-r-btn.ghost{background:none;border:1.5px solid var(--line-2);color:var(--ink-2)}
 .gf-r-btn.ghost:hover{border-color:var(--pink)}
+
+/* desktop: a landscape card, not the tall portrait phone-shaped one —
+   wider and shorter, same content just given more breathing room. Placed
+   after every base .gf-* rule above so these overrides actually win the
+   cascade (equal specificity + media query does not beat source order). */
+@media(min-width:900px){
+  .gf-embed{max-width:880px}
+  .gf-shell{height:520px;padding:26px 30px 22px}
+  .gf-card-body{padding:34px 46px}
+  .gf-question{font-size:clamp(24px,2.4vw,30px);max-width:24ch}
+  .gf-chips{grid-template-columns:repeat(4,1fr);gap:10px;max-width:640px}
+  .slot-wrap{padding:0}
+  .slot-cabinet{max-width:380px}
+}
 
 /* ============ six touches — compact section breaker ============ */
 /* condensed on purpose: reference page runs this as a full sticky-timeline
@@ -1768,7 +1785,7 @@ footer .socials svg{width:14px;height:14px}
         <div class="hero-copy rv">
           <p class="eyebrow">The Art of Gifting</p>
           <h1>Gifts They'll <em>Never</em> Take Off.</h1>
-          <p class="hero-tagline hero-tagline-full">Find theirs in a few taps — wrapped in Mia's signature box, finished with a handwritten note, and at their door in days.</p>
+          <p class="hero-tagline hero-tagline-full">Find theirs in a few taps, wrapped in Mia's signature box, finished with a handwritten note, and at their door in days.</p>
           <p class="hero-tagline hero-tagline-short">Wrapped in Mia's box, finished with a handwritten note.</p>
           <div class="hero-ctas">
             <a href="#finder" class="btn btn-outline">Help Me Choose</a>
@@ -2295,7 +2312,7 @@ footer .socials svg{width:14px;height:14px}
         </div>
       </div>
     </div>
-    <div class="foot-bottom">© 2026 Titan Company Limited. All Rights Reserved. Mia by Tanishq — A Tata Enterprise.</div>
+    <div class="foot-bottom">© 2026 Titan Company Limited. All Rights Reserved. Mia by Tanishq, A Tata Enterprise.</div>
   </div>
 </footer>
 
@@ -2332,7 +2349,7 @@ footer .socials svg{width:14px;height:14px}
 
       <div class="qv-note">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V8H6a2 2 0 0 0-2 2v10h16v-4"/><path d="M2 12h20"/></svg>
-        Arrives in Mia's signature gift box with a printed care card — free on every order.
+        Arrives in Mia's signature gift box with a printed care card, free on every order.
       </div>
 
       <div class="qv-block" style="border-top:none;margin-top:0;padding-top:0">
@@ -2406,7 +2423,7 @@ footer .socials svg{width:14px;height:14px}
     <button class="icon-btn" id="drawer-close" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
   </div>
   <div class="drawer-body" id="drawer-body">
-    <div class="drawer-empty">Your bag is empty — quick view a gift to add it.</div>
+    <div class="drawer-empty">Your bag is empty, quick view a gift to add it.</div>
   </div>
   <div class="drawer-foot" id="drawer-foot" style="display:none">
     <div class="drawer-total"><span>Total</span><span id="drawer-total-val">₹0</span></div>
@@ -2505,7 +2522,7 @@ footer .socials svg{width:14px;height:14px}
     <div class="nudge-eyebrow">Still Browsing?</div>
     <h3 class="nudge-title">Let Us Pick<br>For You.</h3>
     <div class="nudge-rule"></div>
-    <p class="nudge-copy">Three questions — recipient, occasion, budget — and we'll shortlist six pieces they'll actually wear.</p>
+    <p class="nudge-copy">Three questions: recipient, occasion, budget, and we'll shortlist six pieces they'll actually wear.</p>
     <div class="nudge-steps">
       <span class="nudge-step">Recipient</span><span class="nudge-step">Occasion</span><span class="nudge-step">Budget</span>
     </div>
@@ -3134,18 +3151,18 @@ footer .socials svg{width:14px;height:14px}
       {month:'December', short:'Dec', stone:'Blue Topaz', match:'topaz', color:'#3E7FA8'},
     ];
     const STONE_COPY = {
-      Garnet: "Deep, wine-dark red — worn as a keeper of old friendships.",
+      Garnet: "Deep, wine-dark red, worn as a keeper of old friendships.",
       Amethyst: "A violet quietness, traditionally gifted for clarity of mind.",
       Aquamarine: "Sea-glass blue, said to calm and protect on journeys.",
       Diamond: "The classic. Clarity, strength, and a gift that's never wrong.",
-      Emerald: "Rich green — associated with renewal, worn by those who love spring.",
+      Emerald: "Rich green, associated with renewal, worn by those who love spring.",
       Pearl: "Understated and soft, the traditional gift for a lifelong bond.",
-      Ruby: "Bold red — passion and vitality, a gift with real presence.",
+      Ruby: "Bold red, full of passion and vitality, a gift with real presence.",
       Peridot: "A bright olive-green, thought to carry light and good fortune.",
       Sapphire: "Deep blue, historically gifted as a symbol of loyalty.",
-      Opal: "Iridescent, ever-changing — no two stones catch light the same way.",
+      Opal: "Iridescent and ever-changing, no two stones catch light the same way.",
       Citrine: "Warm and golden, worn as a quiet symbol of optimism.",
-      'Blue Topaz': "Clear winter blue — calm, grounded, easy to wear daily.",
+      'Blue Topaz': "Clear winter blue, calm, grounded, easy to wear daily.",
     };
     const bsStrip = document.getElementById('bs-strip');
     const bsStoneName = document.getElementById('bs-stone-name');
@@ -3172,18 +3189,39 @@ footer .socials svg{width:14px;height:14px}
       }
     }
 
+    // a faceted gem silhouette (not a plain rotated square) — a kite-cut
+    // top face with a table facet and crown lines, tinted per stone
+    function bsGemSvg(color){
+      return `<svg class="bs-gem" viewBox="0 0 32 34" fill="none">
+        <polygon points="16,1 30,11 24,33 8,33 2,11" fill="${color}"/>
+        <polygon points="16,1 30,11 16,15 2,11" fill="#fff" opacity=".32"/>
+        <polygon points="2,11 16,15 8,33" fill="#000" opacity=".08"/>
+        <polygon points="30,11 16,15 24,33" fill="#000" opacity=".16"/>
+        <path d="M2 11h28M16 1v14M16 15 8 33M16 15l8 18" stroke="#fff" stroke-opacity=".55" stroke-width=".9" stroke-linejoin="round"/>
+      </svg>`;
+    }
+
     function renderChips(){
       bsStrip.innerHTML = BIRTHSTONES.map((b,i)=>{
         const has = bsMatches(b).length > 0;
         return `<button type="button" class="bs-chip ${i===bsActive?'active':''} ${has?'':'soon'}" data-i="${i}">
-          <span class="bs-gem" style="background:${b.color}"></span>
+          ${bsGemSvg(b.color)}
           <span class="bs-chip-label">${b.short}</span>
         </button>`;
       }).join('');
       bsStrip.querySelectorAll('.bs-chip').forEach(chip=>{
         chip.addEventListener('click', ()=> selectStone(+chip.dataset.i, true));
       });
+      requestAnimationFrame(updateStripCenter);
     }
+
+    // center the strip when all 12 chips fit without needing to scroll
+    // (true at most desktop widths) — only left-anchor + scroll on the
+    // narrow widths where it genuinely overflows
+    function updateStripCenter(){
+      bsStrip.classList.toggle('centered', bsStrip.scrollWidth <= bsStrip.clientWidth + 1);
+    }
+    window.addEventListener('resize', updateStripCenter);
 
     function selectStone(i, scrollChip){
       bsActive = i;
@@ -3215,7 +3253,7 @@ footer .socials svg{width:14px;height:14px}
         nextBtn.addEventListener('click', ()=> grid.scrollBy({left:(grid.querySelector('.pcard')?.offsetWidth||250) + 14, behavior:'smooth'}));
         update();
       } else {
-        bsBody.innerHTML = `<div class="bs-soon-state"><b>${b.stone} — Coming Soon</b>We're still adding ${b.stone.toLowerCase()} pieces to the collection. Check back soon, or explore another month.</div>`;
+        bsBody.innerHTML = `<div class="bs-soon-state"><b>${b.stone}: Coming Soon</b>We're still adding ${b.stone.toLowerCase()} pieces to the collection. Check back soon, or explore another month.</div>`;
       }
       if(scrollChip){
         const chipEl = bsStrip.querySelector(`.bs-chip[data-i="${i}"]`);
@@ -3341,7 +3379,7 @@ footer .socials svg{width:14px;height:14px}
 
   function renderDrawer(){
     if(!bag.length){
-      drawerBody.innerHTML = '<div class="drawer-empty">Your bag is empty — quick view a gift to add it.</div>';
+      drawerBody.innerHTML = '<div class="drawer-empty">Your bag is empty, quick view a gift to add it.</div>';
       drawerFoot.style.display = 'none';
       bagCount.style.display = 'none';
       return;
@@ -3513,7 +3551,7 @@ footer .socials svg{width:14px;height:14px}
   // for anyone who wants to build anticipation without spoiling it
   const WA_TEMPLATES = {
     them: [
-      "A little something from Mia is on its way to you — keep an eye out! 🎁",
+      "A little something from Mia is on its way to you, keep an eye out! 🎁",
       "Someone special sent you a gift. It'll be with you soon!",
       "Your gift has been wrapped with love and is on its way 💛",
     ],
@@ -3568,12 +3606,12 @@ footer .socials svg{width:14px;height:14px}
         renderWaTemplates();
       } else if(notifyAudience === 'hint'){
         qvPhone.placeholder = "Recipient's WhatsApp number";
-        qvWhatsappCopy.textContent = "We'll send a playful hint days before it arrives — not the full surprise";
+        qvWhatsappCopy.textContent = "We'll send a playful hint days before it arrives, not the full surprise";
         qvWaTemplates.style.display = '';
         renderWaTemplates();
       } else {
         qvPhone.placeholder = 'Your WhatsApp number';
-        qvWhatsappCopy.textContent = "They won't be notified — we'll message you instead, so it stays a surprise";
+        qvWhatsappCopy.textContent = "They won't be notified, we'll message you instead, so it stays a surprise";
         qvWaTemplates.style.display = 'none';
       }
     });
@@ -3743,7 +3781,7 @@ footer .socials svg{width:14px;height:14px}
       checkoutPanel.style.display = 'block';
       e.target.textContent = 'Confirm & Pay';
     } else {
-      showToast('Order confirmed — thank you!');
+      showToast('Order confirmed, thank you!');
       bag = [];
       renderDrawer();
       checkoutPanel.style.display = 'none';

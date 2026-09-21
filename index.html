@@ -533,10 +533,13 @@ body{padding-top:var(--header-h,127px)}
    most expensive properties on a mobile GPU, multiplied by every
    card. A slightly more opaque solid fill reads the same at this size
    without the compositing cost. */
-/* colour pulled from Mia's real live site's own occasion-ribbon SVG
-   (linear-gradient stop #BD0067) — their actual tag colour is a deep
-   magenta-pink, never black or gold */
-.pcard .pribbon{position:absolute;top:0;left:0;background:linear-gradient(100deg,#D6006F 0%,#A80057 100%);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.08em;padding:6px 16px 6px 10px;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%);z-index:2}
+/* colour taken directly from real screenshots of Mia's live PLP cards —
+   NEW ARRIVAL / ON OFFER / BEST SELLER all use this warm amber-gold
+   ribbon with a small sparkle mark after the text, never pink or black.
+   (The earlier #BD0067 pink was pulled from the wrong CSS class — an
+   "occasion" ribbon asset, not the actual tag shown on their tiles.) */
+.pcard .pribbon{position:absolute;top:0;left:0;background:linear-gradient(100deg,#F5B44A 0%,#DE8A1E 100%);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.06em;padding:6px 16px 6px 10px;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%);z-index:2;display:flex;align-items:center;gap:3px}
+.pcard .pribbon::after{content:'\2726';font-size:8px}
 .pcard .pwish{position:absolute;top:10px;right:10px;width:30px;height:30px;background:rgba(255,255,255,.92);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.18);transition:background .2s}
 .pcard .pwish svg{width:14px;height:14px;stroke:var(--pink-deep);fill:none;stroke-width:1.8;transition:fill .2s,stroke .2s}
 .pcard .pwish.active{background:var(--pink)}
@@ -801,15 +804,21 @@ body{padding-top:var(--header-h,127px)}
    real products together; name/CTA sit overlaid directly on the photo
    (left-aligned, dark scrim), the way the reference collection banners
    actually work, instead of in a separate plate below it */
-.feat-module{display:flex;flex-direction:column;max-width:900px;margin:0 auto;width:100%}
-.feat-banner-img{position:relative;border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:4/3;background-size:cover;background-position:center;transition:background-image .25s ease;isolation:isolate}
-@media(min-width:640px){.feat-banner-img{aspect-ratio:16/9}}
+/* full width of the rail (same gutter as Shop By Category — no extra
+   max-width cap), and a genuinely thin banner strip so the banner AND
+   the product row both fit in one screen on desktop without scrolling */
+.feat-module{display:flex;flex-direction:column;width:100%}
+.feat-banner-img{position:relative;border-radius:var(--radius-lg);overflow:hidden;height:170px;background-size:cover;background-position:center;transition:background-image .25s ease;isolation:isolate}
+@media(min-width:640px){.feat-banner-img{height:200px}}
 .feat-banner-img::after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(0deg,rgba(20,14,15,.8) 0%,rgba(20,14,15,.22) 48%,rgba(20,14,15,0) 70%)}
 .feat-caption{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:20px;gap:8px}
 .feat-eyebrow{font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin:0}
 .feat-name{font-family:'Fraunces',serif;font-size:clamp(19px,2.6vw,26px);color:#fff;margin:0;font-weight:600}
 .feat-cta{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.18);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:8px 15px;border-radius:100px}
-.feat-arrows{position:absolute;z-index:1;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 12px;pointer-events:none}
+/* pinned to the top edge, not vertically centered — the banner is now a
+   thin strip and the caption owns the whole bottom-left, so a centered
+   arrow used to sit right on top of the eyebrow/name text */
+.feat-arrows{position:absolute;z-index:1;top:10px;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:0 10px;pointer-events:none}
 .feat-arrow{pointer-events:auto;flex-shrink:0;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.22);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:none;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s}
 .feat-arrow:hover{background:rgba(255,255,255,.38)}
 .feat-dots{display:flex;gap:5px;justify-content:center;padding:12px 0 4px}
@@ -827,28 +836,23 @@ body{padding-top:var(--header-h,127px)}
 .spotlight-card span{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;opacity:.92;display:flex;align-items:center;gap:6px}
 
 /* ============ For Her / For Him — Gift By Price panels ============
-   A direct replica of David Yurman's "Gift By Price" pattern
-   (davidyurman.com/gifts.html): a plain centered title, then two
-   photo+sidebar blocks — a landscape lifestyle photo with a narrow
-   price-pill sidebar on its OUTER edge (left of the Her photo, right
-   of the Him photo, mirrored), not pills overlaid on the image. */
-.recip-panels{display:flex;flex-direction:column;gap:20px}
-@media(min-width:900px){.recip-panels{flex-direction:row;gap:24px}}
-.recip-block{display:flex;flex-direction:column;flex:1;min-width:0}
-@media(min-width:900px){
-  /* "her" block's own HTML order is sidebar-then-image (pills sit on the
-     left/outer edge); "him" is image-then-sidebar (pills on the right/
-     outer edge) — a plain row on both, no reversal needed on either */
-  .recip-block{flex-direction:row;align-items:stretch;gap:16px}
-}
-.recip-image{order:1;width:100%;aspect-ratio:16/10;background-size:cover;background-position:center;flex:1;min-width:0}
-@media(min-width:900px){.recip-image{aspect-ratio:auto}}
-.recip-sidebar{order:2;display:flex;flex-direction:column;gap:8px;padding:16px 4px 0}
-@media(min-width:900px){.recip-sidebar{flex:0 0 152px;justify-content:center;padding:0;text-align:center}}
-.recip-label{font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--ink);margin:0 0 6px;text-align:center}
-.recip-price-pill{background:var(--cream);border:1px solid var(--line-2);color:var(--ink);font-size:12px;font-weight:600;padding:12px 10px;cursor:pointer;transition:background .18s,border-color .18s;font-family:inherit;text-align:center;width:100%}
+   David Yurman's "Gift By Price" pattern (davidyurman.com/gifts.html):
+   one full lifestyle photo per side, with the price-pill stack overlaid
+   directly ON the photo, anchored to its outer corner — left corner on
+   the Her photo, right corner on the Him photo — not a separate column
+   beside the image. */
+.recip-panels{display:flex;flex-direction:column;gap:16px}
+@media(min-width:900px){.recip-panels{flex-direction:row;gap:20px}}
+.recip-block{flex:1;min-width:0}
+.recip-image{position:relative;width:100%;aspect-ratio:4/3;background-size:cover;background-position:center;border-radius:var(--radius-lg);overflow:hidden;isolation:isolate}
+@media(min-width:900px){.recip-image{aspect-ratio:6/5}}
+.recip-sidebar{position:absolute;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px;width:150px;padding:16px 14px;background:rgba(250,247,246,.88);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);border-radius:10px}
+.recip-sidebar.corner-left{left:16px}
+.recip-sidebar.corner-right{right:16px}
+@media(max-width:479px){.recip-sidebar{width:132px;padding:12px 10px;gap:6px}}
+.recip-label{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin:0 0 4px;text-align:center}
+.recip-price-pill{background:#fff;border:1px solid var(--line-2);color:var(--ink);font-size:11.5px;font-weight:600;padding:10px 8px;cursor:pointer;transition:background .18s,border-color .18s;font-family:inherit;text-align:center;width:100%}
 .recip-price-pill:hover{background:var(--blush-2);border-color:var(--pink-deep)}
-@media(max-width:899px){.recip-sidebar{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.recip-label{grid-column:1/-1;margin-bottom:0}}
 
 /* ============ Collections rail — its own section, split out from the
    For Her/For Him panels above — same full-bleed rail padding as Shop
@@ -1957,23 +1961,25 @@ footer .socials svg{width:14px;height:14px}
     </div>
     <div class="recip-panels rv">
       <div class="recip-block" data-rel="her">
-        <div class="recip-sidebar">
-          <p class="recip-label">For Her</p>
-          <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="Under ₹10k">Under ₹10k</button>
-          <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="₹10k–50k">₹10k – 50k</button>
-          <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="₹50k–1L">₹50k – 1L</button>
-          <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="Above ₹1L">Above ₹1L</button>
+        <div class="recip-image" style="background-image:url('assets/editorial/gifts-her.webp')">
+          <div class="recip-sidebar corner-left">
+            <p class="recip-label">For Her</p>
+            <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="Under ₹10k">Under ₹10k</button>
+            <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="₹10k–50k">₹10k – 50k</button>
+            <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="₹50k–1L">₹50k – 1L</button>
+            <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="Above ₹1L">Above ₹1L</button>
+          </div>
         </div>
-        <div class="recip-image" style="background-image:url('assets/editorial/gifts-her.webp')"></div>
       </div>
-      <div class="recip-block rev" data-rel="him">
-        <div class="recip-image" style="background-image:url('assets/editorial/gifts-him.webp')"></div>
-        <div class="recip-sidebar">
-          <p class="recip-label">For Him</p>
-          <button type="button" class="recip-price-pill" data-relation="Father" data-budget="Under ₹10k">Under ₹10k</button>
-          <button type="button" class="recip-price-pill" data-relation="Father" data-budget="₹10k–50k">₹10k – 50k</button>
-          <button type="button" class="recip-price-pill" data-relation="Father" data-budget="₹50k–1L">₹50k – 1L</button>
-          <button type="button" class="recip-price-pill" data-relation="Father" data-budget="Above ₹1L">Above ₹1L</button>
+      <div class="recip-block" data-rel="him">
+        <div class="recip-image" style="background-image:url('assets/editorial/gifts-him.webp')">
+          <div class="recip-sidebar corner-right">
+            <p class="recip-label">For Him</p>
+            <button type="button" class="recip-price-pill" data-relation="Father" data-budget="Under ₹10k">Under ₹10k</button>
+            <button type="button" class="recip-price-pill" data-relation="Father" data-budget="₹10k–50k">₹10k – 50k</button>
+            <button type="button" class="recip-price-pill" data-relation="Father" data-budget="₹50k–1L">₹50k – 1L</button>
+            <button type="button" class="recip-price-pill" data-relation="Father" data-budget="Above ₹1L">Above ₹1L</button>
+          </div>
         </div>
       </div>
     </div>
@@ -3387,8 +3393,8 @@ footer .socials svg{width:14px;height:14px}
     const items = PRODUCTS.filter(p=>favMatch(p,key)).slice(0,8);
     tfGrid.innerHTML = items.map(productCardHTML).join('');
     wireCards(tfGrid);
-    tfGrid.classList.remove('centered');
     resetRailScroll(tfGrid, updateTfTrack);
+    requestAnimationFrame(()=> tfGrid.classList.toggle('centered', tfGrid.scrollWidth <= tfGrid.clientWidth + 1));
     // "Shop Most Gifted" / "Shop Best Sellers" / etc. — reflects whichever
     // pill is active, not a generic "View All Products"
     tfViewAll.firstChild.textContent = `Shop ${TF_LABELS[key]} `;

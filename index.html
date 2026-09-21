@@ -533,12 +533,15 @@ body{padding-top:var(--header-h,127px)}
    most expensive properties on a mobile GPU, multiplied by every
    card. A slightly more opaque solid fill reads the same at this size
    without the compositing cost. */
-.pcard .pribbon{position:absolute;top:0;left:0;background:var(--ink);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.08em;padding:6px 16px 6px 10px;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%);z-index:2}
+/* colour pulled from Mia's real live site's own occasion-ribbon SVG
+   (linear-gradient stop #BD0067) — their actual tag colour is a deep
+   magenta-pink, never black or gold */
+.pcard .pribbon{position:absolute;top:0;left:0;background:linear-gradient(100deg,#D6006F 0%,#A80057 100%);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.08em;padding:6px 16px 6px 10px;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%);z-index:2}
 .pcard .pwish{position:absolute;top:10px;right:10px;width:30px;height:30px;background:rgba(255,255,255,.92);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.18);transition:background .2s}
 .pcard .pwish svg{width:14px;height:14px;stroke:var(--pink-deep);fill:none;stroke-width:1.8;transition:fill .2s,stroke .2s}
 .pcard .pwish.active{background:var(--pink)}
 .pcard .pwish.active svg{stroke:#fff;fill:#fff}
-.pcard .prating{position:absolute;bottom:18px;left:18px;background:rgba(255,255,255,.92);padding:4px 9px;border-radius:100px;font-size:11px;font-weight:700;color:var(--pink-deep);display:flex;align-items:center;gap:4px;z-index:2}
+.pcard .prating{position:absolute;bottom:10px;left:10px;background:rgba(255,255,255,.92);padding:4px 9px;border-radius:100px;font-size:11px;font-weight:700;color:var(--pink-deep);display:flex;align-items:center;gap:4px;z-index:2}
 .pcard .prating .star{color:#f2a01c;font-size:11px;line-height:1}
 .pcard .prating .sep{color:#d8d8d8;margin:0 1px}
 /* compare + zoom — same white-on-pink circle language as the wishlist icon */
@@ -819,25 +822,29 @@ body{padding-top:var(--header-h,127px)}
 .spotlight-card span{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;opacity:.92;display:flex;align-items:center;gap:6px}
 
 /* ============ For Her / For Him — Gift By Price panels ============
-   Two lifestyle-photo panels side by side (David Yurman "Gift By Price"
-   pattern), each with a row of budget-tier pills instead of a single
-   CTA — clicking a pill jumps into the finder with recipient + that
-   budget band pre-filled. */
-.recip-panels{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media(max-width:767px){.recip-panels{grid-template-columns:1fr;gap:12px}}
-.recip-panel{position:relative;border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:4/3;display:flex;flex-direction:column;justify-content:flex-end;isolation:isolate}
-@media(max-width:767px){.recip-panel{aspect-ratio:16/10}}
-.recip-panel::before{content:"";position:absolute;inset:0;z-index:-2;background-size:cover;background-position:center;transition:transform .5s var(--ease)}
-.recip-panel:hover::before{transform:scale(1.04)}
-.recip-panel::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(20,14,15,.86) 0%,rgba(20,14,15,.28) 48%,rgba(20,14,15,0) 70%)}
-.recip-panel[data-rel="her"]::before{background-image:url('assets/editorial/gifts-her.webp')}
-.recip-panel[data-rel="him"]::before{background-image:url('assets/editorial/gifts-him.webp')}
-.recip-panel-body{padding:22px;color:#fff}
-.recip-sub{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.88;margin:0 0 6px}
-.recip-panel h4{font-family:'Fraunces',serif;font-size:clamp(19px,2.6vw,24px);font-weight:600;margin:0 0 14px;max-width:22ch}
-.recip-price-row{display:flex;gap:7px;flex-wrap:wrap}
-.recip-price-pill{background:rgba(255,255,255,.14);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.32);color:#fff;font-size:11px;font-weight:700;padding:7px 13px;border-radius:100px;cursor:pointer;transition:background .18s,transform .18s;font-family:inherit}
-.recip-price-pill:hover{background:rgba(255,255,255,.28);transform:translateY(-2px)}
+   A direct replica of David Yurman's "Gift By Price" pattern
+   (davidyurman.com/gifts.html): a plain centered title, then two
+   photo+sidebar blocks — a landscape lifestyle photo with a narrow
+   price-pill sidebar on its OUTER edge (left of the Her photo, right
+   of the Him photo, mirrored), not pills overlaid on the image. */
+.recip-title{text-align:center;font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);margin:0 0 26px}
+.recip-panels{display:flex;flex-direction:column;gap:20px}
+@media(min-width:900px){.recip-panels{flex-direction:row;gap:24px}}
+.recip-block{display:flex;flex-direction:column;flex:1;min-width:0}
+@media(min-width:900px){
+  /* "her" block's own HTML order is sidebar-then-image (pills sit on the
+     left/outer edge); "him" is image-then-sidebar (pills on the right/
+     outer edge) — a plain row on both, no reversal needed on either */
+  .recip-block{flex-direction:row;align-items:stretch;gap:16px}
+}
+.recip-image{order:1;width:100%;aspect-ratio:16/10;background-size:cover;background-position:center;flex:1;min-width:0}
+@media(min-width:900px){.recip-image{aspect-ratio:auto}}
+.recip-sidebar{order:2;display:flex;flex-direction:column;gap:8px;padding:16px 4px 0}
+@media(min-width:900px){.recip-sidebar{flex:0 0 152px;justify-content:center;padding:0;text-align:center}}
+.recip-label{font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--ink);margin:0 0 6px;text-align:center}
+.recip-price-pill{background:var(--cream);border:1px solid var(--line-2);color:var(--ink);font-size:12px;font-weight:600;padding:12px 10px;cursor:pointer;transition:background .18s,border-color .18s;font-family:inherit;text-align:center;width:100%}
+.recip-price-pill:hover{background:var(--blush-2);border-color:var(--pink-deep)}
+@media(max-width:899px){.recip-sidebar{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.recip-label{grid-column:1/-1;margin-bottom:0}}
 
 /* ============ Collections rail — its own section, split out from the
    For Her/For Him panels above — same full-bleed rail padding as Shop
@@ -845,31 +852,46 @@ body{padding-top:var(--header-h,127px)}
 .feat-module-wrap{--rail-gutter:60px;position:relative;width:var(--vw,100vw);left:50%;right:50%;margin-left:calc(var(--vw,100vw) * -0.5);margin-right:calc(var(--vw,100vw) * -0.5);padding:0 var(--rail-gutter);box-sizing:border-box}
 @media(max-width:639px){.feat-module-wrap{--rail-gutter:15px}}
 
-/* ============ Birthstone filter strip ============
+/* ============ Birthstone filter strip — a pink section breaker, same
+   full-bleed gradient + glitter-dust treatment as every other breaker
+   band on the page (meaning-section, touches-section, newsletter) ============
    A row of faceted gem chips (real per-stone colour), one active at a
-   time; the active chip lifts and enlarges. Below it, either a real
-   product rail (months with a name-keyword match in PRODUCTS) or a
-   plain "Coming Soon" state — never a dead click. */
+   time; the active chip lifts and enlarges, and any chip gets a small
+   hover nudge. Below it, either a real product rail (months with a
+   name-keyword match in PRODUCTS) or a plain "Coming Soon" state —
+   never a dead click. No prev/next arrows on the strip itself: it
+   centers and fits without scrolling at almost every width, so a
+   scroll control would mostly do nothing. */
+#birthstone{position:relative;overflow:hidden;padding-top:56px;padding-bottom:56px}
+#birthstone::before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(70% 90% at 80% 0%, rgba(255,255,255,.16), transparent 60%),
+    radial-gradient(145% 165% at 35% 15%, #F26AA8 0%, #E4127D 32%, #A80E5E 62%, #3D0620 100%);
+}
+#birthstone .section-head,#birthstone .bs-wrap,#birthstone .bs-info,#birthstone #bs-body{position:relative;z-index:1}
+#birthstone .eyebrow{color:var(--gold)}
+#birthstone .section-head h2{color:#fff}
 .bs-wrap{position:relative;display:flex;align-items:center;gap:8px;margin:4px 0 4px}
 .bs-strip{display:flex;gap:22px;overflow-x:auto;scroll-behavior:smooth;padding:28px 6px 14px;flex:1;scrollbar-width:none;-ms-overflow-style:none;justify-content:flex-start}
 .bs-strip.centered{justify-content:center}
 .bs-strip::-webkit-scrollbar{display:none}
 .bs-chip{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:none;cursor:pointer;padding:0;font-family:inherit}
-.bs-gem{width:26px;height:auto;filter:drop-shadow(0 2px 4px rgba(0,0,0,.15));transition:all .25s var(--ease)}
-.bs-chip-label{font-size:8.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-2);transition:color .2s;white-space:nowrap}
-.bs-chip.active .bs-gem{width:42px;transform:translateY(-6px);filter:drop-shadow(0 8px 14px rgba(0,0,0,.25))}
-.bs-chip.active .bs-chip-label{color:var(--pink-deep);font-weight:800}
-.bs-chip.soon{opacity:.5}
-.bs-arrow{flex-shrink:0;width:30px;height:30px;border-radius:50%;border:1px solid var(--line-2);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-2);transition:all .2s}
-.bs-arrow:hover{border-color:var(--pink-deep);color:var(--pink-deep)}
+.bs-gem{width:26px;height:auto;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25));transition:transform .3s var(--ease),width .25s var(--ease),filter .3s var(--ease)}
+.bs-chip-label{font-size:8.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.72);transition:color .2s;white-space:nowrap}
+.bs-chip:hover .bs-gem{transform:scale(1.15) rotate(-6deg) translateY(-3px)}
+.bs-chip.active .bs-gem{width:42px;transform:translateY(-6px);filter:drop-shadow(0 8px 14px rgba(0,0,0,.35))}
+.bs-chip.active:hover .bs-gem{transform:translateY(-9px) rotate(-4deg)}
+.bs-chip.active .bs-chip-label{color:var(--gold);font-weight:800}
+.bs-chip.soon{opacity:.55}
 .bs-info{text-align:center;margin:8px 0 22px}
-.bs-stone-name{font-family:'Fraunces',serif;font-size:clamp(20px,2.6vw,26px);font-weight:600;margin:0 0 6px}
-.bs-stone-sub{font-size:12px;color:var(--ink-2);margin:0}
+.bs-stone-name{font-family:'Fraunces',serif;font-size:clamp(20px,2.6vw,26px);font-weight:600;margin:0 0 6px;color:#fff}
+.bs-stone-sub{font-size:12px;color:rgba(255,255,255,.8);margin:0}
 .bs-result-wrap{position:relative}
 .bs-result-wrap .rec-arrow:not(.hide){display:flex!important;width:32px;height:32px}
 @media(min-width:1024px){.bs-result-wrap .rec-arrow:not(.hide){width:38px;height:38px}}
-.bs-soon-state{text-align:center;padding:44px 20px;color:var(--ink-2);font-size:12.5px;background:var(--cream);border-radius:var(--radius-lg)}
-.bs-soon-state b{display:block;font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:6px;font-weight:600}
+.bs-soon-state{text-align:center;padding:44px 20px;color:rgba(255,255,255,.85);font-size:12.5px;background:rgba(255,255,255,.1);border-radius:var(--radius-lg)}
+.bs-soon-state b{display:block;font-family:'Fraunces',serif;font-size:17px;color:#fff;margin-bottom:6px;font-weight:600}
 
 /* ============ coin & gift card section breaker ============
    Full-bleed satin pink (same gradient family as the product cards and
@@ -892,7 +914,7 @@ body{padding-top:var(--header-h,127px)}
    the coin/gift-card section */
 /* exact same white dot texture as the hero card — every pink breaker band
    uses the identical decoration instead of a separate gold-dot version */
-.meaning-section::after,.touches-section::after,.newsletter::after{
+.meaning-section::after,.touches-section::after,.newsletter::after,#birthstone::after{
   content:"";position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.9;
   background-image:
     radial-gradient(1.6px 1.6px at 8% 22%, rgba(255,255,255,.95), transparent),
@@ -1241,7 +1263,10 @@ body{padding-top:var(--header-h,127px)}
    cascade (equal specificity + media query does not beat source order). */
 @media(min-width:900px){
   .gf-embed{max-width:880px}
-  .gf-shell{height:520px;padding:26px 30px 22px}
+  /* tall enough that the real, full-size result cards (~395px) plus the
+     eyebrow/title above and Spin Again/Start Over below actually fit —
+     520px clipped the action row at the bottom of the results step */
+  .gf-shell{height:600px;padding:26px 30px 20px}
   .gf-card-body{padding:34px 46px}
   .gf-question{font-size:clamp(24px,2.4vw,30px);max-width:24ch}
   .gf-chips{grid-template-columns:repeat(4,1fr);gap:10px;max-width:640px}
@@ -1910,35 +1935,26 @@ footer .socials svg{width:14px;height:14px}
      still filled at random, same spirit as Surprise Me. -->
 <section class="band" id="recipient">
   <div class="container">
-    <div class="section-head rv">
-      <div>
-        <p class="eyebrow">Gift By Price</p>
-        <h2>For Her, For Him</h2>
-      </div>
-    </div>
+    <p class="recip-title rv">Gift By Price</p>
     <div class="recip-panels rv">
-      <div class="recip-panel" data-rel="her">
-        <div class="recip-panel-body">
-          <p class="recip-sub">For Her</p>
-          <h4>Gifts She'll Reach For Every Day</h4>
-          <div class="recip-price-row">
-            <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="Under ₹10k">Under ₹10k</button>
-            <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="₹10k–50k">₹10k – 50k</button>
-            <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="₹50k–1L">₹50k – 1L</button>
-            <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="Above ₹1L">Above ₹1L</button>
-          </div>
+      <div class="recip-block" data-rel="her">
+        <div class="recip-sidebar">
+          <p class="recip-label">For Her</p>
+          <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="Under ₹10k">Under ₹10k</button>
+          <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="₹10k–50k">₹10k – 50k</button>
+          <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="₹50k–1L">₹50k – 1L</button>
+          <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="Above ₹1L">Above ₹1L</button>
         </div>
+        <div class="recip-image" style="background-image:url('assets/editorial/gifts-her.webp')"></div>
       </div>
-      <div class="recip-panel" data-rel="him">
-        <div class="recip-panel-body">
-          <p class="recip-sub">For Him</p>
-          <h4>Understated Pieces He'll Actually Wear</h4>
-          <div class="recip-price-row">
-            <button type="button" class="recip-price-pill" data-relation="Father" data-budget="Under ₹10k">Under ₹10k</button>
-            <button type="button" class="recip-price-pill" data-relation="Father" data-budget="₹10k–50k">₹10k – 50k</button>
-            <button type="button" class="recip-price-pill" data-relation="Father" data-budget="₹50k–1L">₹50k – 1L</button>
-            <button type="button" class="recip-price-pill" data-relation="Father" data-budget="Above ₹1L">Above ₹1L</button>
-          </div>
+      <div class="recip-block rev" data-rel="him">
+        <div class="recip-image" style="background-image:url('assets/editorial/gifts-him.webp')"></div>
+        <div class="recip-sidebar">
+          <p class="recip-label">For Him</p>
+          <button type="button" class="recip-price-pill" data-relation="Father" data-budget="Under ₹10k">Under ₹10k</button>
+          <button type="button" class="recip-price-pill" data-relation="Father" data-budget="₹10k–50k">₹10k – 50k</button>
+          <button type="button" class="recip-price-pill" data-relation="Father" data-budget="₹50k–1L">₹50k – 1L</button>
+          <button type="button" class="recip-price-pill" data-relation="Father" data-budget="Above ₹1L">Above ₹1L</button>
         </div>
       </div>
     </div>
@@ -1958,9 +1974,7 @@ footer .socials svg{width:14px;height:14px}
       </div>
     </div>
     <div class="bs-wrap rv">
-      <button type="button" class="bs-arrow bs-arrow-prev" id="bs-prev" aria-label="Scroll months back"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg></button>
       <div class="bs-strip" id="bs-strip"></div>
-      <button type="button" class="bs-arrow bs-arrow-next" id="bs-next" aria-label="Scroll months forward"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg></button>
     </div>
     <div class="bs-info" id="bs-info">
       <h3 class="bs-stone-name" id="bs-stone-name"></h3>
@@ -3260,9 +3274,6 @@ footer .socials svg{width:14px;height:14px}
         if(chipEl) chipEl.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
       }
     }
-
-    document.getElementById('bs-prev').addEventListener('click', ()=> bsStrip.scrollBy({left:-160, behavior:'smooth'}));
-    document.getElementById('bs-next').addEventListener('click', ()=> bsStrip.scrollBy({left:160, behavior:'smooth'}));
 
     renderChips();
     selectStone(bsActive, false);

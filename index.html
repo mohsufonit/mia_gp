@@ -533,13 +533,17 @@ body{padding-top:var(--header-h,127px)}
    most expensive properties on a mobile GPU, multiplied by every
    card. A slightly more opaque solid fill reads the same at this size
    without the compositing cost. */
-/* colour taken directly from real screenshots of Mia's live PLP cards —
-   NEW ARRIVAL / ON OFFER / BEST SELLER all use this warm amber-gold
-   ribbon with a small sparkle mark after the text, never pink or black.
-   (The earlier #BD0067 pink was pulled from the wrong CSS class — an
-   "occasion" ribbon asset, not the actual tag shown on their tiles.) */
-.pcard .pribbon{position:absolute;top:0;left:0;background:linear-gradient(100deg,#F5B44A 0%,#DE8A1E 100%);color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.06em;padding:6px 16px 6px 10px;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%);z-index:2;display:flex;align-items:center;gap:3px}
+/* colours taken directly from real screenshots of Mia's live PLP cards —
+   not one single tag colour: NEW ARRIVAL / ON OFFER / attribute tags
+   (karat, weight) use a warm amber-gold ribbon, while BEST SELLER /
+   MOST GIFTED (the social-proof badges) use a separate pink-rose
+   gradient — both with the same small sparkle mark after the text.
+   (An earlier pass used #BD0067 pink for everything, pulled from the
+   wrong CSS class — an "occasion" ribbon asset, not the actual tags.) */
+.pcard .pribbon{position:absolute;top:0;left:0;color:#fff;font-size:9.5px;font-weight:800;letter-spacing:.06em;padding:6px 16px 6px 10px;text-transform:uppercase;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%);z-index:2;display:flex;align-items:center;gap:3px}
 .pcard .pribbon::after{content:'\2726';font-size:8px}
+.pcard .pribbon.pribbon-amber{background:linear-gradient(100deg,#F5B44A 0%,#DE8A1E 100%)}
+.pcard .pribbon.pribbon-rose{background:linear-gradient(100deg,#F0677D 0%,#C2395A 100%)}
 .pcard .pwish{position:absolute;top:10px;right:10px;width:30px;height:30px;background:rgba(255,255,255,.92);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.18);transition:background .2s}
 .pcard .pwish svg{width:14px;height:14px;stroke:var(--pink-deep);fill:none;stroke-width:1.8;transition:fill .2s,stroke .2s}
 .pcard .pwish.active{background:var(--pink)}
@@ -851,8 +855,10 @@ body{padding-top:var(--header-h,127px)}
 .recip-sidebar.corner-right{right:16px}
 @media(max-width:479px){.recip-sidebar{width:132px;padding:12px 10px;gap:6px}}
 .recip-label{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin:0 0 4px;text-align:center}
-.recip-price-pill{background:#fff;border:1px solid var(--line-2);color:var(--ink);font-size:11.5px;font-weight:600;padding:10px 8px;cursor:pointer;transition:background .18s,border-color .18s;font-family:inherit;text-align:center;width:100%}
-.recip-price-pill:hover{background:var(--blush-2);border-color:var(--pink-deep)}
+/* a pink tint, not plain white/grey — the pill was reading as
+   colourless and disconnected from the rest of the brand's pink */
+.recip-price-pill{background:var(--blush-2);border:1px solid rgba(168,14,94,.22);color:var(--pink-deep);font-size:11.5px;font-weight:700;padding:10px 8px;cursor:pointer;transition:background .18s,border-color .18s;font-family:inherit;text-align:center;width:100%}
+.recip-price-pill:hover{background:var(--blush);border-color:var(--pink-deep)}
 
 /* ============ Collections rail — its own section, split out from the
    For Her/For Him panels above — same full-bleed rail padding as Shop
@@ -3014,12 +3020,19 @@ footer .socials svg{width:14px;height:14px}
 
   // shared card renderer — used by the recommender grid AND the gift finder
   // results, so both surfaces are always visually and behaviourally identical
+  // Mia's real PLP tags aren't all one colour — screenshots of their live
+  // site show BEST SELLER / MOST GIFTED (social-proof badges) in a
+  // pink-rose gradient, while NEW ARRIVAL and every attribute tag
+  // (karat, weight) stay in the amber-gold family
+  function ribbonClass(tag){
+    return (tag === 'BEST SELLER' || tag === 'MOST GIFTED') ? 'pribbon-rose' : 'pribbon-amber';
+  }
   function productCardHTML(p){
     return `
       <button class="pcard" data-code="${p.code}">
         <svg class="csparkle cs1" style="top:2%;left:50%" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6l2 6-2 6-2-6z"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
         <div class="pthumb">
-          <span class="pribbon">${p.tag}</span>
+          <span class="pribbon ${ribbonClass(p.tag)}">${p.tag}</span>
           <span class="pwish" aria-label="wishlist" onclick="this.classList.toggle('active');event.stopPropagation();">
             <svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-9c-1.5-2.7 0-6.5 3.5-7s6 3 6 3 2.5-3.5 6-3 5 4.3 3.5 7c-2.5 4.5-9.5 9-9.5 9z"/></svg>
           </span>

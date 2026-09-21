@@ -1598,6 +1598,20 @@ footer .socials svg{width:14px;height:14px}
 .qv-whatsapp-label svg{color:#25D366;flex-shrink:0;margin-top:1px}
 .qv-whatsapp-label span{min-width:0}
 
+/* template picker + personalised message — shown for "Notify Them" and
+   "Just A Hint" (the recipient actually gets messaged in both cases),
+   hidden for "Keep It A Surprise" (only the sender is contacted) */
+.qv-wa-templates{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line-2)}
+.qv-wa-sub{font-size:11px;font-weight:700;color:var(--ink-2);margin:0 0 8px}
+.qv-wa-tpl-list{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.qv-wa-tpl{text-align:left;padding:9px 12px;border:1.5px solid var(--line-2);border-radius:10px;font-size:12px;line-height:1.4;color:var(--ink-2);cursor:pointer;transition:all .18s;background:#fff}
+.qv-wa-tpl:hover{border-color:var(--pink)}
+.qv-wa-tpl.active{border-color:var(--pink);background:var(--blush-2);color:var(--pink-deep);font-weight:600}
+.qv-wa-custom{width:100%;padding:10px 12px;border:1.5px solid var(--line-2);border-radius:8px;font-family:inherit;font-size:12.5px;resize:vertical;min-height:52px}
+.qv-wa-custom:focus{outline:none;border-color:var(--pink)}
+.qv-wa-custom.active{border-color:var(--pink);background:var(--blush-2)}
+.qv-wa-count{text-align:right;font-size:10.5px;color:var(--muted);margin-top:4px}
+
 .qv-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
 .qv-actions .btn-primary{flex:1;min-width:180px}
 /* matches Mia's real "Wrap it & Add to Bag" CTA — flat grey until a valid
@@ -2253,14 +2267,21 @@ footer .socials svg{width:14px;height:14px}
         </div>
         <div class="qv-whatsapp" id="qv-whatsapp-wrap">
           <div class="qv-audience-row" id="qv-audience-row">
-            <button type="button" class="qv-audience-btn active" data-who="them">Notify them</button>
-            <button type="button" class="qv-audience-btn" data-who="me">Keep it a surprise — notify only me</button>
+            <button type="button" class="qv-audience-btn active" data-who="them">Notify Them</button>
+            <button type="button" class="qv-audience-btn" data-who="hint">Just A Hint</button>
+            <button type="button" class="qv-audience-btn" data-who="me">Keep It A Surprise</button>
           </div>
           <p class="qv-whatsapp-label">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11 11 0 0 0 3.7 17.4L2 22l4.7-1.6A11 11 0 1 0 20.5 3.5Z" opacity=".15"/><path d="M17.4 14.4c-.3-.2-1.7-.9-2-1s-.5-.1-.7.1-.7 1-.9 1.1-.4.2-.7.1a8.6 8.6 0 0 1-2.5-1.6 9.3 9.3 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.4-.5c.1-.2.1-.3.2-.5s0-.4 0-.5L9 7.1c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 2.9 2.9 0 0 0-.9 2.1c0 1.2.9 2.4 1 2.6s1.7 2.7 4.3 3.7a5 5 0 0 0 3 .6c.6-.1 1.7-.7 2-1.4s.3-1.2.2-1.4-.3-.2-.6-.4Z"/></svg>
             <span id="qv-whatsapp-copy">We'll message them a day before delivery, not the surprise</span>
           </p>
           <input type="tel" class="qv-phone" id="qv-phone" placeholder="Recipient's WhatsApp number">
+          <div class="qv-wa-templates" id="qv-wa-templates">
+            <p class="qv-wa-sub">Choose a message, or write your own</p>
+            <div class="qv-wa-tpl-list" id="qv-wa-tpl-list"></div>
+            <textarea class="qv-wa-custom" id="qv-wa-custom" placeholder="Write a personal message instead…" maxlength="140" rows="2"></textarea>
+            <div class="qv-wa-count"><span id="qv-wa-count-val">0</span>/140</div>
+          </div>
         </div>
       </div>
 
@@ -3252,10 +3273,61 @@ footer .socials svg{width:14px;height:14px}
   const qvWhatsappWrap = document.getElementById('qv-whatsapp-wrap');
   const qvPhone = document.getElementById('qv-phone');
   const qvWhatsappCopy = document.getElementById('qv-whatsapp-copy');
+  const qvWaTemplates = document.getElementById('qv-wa-templates');
+  const qvWaTplList = document.getElementById('qv-wa-tpl-list');
+  const qvWaCustom = document.getElementById('qv-wa-custom');
+  const qvWaCount = document.getElementById('qv-wa-count-val');
   let notifyAudience = 'them';
+  let waSelectedTemplate = null; // the chosen template's text, or null if writing custom
+
+  // pre-written options per mode — "Notify Them" tells them a gift is
+  // coming; "Just A Hint" teases it without confirming what or when,
+  // for anyone who wants to build anticipation without spoiling it
+  const WA_TEMPLATES = {
+    them: [
+      "A little something from Mia is on its way to you — keep an eye out! 🎁",
+      "Someone special sent you a gift. It'll be with you soon!",
+      "Your gift has been wrapped with love and is on its way 💛",
+    ],
+    hint: [
+      "Someone's thinking of you… more soon 👀",
+      "A little surprise is brewing for you. Stay tuned 🤫",
+      "Keep an eye on your door this week…",
+    ],
+  };
+
+  function renderWaTemplates(){
+    const list = WA_TEMPLATES[notifyAudience] || [];
+    qvWaTplList.innerHTML = list.map((t,i)=>`<button type="button" class="qv-wa-tpl" data-i="${i}">${t}</button>`).join('');
+    waSelectedTemplate = list[0] || null;
+    qvWaCustom.value = '';
+    qvWaCount.textContent = '0';
+    updateWaSelection();
+    qvWaTplList.querySelectorAll('.qv-wa-tpl').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        waSelectedTemplate = list[+btn.dataset.i];
+        qvWaCustom.value = '';
+        qvWaCount.textContent = '0';
+        updateWaSelection();
+      });
+    });
+  }
+  function updateWaSelection(){
+    qvWaTplList.querySelectorAll('.qv-wa-tpl').forEach((btn,i)=>{
+      btn.classList.toggle('active', waSelectedTemplate === WA_TEMPLATES[notifyAudience][i]);
+    });
+    qvWaCustom.classList.toggle('active', !!qvWaCustom.value.trim());
+  }
+  qvWaCustom.addEventListener('input', ()=>{
+    qvWaCount.textContent = qvWaCustom.value.length;
+    if(qvWaCustom.value.trim()) waSelectedTemplate = null;
+    updateWaSelection();
+  });
+
   qvNotify.addEventListener('change', ()=> qvWhatsappWrap.classList.toggle('show', qvNotify.checked));
-  // who gets the WhatsApp update — the recipient, or just the sender (so the
-  // surprise stays intact but the sender still gets delivery peace of mind)
+  // who gets the WhatsApp update: the recipient with a full heads-up,
+  // the recipient with just a teasing hint, or only the sender (so the
+  // surprise stays fully intact but they still get delivery peace of mind)
   document.querySelectorAll('.qv-audience-btn').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       document.querySelectorAll('.qv-audience-btn').forEach(b=>b.classList.remove('active'));
@@ -3264,12 +3336,21 @@ footer .socials svg{width:14px;height:14px}
       if(notifyAudience === 'them'){
         qvPhone.placeholder = "Recipient's WhatsApp number";
         qvWhatsappCopy.textContent = "We'll message them a day before delivery, not the surprise";
+        qvWaTemplates.style.display = '';
+        renderWaTemplates();
+      } else if(notifyAudience === 'hint'){
+        qvPhone.placeholder = "Recipient's WhatsApp number";
+        qvWhatsappCopy.textContent = "We'll send a playful hint days before it arrives — not the full surprise";
+        qvWaTemplates.style.display = '';
+        renderWaTemplates();
       } else {
         qvPhone.placeholder = 'Your WhatsApp number';
         qvWhatsappCopy.textContent = "They won't be notified — we'll message you instead, so it stays a surprise";
+        qvWaTemplates.style.display = 'none';
       }
     });
   });
+  renderWaTemplates();
 
   // ---- Mia calendar: custom date picker replacing the generic OS one ----
   const qvDateHidden = document.getElementById('qv-date');
@@ -3386,6 +3467,8 @@ footer .socials svg{width:14px;height:14px}
     qvWhatsappCopy.textContent = "We'll message them a day before delivery, not the surprise";
     notifyAudience = 'them';
     document.querySelectorAll('.qv-audience-btn').forEach(b=>b.classList.toggle('active', b.dataset.who==='them'));
+    qvWaTemplates.style.display = '';
+    renderWaTemplates();
     activeWrap = null; activeSticker = null;
     qvWraps.querySelectorAll('.qv-wrap-swatch').forEach(b=>b.classList.remove('active'));
     qvStickersEl.querySelectorAll('.sticker-btn').forEach(b=>b.classList.remove('active'));
@@ -3415,7 +3498,8 @@ footer .socials svg{width:14px;height:14px}
       date: document.getElementById('qv-date').value,
       notify: qvNotify.checked,
       notifyAudience: qvNotify.checked ? notifyAudience : null,
-      phone: qvPhone.value
+      phone: qvPhone.value,
+      whatsappMessage: (qvNotify.checked && notifyAudience !== 'me') ? (qvWaCustom.value.trim() || waSelectedTemplate) : null
     });
     renderDrawer();
     closeQuickView();

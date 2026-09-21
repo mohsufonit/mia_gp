@@ -1148,7 +1148,7 @@ body{padding-top:var(--header-h,127px)}
 @media(max-width:639px){.gf-cta-row{flex-direction:column;gap:6px}}
 
 /* ---- the slot machine ---- */
-.slot-wrap{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;min-height:0;align-items:center;padding:6px 4px 0}
+.slot-wrap{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;min-height:0;align-items:center;justify-content:center;padding:6px 4px}
 .slot-cabinet{position:relative;width:100%;max-width:340px;background:linear-gradient(180deg,#F26AA8 0%,var(--pink) 40%,var(--pink-deep) 100%);
   border:3px solid var(--gold);border-radius:20px;padding:16px 14px 14px;
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.25),0 14px 30px rgba(61,6,32,.35)}
@@ -1177,7 +1177,7 @@ body{padding-top:var(--header-h,127px)}
 .slot-hint{text-align:center;font-size:11px;color:rgba(255,255,255,.8);margin:10px 0 0}
 
 /* ---- the reveal ---- */
-.gf-results{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;min-height:0;align-items:stretch;text-align:center;padding-top:4px}
+.gf-results{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;min-height:0;align-items:stretch;justify-content:center;text-align:center;padding-top:4px}
 .gf-r-eyebrow{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--pink-deep);margin:0 0 6px}
 .gf-r-title{font-family:'Fraunces',serif;font-size:clamp(17px,2.4vw,20px);font-weight:600;margin:0 0 14px;color:var(--ink);max-width:26ch;margin-left:auto;margin-right:auto}
 .gf-r-reveal{animation:gfIn .4s var(--ease)}
@@ -1189,12 +1189,16 @@ body{padding-top:var(--header-h,127px)}
 .gf-result-rail-wrap .rec-arrow{position:absolute;top:44%}
 .gf-result-rail-wrap .rec-arrow.rec-arrow-prev{left:-6px}
 .gf-result-rail-wrap .rec-arrow.rec-arrow-next{right:-6px}
-.gf-result-rail-wrap .pcard-rail{padding:4px 32px 6px;gap:12px}
-.gf-result-rail-wrap .pcard-rail .pcard{flex-basis:132px}
+/* real, full-size site product card — one card fully visible, the
+   next one peeking at the edge, same as every other rail on the page.
+   no shrinking to force extra cards into view. */
+.gf-result-rail-wrap .pcard-rail{padding:4px 34px 6px;gap:14px}
 .gf-single-wrap{position:relative;flex:0 0 auto;display:flex;align-items:center;justify-content:center;padding:4px 0}
 .gf-single-wrap .rec-arrow{position:static}
-#gf-single-holder{flex:0 0 172px;width:172px;margin:0 8px}
-#gf-single-holder .pcard{width:100%}
+#gf-single-holder{display:flex;justify-content:center;margin:0 8px;overflow:visible}
+#gf-single-holder .pcard{flex-basis:200px}
+@media(min-width:640px){#gf-single-holder .pcard{flex-basis:230px}}
+@media(min-width:1024px){#gf-single-holder .pcard{flex-basis:250px}}
 .gf-single-dots{flex:0 0 auto;display:flex;gap:5px;justify-content:center;padding:10px 0 2px}
 .gf-single-dots span{width:5px;height:5px;border-radius:50%;background:var(--line)}
 .gf-single-dots span.on{background:var(--pink-deep);width:14px;border-radius:3px;transition:all .2s}
@@ -3582,12 +3586,6 @@ footer .socials svg{width:14px;height:14px}
       root.classList.remove('results');
       const s = GF_STEPS[step];
       root.innerHTML = `
-        <div class="gf-top">
-          <button class="gf-back-nav" id="gf-x" aria-label="Close">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>
-          </button>
-          <span class="gf-crumb">Explore &middot; <b>Gift Finder</b></span>
-        </div>
         <div class="gf-stack">
           <div class="gf-peek gf-peek-2"></div>
           <div class="gf-peek gf-peek-1"></div>
@@ -3631,7 +3629,6 @@ footer .socials svg{width:14px;height:14px}
       root.querySelector('#gf-next').addEventListener('click', goNext);
       root.querySelector('#gf-surprise').addEventListener('click', renderSlot);
       root.querySelector('#gf-notsure').addEventListener('click', renderVaultB);
-      root.querySelector('#gf-x').addEventListener('click', ()=>{ step = 0; Object.keys(answers).forEach(k=>delete answers[k]); renderStep(); });
     }
 
     function goNext(){

@@ -523,7 +523,11 @@ body{padding-top:var(--header-h,127px)}
    (harmless no-ops now) rather than touching that logic for a purely
    visual change. */
 .pcard .csparkle{display:none}
-.pcard .pthumb{width:calc(100% - 20px);aspect-ratio:1/0.92;background:rgba(0,0,0,.14);position:relative;overflow:hidden;margin:10px 10px 0;border-radius:10px}
+/* shorter, not narrower — width still comes from the card's own
+   flex-basis, only the aspect-ratio (and body padding below) shrink to
+   trim the card's overall height, roughly 10% off the top and 10% off
+   the bottom */
+.pcard .pthumb{width:calc(100% - 20px);aspect-ratio:1/0.78;background:rgba(0,0,0,.14);position:relative;overflow:hidden;margin:9px 10px 0;border-radius:10px}
 .pcard .pthumb img{width:100%;height:100%;object-fit:cover;display:block;border-radius:10px;transition:transform .5s var(--ease),opacity .22s ease}
 .pcard:hover .pthumb img{transform:scale(1.05)}
 /* pushed flush into the corner (not inset over the jewelry) and given
@@ -716,7 +720,7 @@ body{padding-top:var(--header-h,127px)}
   }
 }
 
-.pcard .pbody{position:relative;z-index:2;padding:12px 13px 13px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.pcard .pbody{position:relative;z-index:2;padding:10px 13px 11px;display:flex;flex-direction:column;align-items:center;text-align:center}
 .pcard .pprice{font-size:17px;font-weight:700;color:#fff;line-height:1.1}
 .pcard .ptax{font-size:10.5px;color:rgba(255,255,255,.65);margin:2px 0 7px}
 .pcard h4{font-family:'Manrope',sans-serif;font-weight:600;font-size:12.5px;margin-bottom:8px;color:rgba(255,255,255,.94);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}

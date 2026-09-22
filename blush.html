@@ -668,17 +668,18 @@ body{padding-top:var(--header-h,127px)}
 
 /* ============ sticky "find a gift" bottom CTA ============ */
 .pin-sticky{position:fixed;left:0;right:0;bottom:0;z-index:150;display:flex;justify-content:center;padding:14px 16px;pointer-events:none}
-/* solid ink/white, not pink — this bar now scrolls over pink section
-   breakers (birthstone, coins) as well as the plain white page, and a
-   pink-on-pink bar was camouflaging against those sections */
+/* deep maroon — the darkest stop of Mia's own pink-to-maroon gradient
+   (used on product cards, hero, etc.) — not plain black/ink, and still
+   holds contrast against both the white page and the pink breaker
+   sections it now scrolls over (birthstone, coins) */
 .pin-bar-cta{
-  pointer-events:auto;display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:#fff;
+  pointer-events:auto;display:inline-flex;align-items:center;gap:10px;background:#3D0620;color:#fff;
   padding:13px 24px;border-radius:100px;font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.02em;
-  box-shadow:0 12px 28px rgba(0,0,0,.35);opacity:0;visibility:hidden;
+  box-shadow:0 12px 28px rgba(61,6,32,.4);opacity:0;visibility:hidden;
   transform:translateY(calc(100% + 24px));transition:transform .35s cubic-bezier(.16,1,.3,1),opacity .35s,background .2s;
 }
 .pin-sticky.show .pin-bar-cta{opacity:1;visibility:visible;transform:none}
-.pin-bar-cta:hover{background:#000}
+.pin-bar-cta:hover{background:var(--pink-deep)}
 .pin-cta-dot{position:relative;width:8px;height:8px;border-radius:50%;background:var(--pink);flex-shrink:0}
 .pin-cta-dot::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:1.5px solid var(--pink);animation:ctaPing 1.9s cubic-bezier(.16,1,.3,1) infinite}
 @keyframes ctaPing{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.7);opacity:0}}
@@ -706,7 +707,7 @@ body{padding-top:var(--header-h,127px)}
   .pin-close{display:none;position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.25);color:#fff;align-items:center;justify-content:center;z-index:2}
   .pin-sticky.expanded .pin-close{display:flex}
   .pin-sticky:not(.expanded) .pin-bar-cta:hover::after{
-    content:"Find A Gift In Under 30 Seconds";position:absolute;right:calc(100% + 12px);top:50%;transform:translateY(-50%);
+    content:"Find A Gift";position:absolute;right:calc(100% + 12px);top:50%;transform:translateY(-50%);
     background:var(--ink);color:#fff;font-size:11.5px;font-weight:600;text-transform:none;letter-spacing:0;
     padding:8px 14px;border-radius:8px;white-space:nowrap;pointer-events:none;
   }
@@ -719,7 +720,7 @@ body{padding-top:var(--header-h,127px)}
 .pcard .ppills{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:10px}
 /* quieter — a plain soft pill, no gold border/text, no infinite shine
    sweep running on every card in every rail at once */
-.pcard .ppill{background:var(--blush-2);color:var(--pink);padding:4px 9px;border-radius:6px;font-size:10px;font-weight:700;white-space:nowrap}
+.pcard .ppill{background:var(--blush-2);border:1px solid rgba(168,14,94,.22);color:var(--pink);padding:4px 9px;border-radius:6px;font-size:10px;font-weight:700;white-space:nowrap}
 .pcard .padd{position:relative;overflow:hidden;width:100%;background:var(--pink);color:#fff;padding:10px 14px;border-radius:100px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;text-align:center;transition:background .3s ease,color .3s ease}
 .pcard .padd::before{
   content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
@@ -813,19 +814,26 @@ body{padding-top:var(--header-h,127px)}
    max-width cap), and a genuinely thin banner strip so the banner AND
    the product row both fit in one screen on desktop without scrolling */
 .feat-module{display:flex;flex-direction:column;width:100%}
-.feat-banner-img{position:relative;border-radius:var(--radius-lg);overflow:hidden;height:170px;background-size:cover;background-position:center;transition:background-image .25s ease;isolation:isolate}
-@media(min-width:640px){.feat-banner-img{height:200px}}
-.feat-banner-img::after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(0deg,rgba(20,14,15,.8) 0%,rgba(20,14,15,.22) 48%,rgba(20,14,15,0) 70%)}
+.feat-banner-wrap{position:relative}
+/* a real peek carousel: 3 slides in a native horizontal scroller, each
+   sized so the centered one reads as the "banner" and its neighbours
+   show a real slice at each edge — not an instant content swap */
+/* scroll-padding must be symmetric (left AND right) — a left-only value
+   shrank the snapport asymmetrically, so the "centered" slide was
+   actually landing slightly off-center instead of dead center */
+.feat-banner-scroll{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scroll-padding:0 12%;scrollbar-width:none;-ms-overflow-style:none}
+.feat-banner-scroll::-webkit-scrollbar{display:none}
+.feat-banner-slide{position:relative;flex:0 0 76%;scroll-snap-align:center;border-radius:var(--radius-lg);overflow:hidden;height:170px;background-size:cover;background-position:center;isolation:isolate}
+@media(min-width:640px){.feat-banner-slide{height:200px;flex-basis:64%}}
+.feat-banner-slide::after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(0deg,rgba(20,14,15,.8) 0%,rgba(20,14,15,.22) 48%,rgba(20,14,15,0) 70%)}
 .feat-caption{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:20px;gap:8px}
 .feat-eyebrow{font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin:0}
 .feat-name{font-family:'Fraunces',serif;font-size:clamp(19px,2.6vw,26px);color:#fff;margin:0;font-weight:600}
 .feat-cta{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.18);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:8px 15px;border-radius:100px}
-/* pinned to the top edge, not vertically centered — the banner is now a
-   thin strip and the caption owns the whole bottom-left, so a centered
-   arrow used to sit right on top of the eyebrow/name text */
-.feat-arrows{position:absolute;z-index:1;top:10px;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:0 10px;pointer-events:none}
-.feat-arrow{pointer-events:auto;flex-shrink:0;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.22);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:none;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s}
-.feat-arrow:hover{background:rgba(255,255,255,.38)}
+.feat-arrows{position:absolute;z-index:1;top:50%;left:0;right:0;transform:translateY(-50%);display:flex;align-items:center;justify-content:space-between;padding:0 4px;pointer-events:none}
+.feat-arrow{pointer-events:auto;flex-shrink:0;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.85);border:none;color:var(--pink-deep);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,opacity .2s}
+.feat-arrow:hover{background:#fff}
+.feat-arrow.hide{opacity:0;pointer-events:none}
 .feat-dots{display:flex;gap:5px;justify-content:center;padding:12px 0 4px}
 .feat-dots span{width:5px;height:5px;border-radius:50%;background:var(--line-2)}
 .feat-dots span.on{background:var(--pink-deep);width:14px;border-radius:3px;transition:all .2s}
@@ -902,11 +910,18 @@ body{padding-top:var(--header-h,127px)}
   -webkit-mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 36px),rgba(0,0,0,.2) 100%);
   mask-image:linear-gradient(to right,#000 0,#000 calc(100% - 36px),rgba(0,0,0,.2) 100%);
 }
+@media(min-width:900px){.bs-strip{gap:36px}}
 .bs-strip.centered{justify-content:center;-webkit-mask-image:none;mask-image:none}
 .bs-strip::-webkit-scrollbar{display:none}
-.bs-chip{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:none;cursor:pointer;padding:0;font-family:inherit}
-.bs-gem{width:23px;height:auto;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));transition:transform .3s var(--ease),width .25s var(--ease),filter .3s var(--ease)}
-.bs-chip-label{font-size:8px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-2);transition:color .2s;white-space:nowrap}
+.bs-chip{position:relative;flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:none;cursor:pointer;padding:0;font-family:inherit}
+/* a soft glow behind the active gem, tinted to that stone's own colour
+   (set per-chip via --glow), pulsing gently instead of sitting static */
+.bs-chip::before{content:'';position:absolute;top:-8px;left:50%;width:44px;height:44px;transform:translateX(-50%) scale(.8);border-radius:50%;background:radial-gradient(circle,var(--glow,var(--pink)) 0%,transparent 72%);opacity:0;pointer-events:none;transition:opacity .25s}
+.bs-chip.active::before{opacity:.6;animation:bsPulseGlow 2.2s ease-in-out infinite}
+@keyframes bsPulseGlow{0%,100%{transform:translateX(-50%) scale(.85);opacity:.4}50%{transform:translateX(-50%) scale(1.3);opacity:.7}}
+@media(prefers-reduced-motion:reduce){.bs-chip.active::before{animation:none;opacity:.5}}
+.bs-gem{position:relative;z-index:1;width:23px;height:auto;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));transition:transform .3s var(--ease),width .25s var(--ease),filter .3s var(--ease)}
+.bs-chip-label{position:relative;z-index:1;font-size:8px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-2);transition:color .2s;white-space:nowrap}
 .bs-chip:hover .bs-gem{transform:scale(1.15) rotate(-6deg) translateY(-3px)}
 .bs-chip.active .bs-gem{width:36px;transform:translateY(-5px);filter:drop-shadow(0 8px 14px rgba(0,0,0,.28))}
 .bs-chip.active:hover .bs-gem{transform:translateY(-8px) rotate(-4deg)}
@@ -915,8 +930,7 @@ body{padding-top:var(--header-h,127px)}
 .bs-result-wrap{position:relative}
 .bs-result-wrap .rec-arrow:not(.hide){display:flex!important;width:32px;height:32px}
 @media(min-width:1024px){.bs-result-wrap .rec-arrow:not(.hide){width:38px;height:38px}}
-.bs-soon-state{text-align:center;padding:26px 20px;color:var(--ink-2);font-size:12.5px;background:var(--cream);border-radius:var(--radius-lg)}
-.bs-soon-state b{display:block;font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:6px;font-weight:600}
+.bs-placeholder-note{text-align:center;font-size:11.5px;color:var(--ink-2);font-style:italic;margin:0 0 12px}
 
 /* ============ coin & gift card section breaker ============
    Full-bleed satin pink (same gradient family as the product cards and
@@ -1184,15 +1198,23 @@ body{padding-top:var(--header-h,127px)}
 .gf-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0}
 .gf-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(175deg,rgba(228,18,125,.88) 0%,rgba(168,14,94,.93) 55%,rgba(61,6,32,.97) 100%);z-index:1}
 
-.gf-card-body{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;padding:24px;color:#fff}
+/* everything centered — text, step number, question, the chip grid —
+   not left-aligned; also scrolls internally (overflow-y) so a question
+   with many more options (the full restored list) never gets clipped
+   by the card's fixed height */
+.gf-card-body{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px;color:#fff;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none}
+.gf-card-body::-webkit-scrollbar{display:none}
 .gf-spacer-a{flex:.7}
 .gf-spacer-b{flex:1.3}
 .gf-step-num{font-family:'Fraunces',serif;font-size:13px;font-weight:600;color:var(--gold);margin:0 0 10px;letter-spacing:.02em}
 .gf-question{font-family:'Fraunces',serif;font-size:clamp(22px,3.4vw,28px);font-weight:600;line-height:1.22;margin:0 0 22px;max-width:19ch}
-.gf-chips{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
-.gf-chip{border:1.5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.08);color:#fff;
+/* flex-wrap + justify-content:center, not a strict grid — a grid leaves
+   a short last row (e.g. Self/Kids) stuck at the left instead of
+   centered under the full rows above it */
+.gf-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;width:100%}
+.gf-chip{flex:0 0 calc(50% - 4.5px);border:1.5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.08);color:#fff;
   font-family:inherit;font-size:12.5px;font-weight:700;padding:10px 12px;border-radius:100px;cursor:pointer;
-  transition:all .18s var(--ease);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;text-align:center}
+  transition:all .18s var(--ease);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
 .gf-chip:hover{border-color:#fff;background:rgba(255,255,255,.16)}
 .gf-chip.sel{background:#fff;color:var(--pink-deep);border-color:#fff}
 
@@ -1294,7 +1316,8 @@ body{padding-top:var(--header-h,127px)}
   .gf-shell{height:600px;padding:26px 30px 20px}
   .gf-card-body{padding:34px 46px}
   .gf-question{font-size:clamp(24px,2.4vw,30px);max-width:24ch}
-  .gf-chips{grid-template-columns:repeat(4,1fr);gap:10px;max-width:640px}
+  .gf-chips{gap:10px;max-width:640px}
+  .gf-chip{flex-basis:calc(25% - 7.5px)}
   .slot-wrap{padding:0}
   .slot-cabinet{max-width:380px}
 }
@@ -1994,7 +2017,7 @@ footer .socials svg{width:14px;height:14px}
           <div class="recip-sidebar corner-left">
             <p class="recip-label">For Her</p>
             <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="Under ₹10k">Under ₹10k</button>
-            <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="₹10k–50k">₹10k – 50k</button>
+            <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="₹20k–50k">₹20k – 50k</button>
             <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="₹50k–1L">₹50k – 1L</button>
             <button type="button" class="recip-price-pill" data-relation="Spouse" data-budget="Above ₹1L">Above ₹1L</button>
           </div>
@@ -2005,7 +2028,7 @@ footer .socials svg{width:14px;height:14px}
           <div class="recip-sidebar corner-right">
             <p class="recip-label">For Him</p>
             <button type="button" class="recip-price-pill" data-relation="Father" data-budget="Under ₹10k">Under ₹10k</button>
-            <button type="button" class="recip-price-pill" data-relation="Father" data-budget="₹10k–50k">₹10k – 50k</button>
+            <button type="button" class="recip-price-pill" data-relation="Father" data-budget="₹20k–50k">₹20k – 50k</button>
             <button type="button" class="recip-price-pill" data-relation="Father" data-budget="₹50k–1L">₹50k – 1L</button>
             <button type="button" class="recip-price-pill" data-relation="Father" data-budget="Above ₹1L">Above ₹1L</button>
           </div>
@@ -2020,21 +2043,16 @@ footer .socials svg{width:14px;height:14px}
     <div class="section-head rv">
       <div>
         <p class="eyebrow">Collections</p>
-        <h2>Collection</h2>
       </div>
     </div>
     <div class="feat-module-wrap rv">
-      <!-- one collection at a time — arrow cycles the banner photo AND
-           the 3 real products from that collection together. name/CTA
-           overlaid directly on the banner (left-aligned, dark scrim),
-           arrows float over the image edges. -->
+      <!-- a real peek carousel — the previous/next collection banners
+           show partially at the edges, arrows swipe the whole row so
+           the peeking one slides to center, and the product rail below
+           re-syncs to whichever collection is centered. -->
       <div class="feat-module">
-        <div class="feat-banner-img" id="feat-banner-img">
-          <div class="feat-caption">
-            <p class="feat-eyebrow">Collection</p>
-            <h4 class="feat-name" id="feat-name"></h4>
-            <a href="#" class="feat-cta" id="feat-cta">Shop Now <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-          </div>
+        <div class="feat-banner-wrap">
+          <div class="feat-banner-scroll" id="feat-banner-scroll"></div>
           <div class="feat-arrows">
             <button type="button" class="feat-arrow" id="feat-prev" aria-label="Previous collection"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M15 18l-6-6 6-6"/></svg></button>
             <button type="button" class="feat-arrow" id="feat-next" aria-label="Next collection"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M9 6l6 6-6 6"/></svg></button>
@@ -2614,10 +2632,10 @@ footer .socials svg{width:14px;height:14px}
 <!-- sticky bottom CTA, appears once the finder has scrolled mostly past view -->
 <div class="pin-sticky" id="pin-sticky">
   <div class="pin-widget">
-    <a href="#finder" class="pin-bar-cta" title="Find A Gift In Under 30 Seconds" id="pin-cta">
+    <a href="#finder" class="pin-bar-cta" title="Find A Gift" id="pin-cta">
       <span class="pin-cta-dot"></span>
       <svg class="pin-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 3h6M12 3v2"/></svg>
-      <span class="pin-label">Find A Gift In Under 30 Seconds</span>
+      <span class="pin-label">Find A Gift</span>
       <svg class="pin-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
     </a>
     <button type="button" class="pin-close" id="pin-close" aria-label="Dismiss">
@@ -3150,39 +3168,71 @@ footer .socials svg{width:14px;height:14px}
   }
   const updateRecTrack = wireRail(recGrid, document.getElementById('rec-track-fill'), document.getElementById('rec-prev'), document.getElementById('rec-next'));
 
-  // Featured collection module — arrow cycles the banner photo AND the
-  // 3 real products from that collection together, instead of a plain
-  // photo carousel with no products attached
+  // Featured collection module — a real peek carousel: all 3 banners
+  // sit in a native horizontal scroller, neighbours show a real slice
+  // at each edge, arrows scroll one slide at a time, and the product
+  // rail below re-syncs to whichever collection lands centered
   (function(){
     const FEAT_COLLECTIONS = [
       {name:'Rhapsody Of Colours', img:'assets/collections/rhapsody-nav.webp', codes:['3025CHD','M5I2SEA','M5I2FEZ']},
       {name:'Aurum', img:'assets/collections/aurum-desktop.webp', codes:['3826CEL','3826CDX','3826CEM']},
       {name:'Sunkissed', img:'assets/collections/sunkissed-nav.webp', codes:['3025PKI','3026HMH','IKD5BDG']},
     ];
-    const featBanner = document.getElementById('feat-banner-img');
-    const featName = document.getElementById('feat-name');
+    const featScroll = document.getElementById('feat-banner-scroll');
     const featProducts = document.getElementById('feat-products');
     const featDots = document.getElementById('feat-dots');
+    const featPrev = document.getElementById('feat-prev');
+    const featNext = document.getElementById('feat-next');
     let featIdx = 0;
-    function renderFeat(i){
+
+    featScroll.innerHTML = FEAT_COLLECTIONS.map(c => `
+      <div class="feat-banner-slide" style="background-image:url('${c.img}')">
+        <div class="feat-caption">
+          <p class="feat-eyebrow">Collection</p>
+          <h4 class="feat-name">${c.name}</h4>
+          <a href="#" class="feat-cta">Shop Now <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+    `).join('');
+    featDots.innerHTML = FEAT_COLLECTIONS.map((_,idx)=>`<span class="${idx===0?'on':''}"></span>`).join('');
+
+    function syncProducts(i){
       featIdx = i;
       const c = FEAT_COLLECTIONS[i];
-      featBanner.style.backgroundImage = `url('${c.img}')`;
-      featName.textContent = c.name;
       const items = c.codes.map(code => PRODUCTS.find(p => p.code === code)).filter(Boolean);
       featProducts.innerHTML = items.map(productCardHTML).join('');
       featProducts.scrollLeft = 0;
       wireCards(featProducts);
-      featDots.innerHTML = FEAT_COLLECTIONS.map((_,idx)=>`<span class="${idx===i?'on':''}"></span>`).join('');
+      featDots.querySelectorAll('span').forEach((d,idx)=> d.classList.toggle('on', idx===i));
+      featPrev.classList.toggle('hide', i === 0);
+      featNext.classList.toggle('hide', i === FEAT_COLLECTIONS.length - 1);
       requestAnimationFrame(()=> featProducts.classList.toggle('centered', featProducts.scrollWidth <= featProducts.clientWidth + 1));
     }
-    document.getElementById('feat-prev').addEventListener('click', ()=>{
-      renderFeat((featIdx - 1 + FEAT_COLLECTIONS.length) % FEAT_COLLECTIONS.length);
-    });
-    document.getElementById('feat-next').addEventListener('click', ()=>{
-      renderFeat((featIdx + 1) % FEAT_COLLECTIONS.length);
-    });
-    renderFeat(0);
+
+    function slidePitch(){
+      const slides = featScroll.querySelectorAll('.feat-banner-slide');
+      return slides.length > 1 ? slides[1].offsetLeft - slides[0].offsetLeft : featScroll.clientWidth;
+    }
+    function goTo(i){
+      i = Math.max(0, Math.min(FEAT_COLLECTIONS.length - 1, i));
+      featScroll.scrollTo({left: i * slidePitch(), behavior: 'smooth'});
+    }
+    featPrev.addEventListener('click', ()=> goTo(featIdx - 1));
+    featNext.addEventListener('click', ()=> goTo(featIdx + 1));
+
+    // native swipe/manual scroll also re-syncs the product rail — snap
+    // settles on a slide, then a short debounce reads which one it is
+    let featScrollTimer;
+    featScroll.addEventListener('scroll', ()=>{
+      clearTimeout(featScrollTimer);
+      featScrollTimer = setTimeout(()=>{
+        const pitch = slidePitch();
+        const i = Math.max(0, Math.min(FEAT_COLLECTIONS.length - 1, Math.round(featScroll.scrollLeft / pitch)));
+        if(i !== featIdx) syncProducts(i);
+      }, 120);
+    }, {passive:true});
+
+    syncProducts(0);
   })();
 
   // Birthstone filter strip — all 12 months shown, each matched against
@@ -3243,7 +3293,7 @@ footer .socials svg{width:14px;height:14px}
     function renderChips(){
       bsStrip.innerHTML = BIRTHSTONES.map((b,i)=>{
         const has = bsMatches(b).length > 0;
-        return `<button type="button" class="bs-chip ${i===bsActive?'active':''} ${has?'':'soon'}" data-i="${i}">
+        return `<button type="button" class="bs-chip ${i===bsActive?'active':''} ${has?'':'soon'}" data-i="${i}" style="--glow:${b.color}">
           ${bsGemSvg(b.color)}
           <span class="bs-chip-label">${b.short}</span>
         </button>`;
@@ -3271,37 +3321,46 @@ footer .socials svg{width:14px;height:14px}
     }
     window.addEventListener('resize', updateStripCenter);
 
+    // when a month has no real stone match, preview real (but unrelated)
+    // products instead of an empty "Coming Soon" block — rotated by
+    // index so different months show different pieces, not the same 4
+    function bsPlaceholders(i){
+      const n = PRODUCTS.length;
+      const start = (i * 4) % n;
+      const out = [];
+      for(let k=0; k<4; k++) out.push(PRODUCTS[(start + k) % n]);
+      return out;
+    }
+
     function selectStone(i, scrollChip){
       bsActive = i;
       const b = BIRTHSTONES[i];
       bsStrip.querySelectorAll('.bs-chip').forEach((chip,idx)=> chip.classList.toggle('active', idx===i));
       bsPreview.textContent = b.stone;
-      const items = bsMatches(b);
-      if(items.length){
-        bsBody.innerHTML = `
-          <div class="bs-result-wrap">
-            <button type="button" class="rec-arrow rec-arrow-prev" id="bs-result-prev" aria-label="Previous"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg></button>
-            <div class="pcard-rail" id="bs-grid"></div>
-            <button type="button" class="rec-arrow rec-arrow-next" id="bs-result-next" aria-label="Next"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg></button>
-          </div>`;
-        const grid = document.getElementById('bs-grid');
-        grid.innerHTML = items.map(productCardHTML).join('');
-        wireCards(grid);
-        const prevBtn = document.getElementById('bs-result-prev');
-        const nextBtn = document.getElementById('bs-result-next');
-        function update(){
-          const max = grid.scrollWidth - grid.clientWidth;
-          prevBtn.classList.toggle('hide', max <= 1 || grid.scrollLeft <= 1);
-          nextBtn.classList.toggle('hide', max <= 1 || grid.scrollLeft >= max - 1);
-          grid.classList.toggle('centered', max <= 1);
-        }
-        grid.addEventListener('scroll', update, {passive:true});
-        prevBtn.addEventListener('click', ()=> grid.scrollBy({left:-(grid.querySelector('.pcard')?.offsetWidth||250) - 14, behavior:'smooth'}));
-        nextBtn.addEventListener('click', ()=> grid.scrollBy({left:(grid.querySelector('.pcard')?.offsetWidth||250) + 14, behavior:'smooth'}));
-        update();
-      } else {
-        bsBody.innerHTML = `<div class="bs-soon-state"><b>${b.stone}: Coming Soon</b>We're still adding ${b.stone.toLowerCase()} pieces to the collection. Check back soon, or explore another month.</div>`;
+      const realItems = bsMatches(b);
+      const items = realItems.length ? realItems : bsPlaceholders(i);
+      bsBody.innerHTML = `
+        ${realItems.length ? '' : `<p class="bs-placeholder-note">${b.stone} pieces aren't tagged yet — here's a preview of how this month will look once they are.</p>`}
+        <div class="bs-result-wrap">
+          <button type="button" class="rec-arrow rec-arrow-prev" id="bs-result-prev" aria-label="Previous"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <div class="pcard-rail" id="bs-grid"></div>
+          <button type="button" class="rec-arrow rec-arrow-next" id="bs-result-next" aria-label="Next"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg></button>
+        </div>`;
+      const grid = document.getElementById('bs-grid');
+      grid.innerHTML = items.map(productCardHTML).join('');
+      wireCards(grid);
+      const prevBtn = document.getElementById('bs-result-prev');
+      const nextBtn = document.getElementById('bs-result-next');
+      function update(){
+        const max = grid.scrollWidth - grid.clientWidth;
+        prevBtn.classList.toggle('hide', max <= 1 || grid.scrollLeft <= 1);
+        nextBtn.classList.toggle('hide', max <= 1 || grid.scrollLeft >= max - 1);
+        grid.classList.toggle('centered', max <= 1);
       }
+      grid.addEventListener('scroll', update, {passive:true});
+      prevBtn.addEventListener('click', ()=> grid.scrollBy({left:-(grid.querySelector('.pcard')?.offsetWidth||250) - 14, behavior:'smooth'}));
+      nextBtn.addEventListener('click', ()=> grid.scrollBy({left:(grid.querySelector('.pcard')?.offsetWidth||250) + 14, behavior:'smooth'}));
+      update();
       if(scrollChip){
         const chipEl = bsStrip.querySelector(`.bs-chip[data-i="${i}"]`);
         if(chipEl) chipEl.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
@@ -3865,28 +3924,40 @@ footer .socials svg{width:14px;height:14px}
     return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${GF_ICONS[name]}</svg>`;
   }
 
+  // full option lists restored from the original dropdown finder
+  // (RELATION_CATS/OCCASION_CATS/BUDGET_RANGE) — every relation,
+  // occasion and budget band it had, not a trimmed-down subset
   const GF_STEPS = [
     {q:'Who is this gift for?', key:'who', bg:'assets/editorial/gifts-her.webp', options:[
       {label:'Mother', icon:'person', cats:['necklaces','earrings']},
       {label:'Father', icon:'person', cats:['chains','rings']},
       {label:'Partner', icon:'heart', cats:['necklaces','rings','earrings']},
       {label:'Sister', icon:'people', cats:['bracelets','earrings']},
+      {label:'Brother', icon:'handshake', cats:['chains','rings']},
+      {label:'Daughter', icon:'flower', cats:['earrings','bracelets']},
+      {label:'Son', icon:'gift', cats:['chains','rings']},
       {label:'Friend', icon:'handshake', cats:['bracelets','earrings']},
+      {label:'Self', icon:'ring', cats:['rings','necklaces']},
       {label:'Kids', icon:'gift', cats:['bracelets','earrings']},
     ]},
     {q:"What's the occasion?", key:'occasion', bg:'assets/editorial/hero-gift-frame.webp', options:[
       {label:'Birthday', icon:'cake', cats:['earrings','bracelets']},
       {label:'Anniversary', icon:'flower', cats:['necklaces','rings']},
       {label:'Wedding', icon:'rings2', cats:['rings','necklaces']},
+      {label:'Engagement', icon:'ring', cats:['rings','necklaces']},
       {label:'Valentine’s', icon:'heart', cats:['necklaces','rings']},
+      {label:'Raksha Bandhan', icon:'ribbon', cats:['bracelets','chains']},
+      {label:'Festival', icon:'sparkle', cats:['chains','earrings']},
+      {label:'Milestone', icon:'crown', cats:['necklaces','rings']},
       {label:'Just Because', icon:'sparkle', cats:['bracelets','chains']},
-      {label:'Rakhi', icon:'ribbon', cats:['bracelets','chains']},
     ]},
     {q:'What is your budget?', key:'budget', bg:'assets/editorial/gifts-him.webp', options:[
       {label:'Under ₹10k', icon:'coin', range:[0,10000]},
-      {label:'₹10k–50k', icon:'coins', range:[10000,50000]},
+      {label:'₹10k–20k', icon:'coins', range:[10000,20000]},
+      {label:'₹20k–50k', icon:'coins', range:[20000,50000]},
       {label:'₹50k–1L', icon:'diamond', range:[50000,100000]},
       {label:'Above ₹1L', icon:'crown', range:[100000,Infinity]},
+      {label:'Show Me Everything', icon:'sparkle', range:[0,Infinity]},
     ]},
   ];
 

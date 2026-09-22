@@ -817,7 +817,10 @@ body{padding-top:var(--header-h,127px)}
 /* a real peek carousel: 3 slides in a native horizontal scroller, each
    sized so the centered one reads as the "banner" and its neighbours
    show a real slice at each edge — not an instant content swap */
-.feat-banner-scroll{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scroll-padding-left:12%;scrollbar-width:none;-ms-overflow-style:none}
+/* scroll-padding must be symmetric (left AND right) — a left-only value
+   shrank the snapport asymmetrically, so the "centered" slide was
+   actually landing slightly off-center instead of dead center */
+.feat-banner-scroll{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scroll-padding:0 12%;scrollbar-width:none;-ms-overflow-style:none}
 .feat-banner-scroll::-webkit-scrollbar{display:none}
 .feat-banner-slide{position:relative;flex:0 0 76%;scroll-snap-align:center;border-radius:var(--radius-lg);overflow:hidden;height:170px;background-size:cover;background-position:center;isolation:isolate}
 @media(min-width:640px){.feat-banner-slide{height:200px;flex-basis:64%}}
@@ -1204,10 +1207,13 @@ body{padding-top:var(--header-h,127px)}
 .gf-spacer-b{flex:1.3}
 .gf-step-num{font-family:'Fraunces',serif;font-size:13px;font-weight:600;color:var(--gold);margin:0 0 10px;letter-spacing:.02em}
 .gf-question{font-family:'Fraunces',serif;font-size:clamp(22px,3.4vw,28px);font-weight:600;line-height:1.22;margin:0 0 22px;max-width:19ch}
-.gf-chips{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;width:100%}
-.gf-chip{border:1.5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.08);color:#fff;
+/* flex-wrap + justify-content:center, not a strict grid — a grid leaves
+   a short last row (e.g. Self/Kids) stuck at the left instead of
+   centered under the full rows above it */
+.gf-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;width:100%}
+.gf-chip{flex:0 0 calc(50% - 4.5px);border:1.5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.08);color:#fff;
   font-family:inherit;font-size:12.5px;font-weight:700;padding:10px 12px;border-radius:100px;cursor:pointer;
-  transition:all .18s var(--ease);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;text-align:center}
+  transition:all .18s var(--ease);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
 .gf-chip:hover{border-color:#fff;background:rgba(255,255,255,.16)}
 .gf-chip.sel{background:#fff;color:var(--pink-deep);border-color:#fff}
 
@@ -1309,7 +1315,8 @@ body{padding-top:var(--header-h,127px)}
   .gf-shell{height:600px;padding:26px 30px 20px}
   .gf-card-body{padding:34px 46px}
   .gf-question{font-size:clamp(24px,2.4vw,30px);max-width:24ch}
-  .gf-chips{grid-template-columns:repeat(4,1fr);gap:10px;max-width:640px}
+  .gf-chips{gap:10px;max-width:640px}
+  .gf-chip{flex-basis:calc(25% - 7.5px)}
   .slot-wrap{padding:0}
   .slot-cabinet{max-width:380px}
 }
@@ -3201,13 +3208,25 @@ footer .socials svg{width:14px;height:14px}
       requestAnimationFrame(()=> featProducts.classList.toggle('centered', featProducts.scrollWidth <= featProducts.clientWidth + 1));
     }
 
-    function slidePitch(){
-      const slides = featScroll.querySelectorAll('.feat-banner-slide');
-      return slides.length > 1 ? slides[1].offsetLeft - slides[0].offsetLeft : featScroll.clientWidth;
+    // geometry-based, not a naive "index * pitch" multiplication — the
+    // last slide's mandatory-snap centered position can land short of
+    // that ideal multiple (there's no trailing content to scroll into),
+    // so dividing scrollLeft by a fixed pitch rounded the last slide
+    // back down to the middle one instead of detecting it correctly
+    function nearestSlideIndex(){
+      const slides = [...featScroll.querySelectorAll('.feat-banner-slide')];
+      const center = featScroll.scrollLeft + featScroll.clientWidth / 2;
+      let best = 0, bestDist = Infinity;
+      slides.forEach((s, idx) => {
+        const dist = Math.abs((s.offsetLeft + s.offsetWidth / 2) - center);
+        if(dist < bestDist){ bestDist = dist; best = idx; }
+      });
+      return best;
     }
     function goTo(i){
       i = Math.max(0, Math.min(FEAT_COLLECTIONS.length - 1, i));
-      featScroll.scrollTo({left: i * slidePitch(), behavior: 'smooth'});
+      const slide = featScroll.querySelectorAll('.feat-banner-slide')[i];
+      featScroll.scrollTo({left: slide.offsetLeft - (featScroll.clientWidth - slide.offsetWidth) / 2, behavior: 'smooth'});
     }
     featPrev.addEventListener('click', ()=> goTo(featIdx - 1));
     featNext.addEventListener('click', ()=> goTo(featIdx + 1));
@@ -3218,8 +3237,7 @@ footer .socials svg{width:14px;height:14px}
     featScroll.addEventListener('scroll', ()=>{
       clearTimeout(featScrollTimer);
       featScrollTimer = setTimeout(()=>{
-        const pitch = slidePitch();
-        const i = Math.max(0, Math.min(FEAT_COLLECTIONS.length - 1, Math.round(featScroll.scrollLeft / pitch)));
+        const i = nearestSlideIndex();
         if(i !== featIdx) syncProducts(i);
       }, 120);
     }, {passive:true});

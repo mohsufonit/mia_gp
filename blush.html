@@ -508,7 +508,9 @@ body{padding-top:var(--header-h,127px)}
 /* BLUSH VARIATION — live at a separate path from index.html so the two
    can be compared side by side; card fill swapped from the vivid
    pink-to-maroon gradient to the "Blush" tone (near-white fading to a
-   soft pink), colours taken directly from the approved artifact */
+   soft pink). Accent colour is var(--pink) (#E4127D) — the exact same
+   pink as the Surprise Me button in the gift finder — not a separate
+   custom rose shade. */
 .pcard{
   position:relative;
   background:linear-gradient(160deg,#FFFDFC 0%,#FDF0F2 100%);
@@ -711,12 +713,14 @@ body{padding-top:var(--header-h,127px)}
 }
 
 .pcard .pbody{position:relative;z-index:2;padding:12px 13px 13px;display:flex;flex-direction:column;align-items:center;text-align:center}
-.pcard .pprice{font-size:17px;font-weight:700;color:#A8285A;line-height:1.1}
+.pcard .pprice{font-size:17px;font-weight:700;color:var(--pink);line-height:1.1}
 .pcard .ptax{font-size:10.5px;color:var(--ink-2);margin:2px 0 7px}
 .pcard h4{font-family:'Manrope',sans-serif;font-weight:600;font-size:12.5px;margin-bottom:8px;color:var(--ink);line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .pcard .ppills{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:10px}
-.pcard .ppill{background:#FBE1E6;color:#A8285A;padding:4px 9px;border-radius:6px;font-size:10px;font-weight:700;white-space:nowrap}
-.pcard .padd{position:relative;overflow:hidden;width:100%;background:#A8285A;color:#fff;padding:10px 14px;border-radius:100px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;text-align:center;transition:background .3s ease,color .3s ease}
+/* quieter — a plain soft pill, no gold border/text, no infinite shine
+   sweep running on every card in every rail at once */
+.pcard .ppill{background:var(--blush-2);color:var(--pink);padding:4px 9px;border-radius:6px;font-size:10px;font-weight:700;white-space:nowrap}
+.pcard .padd{position:relative;overflow:hidden;width:100%;background:var(--pink);color:#fff;padding:10px 14px;border-radius:100px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;text-align:center;transition:background .3s ease,color .3s ease}
 .pcard .padd::before{
   content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
   background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.65) 50%,transparent 100%);
@@ -837,16 +841,29 @@ body{padding-top:var(--header-h,127px)}
 .spotlight-card span{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;opacity:.92;display:flex;align-items:center;gap:6px}
 
 /* ============ For Her / For Him — Gift By Price panels ============
-   David Yurman's "Gift By Price" pattern (davidyurman.com/gifts.html):
-   one full lifestyle photo per side, with the price-pill stack overlaid
-   directly ON the photo, anchored to its outer corner — left corner on
-   the Her photo, right corner on the Him photo — not a separate column
-   beside the image. */
+   Now the page's pink section breaker (that role moved here from
+   Birthstone) — same full-bleed gradient + glitter-dust treatment as
+   every other breaker band. David Yurman's "Gift By Price" pattern
+   (davidyurman.com/gifts.html): one full lifestyle photo per side, with
+   the price-pill stack overlaid directly ON the photo, anchored to its
+   outer corner — left corner on the Her photo, right corner on the Him
+   photo — not a separate column beside the image. */
+#recipient{position:relative;overflow:hidden;padding-top:56px;padding-bottom:56px}
+#recipient::before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(70% 90% at 20% 0%, rgba(255,255,255,.16), transparent 60%),
+    radial-gradient(145% 165% at 65% 15%, #F26AA8 0%, #E4127D 32%, #A80E5E 62%, #3D0620 100%);
+}
+#recipient .section-head,#recipient .recip-panels{position:relative;z-index:1}
+#recipient .eyebrow{color:var(--gold)}
+#recipient .section-head h2{color:#fff}
 .recip-panels{display:flex;flex-direction:column;gap:16px}
 @media(min-width:900px){.recip-panels{flex-direction:row;gap:20px}}
 .recip-block{flex:1;min-width:0}
-.recip-image{position:relative;width:100%;aspect-ratio:4/3;background-size:cover;background-position:center;border-radius:var(--radius-lg);overflow:hidden;isolation:isolate}
-@media(min-width:900px){.recip-image{aspect-ratio:6/5}}
+/* shorter and wider than the original — less height, more width */
+.recip-image{position:relative;width:100%;aspect-ratio:3/2;background-size:cover;background-position:center;border-radius:var(--radius-lg);overflow:hidden;isolation:isolate}
+@media(min-width:900px){.recip-image{aspect-ratio:16/9}}
 .recip-sidebar{position:absolute;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px;width:150px;padding:16px 14px;background:rgba(250,247,246,.88);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);border-radius:10px}
 .recip-sidebar.corner-left{left:16px}
 .recip-sidebar.corner-right{right:16px}
@@ -863,31 +880,21 @@ body{padding-top:var(--header-h,127px)}
 .feat-module-wrap{--rail-gutter:60px;position:relative;width:var(--vw,100vw);left:50%;right:50%;margin-left:calc(var(--vw,100vw) * -0.5);margin-right:calc(var(--vw,100vw) * -0.5);padding:0 var(--rail-gutter);box-sizing:border-box}
 @media(max-width:639px){.feat-module-wrap{--rail-gutter:15px}}
 
-/* ============ Birthstone filter strip — a pink section breaker, same
-   full-bleed gradient + glitter-dust treatment as every other breaker
-   band on the page (meaning-section, touches-section, newsletter) ============
+/* ============ Birthstone filter strip — plain white band (the pink
+   section-breaker role moved to For Her/For Him instead) ============
    A row of faceted gem chips (real per-stone colour), one active at a
    time; the active chip lifts and enlarges, and any chip gets a small
-   hover nudge. Below it, either a real product rail (months with a
-   name-keyword match in PRODUCTS) or a plain "Coming Soon" state —
-   never a dead click. No prev/next arrows on the strip itself: it
-   centers and fits without scrolling at almost every width, so a
-   scroll control would mostly do nothing. */
-/* tightened to the same "fits in one view" rhythm as Shop By Category —
-   the first version left far too much empty space above/below the
-   strip and the chip label + a separate big stone-name heading said
-   the same thing twice */
-#birthstone{position:relative;overflow:hidden;padding-top:30px;padding-bottom:34px}
-#birthstone::before{
-  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
-  background:
-    radial-gradient(70% 90% at 80% 0%, rgba(255,255,255,.16), transparent 60%),
-    radial-gradient(145% 165% at 35% 15%, #F26AA8 0%, #E4127D 32%, #A80E5E 62%, #3D0620 100%);
-}
-#birthstone .section-head{margin-bottom:8px}
-#birthstone .section-head,#birthstone .bs-wrap,#birthstone .bs-info,#birthstone #bs-body{position:relative;z-index:1}
-#birthstone .eyebrow{color:var(--gold)}
-#birthstone .section-head h2{color:#fff}
+   hover nudge. A single-line stone name sits between the heading and
+   the strip — no separate subtitle — and previews whichever chip is
+   currently hovered, reverting to the selected one on mouseleave.
+   Below it, either a real product rail (months with a name-keyword
+   match in PRODUCTS) or a plain "Coming Soon" state — never a dead
+   click. No prev/next arrows on the strip itself: it centers and fits
+   without scrolling at almost every width, so a scroll control would
+   mostly do nothing. */
+#birthstone{padding-top:30px;padding-bottom:34px}
+#birthstone .section-head{margin-bottom:0}
+.bs-preview{text-align:center;font-family:'Fraunces',serif;font-size:clamp(16px,1.8vw,19px);font-weight:600;margin:18px 0 0;color:var(--ink)}
 .bs-wrap{position:relative;display:flex;align-items:center;gap:8px;margin:0}
 .bs-strip{display:flex;gap:20px;overflow-x:auto;scroll-behavior:smooth;padding:20px 6px 10px;flex:1;scrollbar-width:none;-ms-overflow-style:none;justify-content:flex-start;
   /* fade + peek at the edge when it DOES overflow, instead of a hard
@@ -898,21 +905,18 @@ body{padding-top:var(--header-h,127px)}
 .bs-strip.centered{justify-content:center;-webkit-mask-image:none;mask-image:none}
 .bs-strip::-webkit-scrollbar{display:none}
 .bs-chip{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:none;cursor:pointer;padding:0;font-family:inherit}
-.bs-gem{width:23px;height:auto;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25));transition:transform .3s var(--ease),width .25s var(--ease),filter .3s var(--ease)}
-.bs-chip-label{font-size:8px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:rgba(255,255,255,.72);transition:color .2s;white-space:nowrap}
+.bs-gem{width:23px;height:auto;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));transition:transform .3s var(--ease),width .25s var(--ease),filter .3s var(--ease)}
+.bs-chip-label{font-size:8px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-2);transition:color .2s;white-space:nowrap}
 .bs-chip:hover .bs-gem{transform:scale(1.15) rotate(-6deg) translateY(-3px)}
-.bs-chip.active .bs-gem{width:36px;transform:translateY(-5px);filter:drop-shadow(0 8px 14px rgba(0,0,0,.35))}
+.bs-chip.active .bs-gem{width:36px;transform:translateY(-5px);filter:drop-shadow(0 8px 14px rgba(0,0,0,.28))}
 .bs-chip.active:hover .bs-gem{transform:translateY(-8px) rotate(-4deg)}
-.bs-chip.active .bs-chip-label{color:var(--gold);font-weight:800}
+.bs-chip.active .bs-chip-label{color:var(--pink-deep);font-weight:800}
 .bs-chip.soon{opacity:.55}
-.bs-info{text-align:center;margin:2px 0 12px}
-.bs-stone-name{font-family:'Fraunces',serif;font-size:clamp(16px,1.8vw,19px);font-weight:600;margin:0;color:#fff}
-.bs-stone-sub{font-size:11px;color:rgba(255,255,255,.75);margin:2px 0 0}
 .bs-result-wrap{position:relative}
 .bs-result-wrap .rec-arrow:not(.hide){display:flex!important;width:32px;height:32px}
 @media(min-width:1024px){.bs-result-wrap .rec-arrow:not(.hide){width:38px;height:38px}}
-.bs-soon-state{text-align:center;padding:26px 20px;color:rgba(255,255,255,.85);font-size:12.5px;background:rgba(255,255,255,.1);border-radius:var(--radius-lg)}
-.bs-soon-state b{display:block;font-family:'Fraunces',serif;font-size:17px;color:#fff;margin-bottom:6px;font-weight:600}
+.bs-soon-state{text-align:center;padding:26px 20px;color:var(--ink-2);font-size:12.5px;background:var(--cream);border-radius:var(--radius-lg)}
+.bs-soon-state b{display:block;font-family:'Fraunces',serif;font-size:17px;color:var(--ink);margin-bottom:6px;font-weight:600}
 
 /* ============ coin & gift card section breaker ============
    Full-bleed satin pink (same gradient family as the product cards and
@@ -935,7 +939,7 @@ body{padding-top:var(--header-h,127px)}
    the coin/gift-card section */
 /* exact same white dot texture as the hero card — every pink breaker band
    uses the identical decoration instead of a separate gold-dot version */
-.meaning-section::after,.touches-section::after,.newsletter::after,#birthstone::after{
+.meaning-section::after,.touches-section::after,.newsletter::after,#recipient::after{
   content:"";position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.9;
   background-image:
     radial-gradient(1.6px 1.6px at 8% 22%, rgba(255,255,255,.95), transparent),
@@ -1948,12 +1952,34 @@ footer .socials svg{width:14px;height:14px}
 </section>
 
 
+<!-- Birthstone filter strip — all 12 months shown so it reads as a
+     complete calendar; only the months with a real name-keyword match in
+     PRODUCTS get a live product rail, the rest show a "Coming Soon"
+     state instead of a dead end. Plain white band (the pink section-
+     breaker treatment now belongs to For Her/For Him below instead). -->
+<section class="band" id="birthstone">
+  <div class="container">
+    <div class="section-head rv">
+      <div>
+        <p class="eyebrow">Gift By Birthstone</p>
+        <h2>Moments, Made Personal</h2>
+      </div>
+    </div>
+    <p class="bs-preview" id="bs-preview"></p>
+    <div class="bs-wrap rv">
+      <div class="bs-strip" id="bs-strip"></div>
+    </div>
+    <div id="bs-body"></div>
+  </div>
+</section>
+
 <!-- CRO: NOT a second decision surface — a one-tap shortcut into the same
      finder above, styled on David Yurman's "Gift By Price" pattern
      (davidyurman.com/gifts.html): a For Her / For Him photo panel each,
      with budget-tier pills instead of a single CTA. Picking a pill jumps
      into the finder with recipient + that budget pre-filled; occasion is
-     still filled at random, same spirit as Surprise Me. -->
+     still filled at random, same spirit as Surprise Me. Now the page's
+     pink section breaker (that role moved here from Birthstone). -->
 <section class="band" id="recipient">
   <div class="container">
     <div class="section-head rv">
@@ -1986,29 +2012,6 @@ footer .socials svg{width:14px;height:14px}
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- Birthstone filter strip — all 12 months shown so it reads as a
-     complete calendar; only the months with a real name-keyword match in
-     PRODUCTS get a live product rail, the rest show a "Coming Soon"
-     state instead of a dead end. -->
-<section class="band" id="birthstone">
-  <div class="container">
-    <div class="section-head rv">
-      <div>
-        <p class="eyebrow">Gift By Birthstone</p>
-        <h2>Moments, Made Personal</h2>
-      </div>
-    </div>
-    <div class="bs-wrap rv">
-      <div class="bs-strip" id="bs-strip"></div>
-    </div>
-    <div class="bs-info" id="bs-info">
-      <h3 class="bs-stone-name" id="bs-stone-name"></h3>
-      <p class="bs-stone-sub" id="bs-stone-sub"></p>
-    </div>
-    <div id="bs-body"></div>
   </div>
 </section>
 
@@ -3201,23 +3204,8 @@ footer .socials svg{width:14px;height:14px}
       {month:'November', short:'Nov', stone:'Citrine', match:'citrine', color:'#C97A2B'},
       {month:'December', short:'Dec', stone:'Blue Topaz', match:'topaz', color:'#3E7FA8'},
     ];
-    const STONE_COPY = {
-      Garnet: "Deep, wine-dark red, worn as a keeper of old friendships.",
-      Amethyst: "A violet quietness, traditionally gifted for clarity of mind.",
-      Aquamarine: "Sea-glass blue, said to calm and protect on journeys.",
-      Diamond: "The classic. Clarity, strength, and a gift that's never wrong.",
-      Emerald: "Rich green, associated with renewal, worn by those who love spring.",
-      Pearl: "Understated and soft, the traditional gift for a lifelong bond.",
-      Ruby: "Bold red, full of passion and vitality, a gift with real presence.",
-      Peridot: "A bright olive-green, thought to carry light and good fortune.",
-      Sapphire: "Deep blue, historically gifted as a symbol of loyalty.",
-      Opal: "Iridescent and ever-changing, no two stones catch light the same way.",
-      Citrine: "Warm and golden, worn as a quiet symbol of optimism.",
-      'Blue Topaz': "Clear winter blue, calm, grounded, easy to wear daily.",
-    };
     const bsStrip = document.getElementById('bs-strip');
-    const bsStoneName = document.getElementById('bs-stone-name');
-    const bsStoneSub = document.getElementById('bs-stone-sub');
+    const bsPreview = document.getElementById('bs-preview');
     const bsBody = document.getElementById('bs-body');
 
     function bsMatches(b){
@@ -3262,6 +3250,15 @@ footer .socials svg{width:14px;height:14px}
       }).join('');
       bsStrip.querySelectorAll('.bs-chip').forEach(chip=>{
         chip.addEventListener('click', ()=> selectStone(+chip.dataset.i, true));
+        // hovering any chip (not just clicking) previews its stone name
+        // in the shared label above the strip; leaving reverts to
+        // whichever stone is actually selected
+        chip.addEventListener('mouseenter', ()=>{
+          bsPreview.textContent = BIRTHSTONES[+chip.dataset.i].stone;
+        });
+        chip.addEventListener('mouseleave', ()=>{
+          bsPreview.textContent = BIRTHSTONES[bsActive].stone;
+        });
       });
       requestAnimationFrame(updateStripCenter);
     }
@@ -3278,8 +3275,7 @@ footer .socials svg{width:14px;height:14px}
       bsActive = i;
       const b = BIRTHSTONES[i];
       bsStrip.querySelectorAll('.bs-chip').forEach((chip,idx)=> chip.classList.toggle('active', idx===i));
-      bsStoneName.textContent = b.stone;
-      bsStoneSub.textContent = STONE_COPY[b.stone] || '';
+      bsPreview.textContent = b.stone;
       const items = bsMatches(b);
       if(items.length){
         bsBody.innerHTML = `

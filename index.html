@@ -3282,7 +3282,7 @@ footer .socials svg{width:14px;height:14px}
       {month:'March', short:'Mar', stone:'Aquamarine', match:'aquamarine', color:'#7EC8D9'},
       {month:'April', short:'Apr', stone:'Diamond', match:'diamond', color:'#DCEAF2'},
       {month:'May', short:'May', stone:'Emerald', match:'emerald', color:'#2F6B4F'},
-      {month:'June', short:'Jun', stone:'Pearl', match:'pearl', color:'#EFE9E2'},
+      {month:'June', short:'Jun', stone:'Pearl', match:'pearl', color:'#D3C4A6'},
       {month:'July', short:'Jul', stone:'Ruby', match:'ruby', color:'#9B1B30'},
       {month:'August', short:'Aug', stone:'Peridot', match:'peridot', color:'#8FA83E'},
       {month:'September', short:'Sep', stone:'Sapphire', match:'sapphire', color:'#2A4B8C'},
@@ -3317,8 +3317,11 @@ footer .socials svg{width:14px;height:14px}
     // a faceted gem silhouette (not a plain rotated square) — a kite-cut
     // top face with a table facet and crown lines, tinted per stone
     function bsGemSvg(color){
+      // a thin dark outline on the outer facet — without it, any pale
+      // stone (pearl, moonstone-ish tones) nearly disappears against the
+      // white section background instead of just being naturally subtle
       return `<svg class="bs-gem" viewBox="0 0 32 34" fill="none">
-        <polygon points="16,1 30,11 24,33 8,33 2,11" fill="${color}"/>
+        <polygon points="16,1 30,11 24,33 8,33 2,11" fill="${color}" stroke="rgba(0,0,0,.22)" stroke-width="1" stroke-linejoin="round"/>
         <polygon points="16,1 30,11 16,15 2,11" fill="#fff" opacity=".32"/>
         <polygon points="2,11 16,15 8,33" fill="#000" opacity=".08"/>
         <polygon points="30,11 16,15 24,33" fill="#000" opacity=".16"/>

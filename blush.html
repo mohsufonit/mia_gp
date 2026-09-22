@@ -1237,9 +1237,12 @@ body{padding-top:var(--header-h,127px)}
    a short last row (e.g. Self/Kids) stuck at the left instead of
    centered under the full rows above it */
 .gf-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;width:100%}
+/* wraps to 2 lines instead of nowrap+ellipsis — at the smaller chip
+   width, a long label like "Show Me Everything" was getting truncated
+   to "Show Me Everyt…" */
 .gf-chip{flex:0 0 calc(45% - 4.5px);border:1.5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.08);color:#fff;
-  font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 12px;border-radius:100px;cursor:pointer;
-  transition:all .18s var(--ease);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
+  font-family:inherit;font-size:12.5px;font-weight:700;line-height:1.25;padding:9px 12px;border-radius:100px;cursor:pointer;
+  transition:all .18s var(--ease);text-align:center}
 .gf-chip:hover{border-color:#fff;background:rgba(255,255,255,.16)}
 .gf-chip.sel{background:#fff;color:var(--pink-deep);border-color:#fff}
 
@@ -1335,10 +1338,14 @@ body{padding-top:var(--header-h,127px)}
    cascade (equal specificity + media query does not beat source order). */
 @media(min-width:900px){
   .gf-embed{max-width:880px}
-  /* tall enough that the real, full-size result cards (~395px) plus the
-     eyebrow/title above and Spin Again/Start Over below actually fit —
-     520px clipped the action row at the bottom of the results step */
-  .gf-shell{height:600px;padding:26px 30px 20px}
+  /* the question step's own content (a headline + a handful of chips)
+     doesn't need nearly as much height as the results view — a single
+     fixed height sized for the results card was leaving a lot of empty
+     pink space above/below the chips on every question. Only the
+     .results state (slot machine + the reveal, which holds a real
+     ~395px product card) gets the taller height. */
+  .gf-shell{height:460px;padding:26px 30px 20px}
+  .gf-shell.results{height:600px}
   .gf-card-body{padding:34px 46px}
   .gf-question{font-size:clamp(24px,2.4vw,30px);max-width:24ch}
   .gf-chips{gap:10px;max-width:640px}

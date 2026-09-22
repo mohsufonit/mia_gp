@@ -821,10 +821,18 @@ body{padding-top:var(--header-h,127px)}
 /* scroll-padding must be symmetric (left AND right) — a left-only value
    shrank the snapport asymmetrically, so the "centered" slide was
    actually landing slightly off-center instead of dead center */
-.feat-banner-scroll{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scroll-padding:0 12%;scrollbar-width:none;-ms-overflow-style:none}
+/* fades the peeking neighbours toward transparent at the outer edges
+   instead of a hard crop, so they blend into the white page */
+.feat-banner-scroll{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scroll-padding:0 12%;scrollbar-width:none;-ms-overflow-style:none;
+  -webkit-mask-image:linear-gradient(to right,rgba(0,0,0,0) 0%,rgba(0,0,0,1) 9%,rgba(0,0,0,1) 91%,rgba(0,0,0,0) 100%);
+  mask-image:linear-gradient(to right,rgba(0,0,0,0) 0%,rgba(0,0,0,1) 9%,rgba(0,0,0,1) 91%,rgba(0,0,0,0) 100%);
+}
 .feat-banner-scroll::-webkit-scrollbar{display:none}
-.feat-banner-slide{position:relative;flex:0 0 76%;scroll-snap-align:center;border-radius:var(--radius-lg);overflow:hidden;height:170px;background-size:cover;background-position:center;isolation:isolate}
-@media(min-width:640px){.feat-banner-slide{height:200px;flex-basis:64%}}
+/* widened 10% on each side on desktop (was 64%) so the centered banner
+   reads bigger; mobile kept closer to its original 76% since it has far
+   less room to give up before the peek disappears entirely */
+.feat-banner-slide{position:relative;flex:0 0 80%;scroll-snap-align:center;border-radius:var(--radius-lg);overflow:hidden;height:170px;background-size:cover;background-position:center;isolation:isolate}
+@media(min-width:640px){.feat-banner-slide{height:200px;flex-basis:84%}}
 .feat-banner-slide::after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(0deg,rgba(20,14,15,.8) 0%,rgba(20,14,15,.22) 48%,rgba(20,14,15,0) 70%)}
 .feat-caption{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:20px;gap:8px}
 .feat-eyebrow{font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin:0}
@@ -3183,18 +3191,28 @@ footer .socials svg{width:14px;height:14px}
     const featDots = document.getElementById('feat-dots');
     const featPrev = document.getElementById('feat-prev');
     const featNext = document.getElementById('feat-next');
+    const N = FEAT_COLLECTIONS.length;
     let featIdx = 0;
 
-    featScroll.innerHTML = FEAT_COLLECTIONS.map(c => `
-      <div class="feat-banner-slide" style="background-image:url('${c.img}')">
+    // a real infinite loop: clone of the LAST collection prepended, clone
+    // of the FIRST appended, so DOM position 1..N are the real slides and
+    // 0/N+1 are the wrap-around clones — every real slide (including the
+    // first and last) always has something to peek at on both sides,
+    // instead of sitting flush against an empty edge
+    function slideHTML(c){
+      return `<div class="feat-banner-slide" style="background-image:url('${c.img}')">
         <div class="feat-caption">
           <p class="feat-eyebrow">Collection</p>
           <h4 class="feat-name">${c.name}</h4>
           <a href="#" class="feat-cta">Shop Now <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
-      </div>
-    `).join('');
+      </div>`;
+    }
+    featScroll.innerHTML = [FEAT_COLLECTIONS[N-1], ...FEAT_COLLECTIONS, FEAT_COLLECTIONS[0]].map(slideHTML).join('');
     featDots.innerHTML = FEAT_COLLECTIONS.map((_,idx)=>`<span class="${idx===0?'on':''}"></span>`).join('');
+    // arrows never hide now — the carousel loops in both directions
+    featPrev.classList.remove('hide');
+    featNext.classList.remove('hide');
 
     function syncProducts(i){
       featIdx = i;
@@ -3204,33 +3222,60 @@ footer .socials svg{width:14px;height:14px}
       featProducts.scrollLeft = 0;
       wireCards(featProducts);
       featDots.querySelectorAll('span').forEach((d,idx)=> d.classList.toggle('on', idx===i));
-      featPrev.classList.toggle('hide', i === 0);
-      featNext.classList.toggle('hide', i === FEAT_COLLECTIONS.length - 1);
       requestAnimationFrame(()=> featProducts.classList.toggle('centered', featProducts.scrollWidth <= featProducts.clientWidth + 1));
     }
 
-    function slidePitch(){
-      const slides = featScroll.querySelectorAll('.feat-banner-slide');
-      return slides.length > 1 ? slides[1].offsetLeft - slides[0].offsetLeft : featScroll.clientWidth;
+    // geometry-based, not a naive "index * pitch" multiplication — a
+    // slide's mandatory-snap centered position doesn't always land on a
+    // clean multiple of the nominal pitch, so dividing scrollLeft by a
+    // fixed pitch could round to the wrong neighbour
+    function nearestDomIndex(){
+      const slides = [...featScroll.querySelectorAll('.feat-banner-slide')];
+      const center = featScroll.scrollLeft + featScroll.clientWidth / 2;
+      let best = 0, bestDist = Infinity;
+      slides.forEach((s, idx) => {
+        const dist = Math.abs((s.offsetLeft + s.offsetWidth / 2) - center);
+        if(dist < bestDist){ bestDist = dist; best = idx; }
+      });
+      return best;
+    }
+    function centerOn(domIdx, smooth){
+      const slide = featScroll.querySelectorAll('.feat-banner-slide')[domIdx];
+      featScroll.scrollTo({left: slide.offsetLeft - (featScroll.clientWidth - slide.offsetWidth) / 2, behavior: smooth ? 'smooth' : 'auto'});
     }
     function goTo(i){
-      i = Math.max(0, Math.min(FEAT_COLLECTIONS.length - 1, i));
-      featScroll.scrollTo({left: i * slidePitch(), behavior: 'smooth'});
+      centerOn(((i % N) + N) % N + 1, true);
     }
     featPrev.addEventListener('click', ()=> goTo(featIdx - 1));
     featNext.addEventListener('click', ()=> goTo(featIdx + 1));
 
     // native swipe/manual scroll also re-syncs the product rail — snap
-    // settles on a slide, then a short debounce reads which one it is
+    // settles on a slide, then a short debounce reads which one it is.
+    // Landing on one of the two wrap-around clones (dom index 0 or N+1)
+    // silently re-centers on the matching real slide with no animation,
+    // so the loop feels continuous instead of snapping back visibly.
     let featScrollTimer;
     featScroll.addEventListener('scroll', ()=>{
       clearTimeout(featScrollTimer);
       featScrollTimer = setTimeout(()=>{
-        const pitch = slidePitch();
-        const i = Math.max(0, Math.min(FEAT_COLLECTIONS.length - 1, Math.round(featScroll.scrollLeft / pitch)));
-        if(i !== featIdx) syncProducts(i);
+        const dom = nearestDomIndex();
+        if(dom === 0){
+          syncProducts(N - 1);
+          centerOn(N, false);
+        } else if(dom === N + 1){
+          syncProducts(0);
+          centerOn(1, false);
+        } else {
+          const i = dom - 1;
+          if(i !== featIdx) syncProducts(i);
+        }
       }, 120);
     }, {passive:true});
+
+    // land on the real first slide (dom index 1), not the prepended
+    // clone at index 0, before anything is visible
+    syncProducts(0);
+    centerOn(1, false);
 
     syncProducts(0);
   })();
@@ -3246,7 +3291,7 @@ footer .socials svg{width:14px;height:14px}
       {month:'March', short:'Mar', stone:'Aquamarine', match:'aquamarine', color:'#7EC8D9'},
       {month:'April', short:'Apr', stone:'Diamond', match:'diamond', color:'#DCEAF2'},
       {month:'May', short:'May', stone:'Emerald', match:'emerald', color:'#2F6B4F'},
-      {month:'June', short:'Jun', stone:'Pearl', match:'pearl', color:'#EFE9E2'},
+      {month:'June', short:'Jun', stone:'Pearl', match:'pearl', color:'#D3C4A6'},
       {month:'July', short:'Jul', stone:'Ruby', match:'ruby', color:'#9B1B30'},
       {month:'August', short:'Aug', stone:'Peridot', match:'peridot', color:'#8FA83E'},
       {month:'September', short:'Sep', stone:'Sapphire', match:'sapphire', color:'#2A4B8C'},
@@ -3281,8 +3326,11 @@ footer .socials svg{width:14px;height:14px}
     // a faceted gem silhouette (not a plain rotated square) — a kite-cut
     // top face with a table facet and crown lines, tinted per stone
     function bsGemSvg(color){
+      // a thin dark outline on the outer facet — without it, any pale
+      // stone (pearl, moonstone-ish tones) nearly disappears against the
+      // white section background instead of just being naturally subtle
       return `<svg class="bs-gem" viewBox="0 0 32 34" fill="none">
-        <polygon points="16,1 30,11 24,33 8,33 2,11" fill="${color}"/>
+        <polygon points="16,1 30,11 24,33 8,33 2,11" fill="${color}" stroke="rgba(0,0,0,.22)" stroke-width="1" stroke-linejoin="round"/>
         <polygon points="16,1 30,11 16,15 2,11" fill="#fff" opacity=".32"/>
         <polygon points="2,11 16,15 8,33" fill="#000" opacity=".08"/>
         <polygon points="30,11 16,15 24,33" fill="#000" opacity=".16"/>

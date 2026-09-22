@@ -3182,18 +3182,28 @@ footer .socials svg{width:14px;height:14px}
     const featDots = document.getElementById('feat-dots');
     const featPrev = document.getElementById('feat-prev');
     const featNext = document.getElementById('feat-next');
+    const N = FEAT_COLLECTIONS.length;
     let featIdx = 0;
 
-    featScroll.innerHTML = FEAT_COLLECTIONS.map(c => `
-      <div class="feat-banner-slide" style="background-image:url('${c.img}')">
+    // a real infinite loop: clone of the LAST collection prepended, clone
+    // of the FIRST appended, so DOM position 1..N are the real slides and
+    // 0/N+1 are the wrap-around clones — every real slide (including the
+    // first and last) always has something to peek at on both sides,
+    // instead of sitting flush against an empty edge
+    function slideHTML(c){
+      return `<div class="feat-banner-slide" style="background-image:url('${c.img}')">
         <div class="feat-caption">
           <p class="feat-eyebrow">Collection</p>
           <h4 class="feat-name">${c.name}</h4>
           <a href="#" class="feat-cta">Shop Now <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         </div>
-      </div>
-    `).join('');
+      </div>`;
+    }
+    featScroll.innerHTML = [FEAT_COLLECTIONS[N-1], ...FEAT_COLLECTIONS, FEAT_COLLECTIONS[0]].map(slideHTML).join('');
     featDots.innerHTML = FEAT_COLLECTIONS.map((_,idx)=>`<span class="${idx===0?'on':''}"></span>`).join('');
+    // arrows never hide now — the carousel loops in both directions
+    featPrev.classList.remove('hide');
+    featNext.classList.remove('hide');
 
     function syncProducts(i){
       featIdx = i;
@@ -3203,17 +3213,14 @@ footer .socials svg{width:14px;height:14px}
       featProducts.scrollLeft = 0;
       wireCards(featProducts);
       featDots.querySelectorAll('span').forEach((d,idx)=> d.classList.toggle('on', idx===i));
-      featPrev.classList.toggle('hide', i === 0);
-      featNext.classList.toggle('hide', i === FEAT_COLLECTIONS.length - 1);
       requestAnimationFrame(()=> featProducts.classList.toggle('centered', featProducts.scrollWidth <= featProducts.clientWidth + 1));
     }
 
-    // geometry-based, not a naive "index * pitch" multiplication — the
-    // last slide's mandatory-snap centered position can land short of
-    // that ideal multiple (there's no trailing content to scroll into),
-    // so dividing scrollLeft by a fixed pitch rounded the last slide
-    // back down to the middle one instead of detecting it correctly
-    function nearestSlideIndex(){
+    // geometry-based, not a naive "index * pitch" multiplication — a
+    // slide's mandatory-snap centered position doesn't always land on a
+    // clean multiple of the nominal pitch, so dividing scrollLeft by a
+    // fixed pitch could round to the wrong neighbour
+    function nearestDomIndex(){
       const slides = [...featScroll.querySelectorAll('.feat-banner-slide')];
       const center = featScroll.scrollLeft + featScroll.clientWidth / 2;
       let best = 0, bestDist = Infinity;
@@ -3223,24 +3230,43 @@ footer .socials svg{width:14px;height:14px}
       });
       return best;
     }
+    function centerOn(domIdx, smooth){
+      const slide = featScroll.querySelectorAll('.feat-banner-slide')[domIdx];
+      featScroll.scrollTo({left: slide.offsetLeft - (featScroll.clientWidth - slide.offsetWidth) / 2, behavior: smooth ? 'smooth' : 'auto'});
+    }
     function goTo(i){
-      i = Math.max(0, Math.min(FEAT_COLLECTIONS.length - 1, i));
-      const slide = featScroll.querySelectorAll('.feat-banner-slide')[i];
-      featScroll.scrollTo({left: slide.offsetLeft - (featScroll.clientWidth - slide.offsetWidth) / 2, behavior: 'smooth'});
+      centerOn(((i % N) + N) % N + 1, true);
     }
     featPrev.addEventListener('click', ()=> goTo(featIdx - 1));
     featNext.addEventListener('click', ()=> goTo(featIdx + 1));
 
     // native swipe/manual scroll also re-syncs the product rail — snap
-    // settles on a slide, then a short debounce reads which one it is
+    // settles on a slide, then a short debounce reads which one it is.
+    // Landing on one of the two wrap-around clones (dom index 0 or N+1)
+    // silently re-centers on the matching real slide with no animation,
+    // so the loop feels continuous instead of snapping back visibly.
     let featScrollTimer;
     featScroll.addEventListener('scroll', ()=>{
       clearTimeout(featScrollTimer);
       featScrollTimer = setTimeout(()=>{
-        const i = nearestSlideIndex();
-        if(i !== featIdx) syncProducts(i);
+        const dom = nearestDomIndex();
+        if(dom === 0){
+          syncProducts(N - 1);
+          centerOn(N, false);
+        } else if(dom === N + 1){
+          syncProducts(0);
+          centerOn(1, false);
+        } else {
+          const i = dom - 1;
+          if(i !== featIdx) syncProducts(i);
+        }
       }, 120);
     }, {passive:true});
+
+    // land on the real first slide (dom index 1), not the prepended
+    // clone at index 0, before anything is visible
+    syncProducts(0);
+    centerOn(1, false);
 
     syncProducts(0);
   })();

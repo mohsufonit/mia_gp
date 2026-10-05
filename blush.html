@@ -1029,8 +1029,13 @@ body{padding-top:var(--header-h,127px)}
    while the new deep stop is the corrected rose hue (~350°), so the
    gradient visibly clashed with itself. Replaced with --rose-dark
    (#A83850), matching the same rose family used everywhere else now. */
-.cc-giftcard{background:linear-gradient(155deg,#A83850 0%,#6E0D1D 100%);color:#fff}
-.cc-giftcard .cc-btn{background:var(--gold);color:#3a2410}
+/* rose gold, not another shade of the section's own pink — the tile
+   sits between Silver and Gold, so it now completes the same "real
+   metal finish" trio Mia actually sells jewellery in, instead of just
+   blending into the pink band behind it */
+.cc-giftcard{background:linear-gradient(155deg,#F6D9CE 0%,#D9A48F 55%,#A66B56 100%);color:#4a2416}
+.cc-giftcard p{color:#6b4332}
+.cc-giftcard .cc-btn{background:#4a2416;color:#F6D9CE}
 
 .cc-gold{background:linear-gradient(155deg,#FCEBB0 0%,#E8C15A 55%,#B8860B 100%);color:#3a2410}
 .cc-gold p{color:#5c410e}
@@ -1064,7 +1069,7 @@ body{padding-top:var(--header-h,127px)}
 /* No jewellery illustration — just the real Mia by Tanishq logo (fetched
    from their own site, recolored white via filter) centered on the card,
    with the tagline beneath it. */
-.giftcard-pack{width:152px;aspect-ratio:1.55/1;border-radius:10px;background:linear-gradient(135deg,#E8738A,#A83850 55%,#6E0D1D 100%);position:relative;overflow:hidden;--tilt:-9deg;transform:rotate(var(--tilt));box-shadow:0 16px 20px -4px rgba(0,0,0,.4),0 6px 10px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.3);animation:packFloat 4.8s ease-in-out infinite;animation-delay:.3s}
+.giftcard-pack{width:152px;aspect-ratio:1.55/1;border-radius:10px;background:linear-gradient(135deg,#D9A48F,#A66B56 55%,#7A4B38 100%);position:relative;overflow:hidden;--tilt:-9deg;transform:rotate(var(--tilt));box-shadow:0 16px 20px -4px rgba(0,0,0,.4),0 6px 10px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.3);animation:packFloat 4.8s ease-in-out infinite;animation-delay:.3s}
 .giftcard-pack::after{
   content:"";position:absolute;top:0;left:-60%;width:35%;height:100%;
   background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.4) 50%,transparent 100%);

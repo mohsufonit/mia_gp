@@ -34,9 +34,9 @@
   --cream-2:#F5EFEE;
   --blush:#FBE4E7;
   --blush-2:#FDF3F4;
-  --pink:#D14A61;
-  --pink-deep:#A83850;
-  --pink-hover:#E8738A;
+  --pink:#EC1664;
+  --pink-deep:#D1115A;
+  --pink-hover:#FF6FA8;
   --gold:#F0C987;
   --line:rgba(27,27,31,.09);
   --line-2:rgba(27,27,31,.15);
@@ -209,7 +209,7 @@ body{padding-top:var(--header-h,127px)}
 .login-text{font-family:'Manrope',sans-serif;font-size:13.5px;font-weight:600}
 
 /* ---- header nav: coral bar, category links ---- */
-.header-nav{display:none;background:linear-gradient(90deg,#A83850 0%,#D14A61 100%);color:#fff;overflow-x:auto}
+.header-nav{display:none;background:linear-gradient(90deg,#D1115A 0%,#EC1664 100%);color:#fff;overflow-x:auto}
 @media(min-width:1024px){.header-nav{display:block}}
 .header-nav::-webkit-scrollbar{display:none}
 .header-nav-inner{display:flex;align-items:center;justify-content:center;gap:30px;padding:12px 24px;max-width:var(--max);margin:0 auto;white-space:nowrap}
@@ -233,7 +233,7 @@ body{padding-top:var(--header-h,127px)}
 /* the spotlight card — pulled from index.html's .spotlight--fiora gradient
    + its glitter-dot overlay texture, as a contained rounded card (not
    full-bleed) with equal breathing room above and below */
-.hero-card{position:relative;overflow:hidden;border-radius:20px;background:radial-gradient(58% 50% at 70% 22%, rgba(255,255,255,.28), transparent 70%),radial-gradient(75% 85% at 65% 28%, #E8738A 0%, #D14A61 28%, #A83850 55%, #6E0D1D 100%);box-shadow:0 24px 54px rgba(110,13,29,.28)}
+.hero-card{position:relative;overflow:hidden;border-radius:20px;background:radial-gradient(58% 50% at 70% 22%, rgba(255,255,255,.28), transparent 70%),radial-gradient(75% 85% at 65% 28%, #FF6FA8 0%, #EC1664 28%, #D1115A 55%, #B30D4A 100%);box-shadow:0 24px 54px rgba(110,13,29,.28)}
 .hero-card::before{
   content:"";position:absolute;inset:0;pointer-events:none;opacity:.9;
   background-image:
@@ -254,7 +254,7 @@ body{padding-top:var(--header-h,127px)}
 @media(min-width:900px){.hero-copy{max-width:640px}}
 .hero-visual{order:1}
 @media(min-width:900px){.hero-copy{order:1}.hero-visual{order:2}}
-.hero-copy .eyebrow{margin-bottom:20px;background:#fff;color:#A83850;padding:7px 16px;border-radius:100px;width:fit-content}
+.hero-copy .eyebrow{margin-bottom:20px;background:#fff;color:#D1115A;padding:7px 16px;border-radius:100px;width:fit-content}
 .hero-copy h1{
   font-size:clamp(32px,5vw,52px);margin:0 0 20px;
   /* shine sweep on the headline — a bright band moving through a
@@ -283,7 +283,7 @@ body{padding-top:var(--header-h,127px)}
 .hero-tagline-short{display:none}
 .hero-ctas{display:flex;flex-wrap:wrap;gap:16px}
 .hero-card .btn-outline{border-color:rgba(255,255,255,.7);color:#fff}
-.btn-gold{background:#F0C987;color:#6E0D1D;box-shadow:0 10px 24px rgba(0,0,0,.18)}
+.btn-gold{background:#F0C987;color:#B30D4A;box-shadow:0 10px 24px rgba(0,0,0,.18)}
 .btn-gold:hover{background:#ecbd72}
 /* looping shine sweep on both hero CTAs, mobile and desktop alike */
 .hero-ctas .btn{position:relative;overflow:hidden}
@@ -357,7 +357,7 @@ body{padding-top:var(--header-h,127px)}
 .sparkle.s3{animation-delay:1.7s}
 @keyframes sparkle{0%,100%{opacity:.15;transform:scale(.75) rotate(0)}50%{opacity:.55;transform:scale(.9) rotate(8deg)}}
 /* value pills live on the collage itself, not as extra copy text */
-.tag{position:absolute;z-index:3;display:inline-flex;align-items:center;gap:6px;background:#fff;border-radius:100px;padding:6px 13px;font-size:10.5px;font-weight:700;color:#A83850;white-space:nowrap;box-shadow:0 8px 18px rgba(0,0,0,.18);animation:tagFloat 3.4s ease-in-out infinite}
+.tag{position:absolute;z-index:3;display:inline-flex;align-items:center;gap:6px;background:#fff;border-radius:100px;padding:6px 13px;font-size:10.5px;font-weight:700;color:#D1115A;white-space:nowrap;box-shadow:0 8px 18px rgba(0,0,0,.18);animation:tagFloat 3.4s ease-in-out infinite}
 .tag svg{flex-shrink:0}
 .tag-wrap{left:1%;top:0%;animation-delay:0s}
 .tag-note{right:-2%;top:20%;animation-delay:.7s}
@@ -508,7 +508,7 @@ body{padding-top:var(--header-h,127px)}
 /* BLUSH VARIATION — live at a separate path from index.html so the two
    can be compared side by side; card fill swapped from the vivid
    pink-to-maroon gradient to the "Blush" tone (near-white fading to a
-   soft pink). Accent colour is var(--pink) (#D14A61) — the exact same
+   soft pink). Accent colour is var(--pink) (#EC1664) — the exact same
    pink as the Surprise Me button in the gift finder — not a separate
    custom rose shade. */
 .pcard{
@@ -646,7 +646,7 @@ body{padding-top:var(--header-h,127px)}
 .nudge.show{opacity:1;pointer-events:auto}
 .nudge-box{
   position:relative;max-width:420px;width:100%;padding:36px 30px 30px;border-radius:20px;text-align:center;color:#fff;
-  background:radial-gradient(130% 150% at 50% -10%,#E8738A 0%,#D14A61 45%,#6E0D1D 100%);
+  background:radial-gradient(130% 150% at 50% -10%,#FF6FA8 0%,#EC1664 45%,#B30D4A 100%);
   box-shadow:0 30px 60px rgba(110,13,29,.4);border:1px solid rgba(240,201,135,.35);
   transform:translateY(14px) scale(.97);transition:transform .35s var(--ease);
 }
@@ -694,7 +694,7 @@ body{padding-top:var(--header-h,127px)}
    holds contrast against both the white page and the pink breaker
    sections it now scrolls over (birthstone, coins) */
 .pin-bar-cta{
-  pointer-events:auto;display:inline-flex;align-items:center;gap:10px;background:#6E0D1D;color:#fff;
+  pointer-events:auto;display:inline-flex;align-items:center;gap:10px;background:#B30D4A;color:#fff;
   padding:13px 24px;border-radius:100px;font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.02em;
   box-shadow:0 12px 28px rgba(110,13,29,.4);opacity:0;visibility:hidden;
   transform:translateY(calc(100% + 24px));transition:transform .35s cubic-bezier(.16,1,.3,1),opacity .35s,background .2s;
@@ -759,7 +759,7 @@ body{padding-top:var(--header-h,127px)}
    (Mia Difference / modals) for consistency — one line always, never wraps:
    uses the full available width first, shrinks type only if it must */
 .trust-ticker{
-  background:radial-gradient(130% 150% at 50% -10%,#E8738A 0%,#D14A61 45%,#6E0D1D 100%);
+  background:radial-gradient(130% 150% at 50% -10%,#FF6FA8 0%,#EC1664 45%,#B30D4A 100%);
   box-shadow:0 12px 28px rgba(110,13,29,.24);
   padding:29px 20px;
   width:var(--vw,100vw);position:relative;left:50%;margin-left:calc(var(--vw,100vw) * -0.5);
@@ -890,7 +890,7 @@ body{padding-top:var(--header-h,127px)}
   content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
   background:
     radial-gradient(70% 90% at 20% 0%, rgba(255,255,255,.16), transparent 60%),
-    radial-gradient(75% 85% at 65% 15%, #E8738A 0%, #D14A61 28%, #A83850 55%, #6E0D1D 100%);
+    radial-gradient(75% 85% at 65% 15%, #FF6FA8 0%, #EC1664 28%, #D1115A 55%, #B30D4A 100%);
 }
 #recipient .section-head,#recipient .recip-panels{position:relative;z-index:1}
 #recipient .eyebrow{color:var(--gold)}
@@ -976,7 +976,7 @@ body{padding-top:var(--header-h,127px)}
   content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
   background:
     radial-gradient(70% 90% at 20% 0%, rgba(255,255,255,.16), transparent 60%),
-    radial-gradient(75% 85% at 65% 15%, #E8738A 0%, #D14A61 28%, #A83850 55%, #6E0D1D 100%);
+    radial-gradient(75% 85% at 65% 15%, #FF6FA8 0%, #EC1664 28%, #D1115A 55%, #B30D4A 100%);
 }
 /* gold dust glitter texture — every pink breaker band gets this, not just
    the coin/gift-card section */
@@ -1025,10 +1025,10 @@ body{padding-top:var(--header-h,127px)}
 .cc-silver p{color:#454b53}
 .cc-silver .cc-btn{background:#20242b;color:#fff}
 
-/* was #7A0A3A -> #6E0D1D — the old stop sat at the magenta hue (~334°)
+/* was #7A0A3A -> #B30D4A — the old stop sat at the magenta hue (~334°)
    while the new deep stop is the corrected rose hue (~350°), so the
    gradient visibly clashed with itself. Replaced with --rose-dark
-   (#A83850), matching the same rose family used everywhere else now. */
+   (#D1115A), matching the same rose family used everywhere else now. */
 /* rose gold, not another shade of the section's own pink — the tile
    sits between Silver and Gold, so it now completes the same "real
    metal finish" trio Mia actually sells jewellery in, instead of just
@@ -1082,7 +1082,7 @@ body{padding-top:var(--header-h,127px)}
 @media(prefers-reduced-motion:reduce){.giftcard-pack,.giftcard-pack::after{animation:none}}
 
 /* ============ gift card mock (shared with the gift card modal) ============ */
-.gift-card-mock{width:100%;max-width:360px;aspect-ratio:1.6/1;border-radius:16px;background:linear-gradient(135deg,#6E0D1D 0%,#D14A61 55%,#E8738A 100%);position:relative;box-shadow:0 22px 46px rgba(110,13,29,.24);padding:24px;color:#fff;overflow:hidden}
+.gift-card-mock{width:100%;max-width:360px;aspect-ratio:1.6/1;border-radius:16px;background:linear-gradient(135deg,#7A4B38 0%,#A66B56 55%,#D9A48F 100%);position:relative;box-shadow:0 22px 46px rgba(74,36,22,.3);padding:24px;color:#fff;overflow:hidden}
 .gift-card-mock::before{content:"";position:absolute;width:200px;height:200px;border-radius:50%;border:1px solid rgba(255,255,255,.18);top:-80px;right:-60px}
 .gcm-top{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1}
 .gcm-value{font-family:'Fraunces',serif;font-size:24px;margin-top:30px;position:relative;z-index:1}
@@ -1097,7 +1097,7 @@ body{padding-top:var(--header-h,127px)}
 .gcmodal-close:hover{background:var(--blush)}
 .gcmodal-grid{display:grid;grid-template-columns:1fr}
 @media(min-width:760px){.gcmodal-grid{grid-template-columns:1fr 1.15fr}}
-.gcmodal-preview{background:radial-gradient(120% 140% at 30% 0%,#F0A0B0,#D14A61 55%,#A83850 100%);display:flex;align-items:center;justify-content:center;padding:44px 30px}
+.gcmodal-preview{background:radial-gradient(120% 140% at 30% 0%,#F0A0B0,#EC1664 55%,#D1115A 100%);display:flex;align-items:center;justify-content:center;padding:44px 30px}
 /* a real fixed ratio, sized with enough headroom that the logo, amount,
    name and message never get clipped by the card's own overflow:hidden */
 .gcmodal-card{width:100%;max-width:300px;aspect-ratio:1.15/1;animation:gcmCardFloat 4.5s ease-in-out infinite}
@@ -1234,7 +1234,7 @@ body{padding-top:var(--header-h,127px)}
 
 .gf-card{position:absolute;inset:0;border-radius:22px;overflow:hidden;display:flex;flex-direction:column}
 .gf-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0}
-.gf-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(175deg,rgba(209,74,97,.88) 0%,rgba(168,56,80,.93) 55%,rgba(110,13,29,.97) 100%);z-index:1}
+.gf-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(175deg,rgba(255,111,168,.88) 0%,rgba(236,22,100,.93) 55%,rgba(179,13,74,.97) 100%);z-index:1}
 
 /* everything centered — text, step number, question, the chip grid —
    not left-aligned; also scrolls internally (overflow-y) so a question
@@ -1279,7 +1279,7 @@ body{padding-top:var(--header-h,127px)}
 
 /* ---- the slot machine ---- */
 .slot-wrap{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;min-height:0;align-items:center;justify-content:center;padding:6px 4px}
-.slot-cabinet{position:relative;width:100%;max-width:340px;background:linear-gradient(180deg,#E8738A 0%,var(--pink) 40%,var(--pink-deep) 100%);
+.slot-cabinet{position:relative;width:100%;max-width:340px;background:linear-gradient(180deg,#FF6FA8 0%,var(--pink) 40%,var(--pink-deep) 100%);
   border:3px solid var(--gold);border-radius:20px;padding:16px 14px 14px;
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.25),0 14px 30px rgba(110,13,29,.35)}
 .slot-cabinet::before,.slot-cabinet::after{content:'';position:absolute;top:8px;bottom:8px;width:6px;
@@ -1373,7 +1373,7 @@ body{padding-top:var(--header-h,127px)}
    as the coin/gift-card breaker above it, not its own destination section */
 /* this is the page's actual section breaker (same role as the coin/gift-card
    band) — pink full-bleed gradient, cream cards floating on top */
-.touches-section{background:radial-gradient(130% 150% at 50% -10%,#E8738A 0%,#D14A61 45%,#6E0D1D 100%);position:relative;overflow:hidden}
+.touches-section{background:radial-gradient(130% 150% at 50% -10%,#FF6FA8 0%,#EC1664 45%,#B30D4A 100%);position:relative;overflow:hidden}
 .touches-section .eyebrow{color:var(--gold)}
 .touches-section h2{color:#fff}
 .touch-strip{display:flex;gap:14px;overflow-x:auto;padding:4px 4px 10px;-ms-overflow-style:none;scrollbar-width:none}
@@ -1382,7 +1382,7 @@ body{padding-top:var(--header-h,127px)}
   transform:scale(.94);opacity:.6;transition:transform .5s var(--ease),opacity .5s var(--ease),border-color .2s}
 .touch-card.active{transform:scale(1);opacity:1;border-color:var(--gold-line)}
 .touch-num{position:absolute;top:-6px;right:8px;font-family:'Fraunces',serif;font-size:52px;font-weight:600;color:rgba(209,74,97,.08);line-height:1;pointer-events:none}
-.touch-icon{width:40px;height:40px;border-radius:11px;background:#6E0D1D;display:flex;align-items:center;justify-content:center;color:var(--gold);margin-bottom:12px;position:relative;overflow:hidden}
+.touch-icon{width:40px;height:40px;border-radius:11px;background:#B30D4A;display:flex;align-items:center;justify-content:center;color:var(--gold);margin-bottom:12px;position:relative;overflow:hidden}
 .touch-card h4{font-size:14px;font-weight:700;margin:0 0 6px;color:var(--ink);position:relative}
 .touch-card h4 em{font-style:normal;color:var(--pink-deep)}
 .touch-card p{font-size:11.5px;color:var(--muted);line-height:1.5;margin:0 0 10px;position:relative}
@@ -1512,7 +1512,7 @@ body{padding-top:var(--header-h,127px)}
 .mp-section{display:none}
 @media(max-width:899px){
   .tm-carousel-wrap{display:none}
-  .mp-section{display:block;background:radial-gradient(130% 150% at 50% -10%,var(--pink-hover) 0%,var(--pink) 45%,#6E0D1D 100%);
+  .mp-section{display:block;background:radial-gradient(130% 150% at 50% -10%,var(--pink-hover) 0%,var(--pink) 45%,#B30D4A 100%);
     border-radius:18px;padding:26px 0 22px;position:relative;overflow:hidden}
   .mp-stage{position:relative;height:300px}
   .mp-card{position:absolute;top:50%;left:50%;width:190px;height:270px;margin-left:-95px;margin-top:-135px;
@@ -1559,7 +1559,7 @@ body{padding-top:var(--header-h,127px)}
 /* margin-bottom so it doesn't butt straight into the footer's own solid
    pink — the dark-maroon-to-bright-pink jump with zero gap read as a
    layout bug rather than two intentionally different bands */
-.newsletter{background:radial-gradient(130% 150% at 50% -10%,var(--pink-hover) 0%,var(--pink) 45%,#6E0D1D 100%);color:#fff;text-align:center;padding:62px 24px;margin-bottom:36px;position:relative;overflow:hidden}
+.newsletter{background:radial-gradient(130% 150% at 50% -10%,var(--pink-hover) 0%,var(--pink) 45%,#B30D4A 100%);color:#fff;text-align:center;padding:62px 24px;margin-bottom:36px;position:relative;overflow:hidden}
 .newsletter h2{color:#fff;font-size:clamp(21px,2.8vw,28px);margin-bottom:9px}
 .newsletter p{color:rgba(255,255,255,.6);max-width:420px;margin:0 auto 24px;font-size:13.5px}
 .nl-form{display:flex;max-width:400px;margin:0 auto;border-radius:100px;overflow:hidden;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2)}
@@ -1679,7 +1679,7 @@ footer .socials svg{width:14px;height:14px}
 .qv-gallery-item:hover img{transform:scale(1.04)}
 .qv-gallery-item + .qv-gallery-item{border-top:1px solid var(--line)}
 .qv-gallery-item::after{content:'';position:absolute;top:12px;right:12px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.85);opacity:0;transition:opacity .2s;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A83850' stroke-width='2'%3E%3Ccircle cx='10' cy='10' r='6.5'/%3E%3Cpath d='m20 20-4.4-4.4'/%3E%3C/svg%3E");
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23D1115A' stroke-width='2'%3E%3Ccircle cx='10' cy='10' r='6.5'/%3E%3Cpath d='m20 20-4.4-4.4'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:center;background-size:14px}
 .qv-gallery-item:hover::after{opacity:1}
 @media(min-width:680px){

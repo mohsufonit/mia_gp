@@ -233,7 +233,7 @@ body{padding-top:var(--header-h,127px)}
 /* the spotlight card — pulled from index.html's .spotlight--fiora gradient
    + its glitter-dot overlay texture, as a contained rounded card (not
    full-bleed) with equal breathing room above and below */
-.hero-card{position:relative;overflow:hidden;border-radius:20px;background:radial-gradient(58% 50% at 70% 22%, rgba(255,255,255,.28), transparent 70%),radial-gradient(145% 165% at 65% 28%, #E8738A 0%, #D14A61 32%, #A83850 62%, #6E0D1D 100%);box-shadow:0 24px 54px rgba(110,13,29,.28)}
+.hero-card{position:relative;overflow:hidden;border-radius:20px;background:radial-gradient(58% 50% at 70% 22%, rgba(255,255,255,.28), transparent 70%),radial-gradient(75% 85% at 65% 28%, #E8738A 0%, #D14A61 28%, #A83850 55%, #6E0D1D 100%);box-shadow:0 24px 54px rgba(110,13,29,.28)}
 .hero-card::before{
   content:"";position:absolute;inset:0;pointer-events:none;opacity:.9;
   background-image:
@@ -623,7 +623,11 @@ body{padding-top:var(--header-h,127px)}
 .cmp-cols{display:grid;grid-template-columns:96px 1fr 1fr;gap:14px;align-items:end;margin-bottom:8px}
 .cmp-col-head{text-align:center}
 .cmp-col-head img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;margin-bottom:10px;background:var(--cream)}
-.cmp-col-head h4{font-size:12.5px;margin:0;line-height:1.35}
+/* reserves room for 2 lines even when a name fits on 1 — with the
+   column's own align-items:end, a shorter 1-line name was letting that
+   whole column (image included) sink lower than the other, throwing
+   off the alignment of everything below it, row by row */
+.cmp-col-head h4{font-size:12.5px;margin:0;line-height:1.35;min-height:calc(12.5px * 1.35 * 2);display:flex;align-items:center;justify-content:center}
 .cmp-spec{display:grid;grid-template-columns:96px 1fr 1fr;gap:14px;align-items:center;padding:14px 0;border-top:1px solid var(--line)}
 .cmp-spec:nth-of-type(even){background:var(--cream)}
 .cmp-spec-label{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
@@ -886,7 +890,7 @@ body{padding-top:var(--header-h,127px)}
   content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
   background:
     radial-gradient(70% 90% at 20% 0%, rgba(255,255,255,.16), transparent 60%),
-    radial-gradient(145% 165% at 65% 15%, #E8738A 0%, #D14A61 32%, #A83850 62%, #6E0D1D 100%);
+    radial-gradient(75% 85% at 65% 15%, #E8738A 0%, #D14A61 28%, #A83850 55%, #6E0D1D 100%);
 }
 #recipient .section-head,#recipient .recip-panels{position:relative;z-index:1}
 #recipient .eyebrow{color:var(--gold)}
@@ -972,7 +976,7 @@ body{padding-top:var(--header-h,127px)}
   content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
   background:
     radial-gradient(70% 90% at 20% 0%, rgba(255,255,255,.16), transparent 60%),
-    radial-gradient(145% 165% at 65% 15%, #E8738A 0%, #D14A61 32%, #A83850 62%, #6E0D1D 100%);
+    radial-gradient(75% 85% at 65% 15%, #E8738A 0%, #D14A61 28%, #A83850 55%, #6E0D1D 100%);
 }
 /* gold dust glitter texture — every pink breaker band gets this, not just
    the coin/gift-card section */

@@ -34,13 +34,13 @@
   --cream-2:#F5EFEE;
   --blush:#FBE4E7;
   --blush-2:#FDF3F4;
-  --pink:#E4127D;
-  --pink-deep:#A80E5E;
-  --pink-hover:#F26AA8;
+  --pink:#D14A61;
+  --pink-deep:#A83850;
+  --pink-hover:#E8738A;
   --gold:#F0C987;
   --line:rgba(27,27,31,.09);
   --line-2:rgba(27,27,31,.15);
-  --gold-line:rgba(228,18,125,.35);
+  --gold-line:rgba(209,74,97,.35);
   --shadow-1:0 1px 2px rgba(27,27,31,.05), 0 4px 14px rgba(27,27,31,.05);
   --shadow-2:0 10px 30px rgba(27,27,31,.09), 0 2px 8px rgba(27,27,31,.05);
   --ease:cubic-bezier(.22,.61,.36,1);
@@ -65,17 +65,17 @@ body{
      the full document height naturally since it scrolls with content */
   background-color:#fff;
   background-image:
-    radial-gradient(2.2px 2.2px at 6% 18%, rgba(228,18,125,.8), transparent),
-    radial-gradient(1.8px 1.8px at 18% 62%, rgba(228,18,125,.65), transparent),
-    radial-gradient(2px 2px at 32% 8%, rgba(228,18,125,.75), transparent),
-    radial-gradient(1.6px 1.6px at 46% 72%, rgba(228,18,125,.6), transparent),
-    radial-gradient(2.2px 2.2px at 61% 28%, rgba(228,18,125,.8), transparent),
-    radial-gradient(1.7px 1.7px at 74% 58%, rgba(228,18,125,.65), transparent),
-    radial-gradient(2px 2px at 86% 15%, rgba(228,18,125,.75), transparent),
-    radial-gradient(1.6px 1.6px at 12% 88%, rgba(228,18,125,.6), transparent),
-    radial-gradient(1.9px 1.9px at 92% 82%, rgba(228,18,125,.7), transparent),
-    radial-gradient(1.6px 1.6px at 40% 42%, rgba(228,18,125,.55), transparent),
-    radial-gradient(1.8px 1.8px at 68% 90%, rgba(228,18,125,.6), transparent);
+    radial-gradient(2.2px 2.2px at 6% 18%, rgba(209,74,97,.8), transparent),
+    radial-gradient(1.8px 1.8px at 18% 62%, rgba(209,74,97,.65), transparent),
+    radial-gradient(2px 2px at 32% 8%, rgba(209,74,97,.75), transparent),
+    radial-gradient(1.6px 1.6px at 46% 72%, rgba(209,74,97,.6), transparent),
+    radial-gradient(2.2px 2.2px at 61% 28%, rgba(209,74,97,.8), transparent),
+    radial-gradient(1.7px 1.7px at 74% 58%, rgba(209,74,97,.65), transparent),
+    radial-gradient(2px 2px at 86% 15%, rgba(209,74,97,.75), transparent),
+    radial-gradient(1.6px 1.6px at 12% 88%, rgba(209,74,97,.6), transparent),
+    radial-gradient(1.9px 1.9px at 92% 82%, rgba(209,74,97,.7), transparent),
+    radial-gradient(1.6px 1.6px at 40% 42%, rgba(209,74,97,.55), transparent),
+    radial-gradient(1.8px 1.8px at 68% 90%, rgba(209,74,97,.6), transparent);
   background-size:170px 170px;
   background-attachment:fixed;
 }
@@ -185,7 +185,7 @@ body{padding-top:var(--header-h,127px)}
 .logo-mia-img{height:38px;width:auto;display:block}
 .header-search{display:none;flex:1;max-width:560px;align-items:center;background:#fff;border:1.5px solid var(--line-2);border-radius:100px;padding:4px 6px 4px 18px;transition:border-color .2s,box-shadow .2s}
 @media(min-width:760px){.header-search{display:flex}}
-.header-search:focus-within{border-color:var(--pink);box-shadow:0 0 0 4px rgba(228,18,125,.08)}
+.header-search:focus-within{border-color:var(--pink);box-shadow:0 0 0 4px rgba(209,74,97,.08)}
 .header-search-btn,.header-cam-btn{background:transparent;border:none;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--pink-deep);flex-shrink:0}
 .header-search-btn svg,.header-cam-btn svg{width:18px;height:18px}
 .header-search-input{flex:1;border:none;outline:none;background:transparent;font-family:'Manrope',sans-serif;font-size:13.5px;color:var(--ink);padding:8px 4px;width:100%;min-width:0}
@@ -209,7 +209,7 @@ body{padding-top:var(--header-h,127px)}
 .login-text{font-family:'Manrope',sans-serif;font-size:13.5px;font-weight:600}
 
 /* ---- header nav: coral bar, category links ---- */
-.header-nav{display:none;background:linear-gradient(90deg,#A80E5E 0%,#E4127D 100%);color:#fff;overflow-x:auto}
+.header-nav{display:none;background:linear-gradient(90deg,#A83850 0%,#D14A61 100%);color:#fff;overflow-x:auto}
 @media(min-width:1024px){.header-nav{display:block}}
 .header-nav::-webkit-scrollbar{display:none}
 .header-nav-inner{display:flex;align-items:center;justify-content:center;gap:30px;padding:12px 24px;max-width:var(--max);margin:0 auto;white-space:nowrap}
@@ -233,7 +233,7 @@ body{padding-top:var(--header-h,127px)}
 /* the spotlight card — pulled from index.html's .spotlight--fiora gradient
    + its glitter-dot overlay texture, as a contained rounded card (not
    full-bleed) with equal breathing room above and below */
-.hero-card{position:relative;overflow:hidden;border-radius:20px;background:radial-gradient(58% 50% at 70% 22%, rgba(255,255,255,.28), transparent 70%),radial-gradient(145% 165% at 65% 28%, #F26AA8 0%, #E4127D 32%, #A80E5E 62%, #3D0620 100%);box-shadow:0 24px 54px rgba(61,6,32,.28)}
+.hero-card{position:relative;overflow:hidden;border-radius:20px;background:radial-gradient(58% 50% at 70% 22%, rgba(255,255,255,.28), transparent 70%),radial-gradient(145% 165% at 65% 28%, #E8738A 0%, #D14A61 32%, #A83850 62%, #6E0D1D 100%);box-shadow:0 24px 54px rgba(110,13,29,.28)}
 .hero-card::before{
   content:"";position:absolute;inset:0;pointer-events:none;opacity:.9;
   background-image:
@@ -254,7 +254,7 @@ body{padding-top:var(--header-h,127px)}
 @media(min-width:900px){.hero-copy{max-width:640px}}
 .hero-visual{order:1}
 @media(min-width:900px){.hero-copy{order:1}.hero-visual{order:2}}
-.hero-copy .eyebrow{margin-bottom:20px;background:#fff;color:#A80E5E;padding:7px 16px;border-radius:100px;width:fit-content}
+.hero-copy .eyebrow{margin-bottom:20px;background:#fff;color:#A83850;padding:7px 16px;border-radius:100px;width:fit-content}
 .hero-copy h1{
   font-size:clamp(32px,5vw,52px);margin:0 0 20px;
   /* shine sweep on the headline — a bright band moving through a
@@ -283,7 +283,7 @@ body{padding-top:var(--header-h,127px)}
 .hero-tagline-short{display:none}
 .hero-ctas{display:flex;flex-wrap:wrap;gap:16px}
 .hero-card .btn-outline{border-color:rgba(255,255,255,.7);color:#fff}
-.btn-gold{background:#F0C987;color:#3D0620;box-shadow:0 10px 24px rgba(0,0,0,.18)}
+.btn-gold{background:#F0C987;color:#6E0D1D;box-shadow:0 10px 24px rgba(0,0,0,.18)}
 .btn-gold:hover{background:#ecbd72}
 /* looping shine sweep on both hero CTAs, mobile and desktop alike */
 .hero-ctas .btn{position:relative;overflow:hidden}
@@ -357,7 +357,7 @@ body{padding-top:var(--header-h,127px)}
 .sparkle.s3{animation-delay:1.7s}
 @keyframes sparkle{0%,100%{opacity:.15;transform:scale(.75) rotate(0)}50%{opacity:.55;transform:scale(.9) rotate(8deg)}}
 /* value pills live on the collage itself, not as extra copy text */
-.tag{position:absolute;z-index:3;display:inline-flex;align-items:center;gap:6px;background:#fff;border-radius:100px;padding:6px 13px;font-size:10.5px;font-weight:700;color:#A80E5E;white-space:nowrap;box-shadow:0 8px 18px rgba(0,0,0,.18);animation:tagFloat 3.4s ease-in-out infinite}
+.tag{position:absolute;z-index:3;display:inline-flex;align-items:center;gap:6px;background:#fff;border-radius:100px;padding:6px 13px;font-size:10.5px;font-weight:700;color:#A83850;white-space:nowrap;box-shadow:0 8px 18px rgba(0,0,0,.18);animation:tagFloat 3.4s ease-in-out infinite}
 .tag svg{flex-shrink:0}
 .tag-wrap{left:1%;top:0%;animation-delay:0s}
 .tag-note{right:-2%;top:20%;animation-delay:.7s}
@@ -384,8 +384,8 @@ body{padding-top:var(--header-h,127px)}
 }
 .cat-chip{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:9px;cursor:pointer;opacity:.75;transition:opacity .2s}
 .cat-chip:hover,.cat-chip.active{opacity:1}
-.cat-chip-ic{width:52px;height:52px;border-radius:50%;background:linear-gradient(155deg,var(--pink),var(--pink-deep));display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(168,14,94,.18);transition:all .2s var(--ease)}
-.cat-chip.active .cat-chip-ic{box-shadow:0 6px 16px rgba(168,14,94,.32);transform:scale(1.06)}
+.cat-chip-ic{width:52px;height:52px;border-radius:50%;background:linear-gradient(155deg,var(--pink),var(--pink-deep));display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(168,56,80,.18);transition:all .2s var(--ease)}
+.cat-chip.active .cat-chip-ic{box-shadow:0 6px 16px rgba(168,56,80,.32);transform:scale(1.06)}
 .cat-chip-ic svg{width:22px;height:22px;color:#fff}
 .cat-chip span{font-size:12px;font-weight:600;color:var(--ink-2);white-space:nowrap}
 .cat-chip.active span{color:var(--pink-deep)}
@@ -508,29 +508,29 @@ body{padding-top:var(--header-h,127px)}
 /* BLUSH VARIATION — live at a separate path from index.html so the two
    can be compared side by side; card fill swapped from the vivid
    pink-to-maroon gradient to the "Blush" tone (near-white fading to a
-   soft pink). Accent colour is var(--pink) (#E4127D) — the exact same
+   soft pink). Accent colour is var(--pink) (#D14A61) — the exact same
    pink as the Surprise Me button in the gift finder — not a separate
    custom rose shade. */
 .pcard{
   position:relative;
   background:linear-gradient(160deg,#FFFDFC 0%,#FDF0F2 100%);
-  border:1px solid rgba(168,14,94,.14);border-radius:16px;overflow:hidden;box-shadow:0 8px 20px rgba(61,6,32,.08);transition:box-shadow .25s var(--ease),transform .25s var(--ease),border-color .25s var(--ease);cursor:pointer;text-align:left;display:flex;flex-direction:column
+  border:1px solid rgba(168,56,80,.14);border-radius:16px;overflow:hidden;box-shadow:0 8px 20px rgba(110,13,29,.08);transition:box-shadow .25s var(--ease),transform .25s var(--ease),border-color .25s var(--ease);cursor:pointer;text-align:left;display:flex;flex-direction:column
 }
-.pcard:hover{box-shadow:0 12px 26px rgba(61,6,32,.13);transform:translateY(-3px);border-color:rgba(168,14,94,.14)}
+.pcard:hover{box-shadow:0 12px 26px rgba(110,13,29,.13);transform:translateY(-3px);border-color:rgba(168,56,80,.14)}
 /* same pink dot texture as the page's own background, scaled down to
    card size — the flat blush gradient needed a little texture of its
    own instead of reading as a plain empty tint */
 .pcard::before{
   content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
   background-image:
-    radial-gradient(1.6px 1.6px at 10% 15%, rgba(228,18,125,.5), transparent),
-    radial-gradient(1.3px 1.3px at 30% 55%, rgba(228,18,125,.4), transparent),
-    radial-gradient(1.5px 1.5px at 55% 12%, rgba(228,18,125,.45), transparent),
-    radial-gradient(1.2px 1.2px at 78% 40%, rgba(228,18,125,.38), transparent),
-    radial-gradient(1.6px 1.6px at 90% 75%, rgba(228,18,125,.5), transparent),
-    radial-gradient(1.2px 1.2px at 20% 85%, rgba(228,18,125,.38), transparent),
-    radial-gradient(1.4px 1.4px at 65% 90%, rgba(228,18,125,.42), transparent),
-    radial-gradient(1.3px 1.3px at 42% 32%, rgba(228,18,125,.35), transparent);
+    radial-gradient(1.6px 1.6px at 10% 15%, rgba(209,74,97,.5), transparent),
+    radial-gradient(1.3px 1.3px at 30% 55%, rgba(209,74,97,.4), transparent),
+    radial-gradient(1.5px 1.5px at 55% 12%, rgba(209,74,97,.45), transparent),
+    radial-gradient(1.2px 1.2px at 78% 40%, rgba(209,74,97,.38), transparent),
+    radial-gradient(1.6px 1.6px at 90% 75%, rgba(209,74,97,.5), transparent),
+    radial-gradient(1.2px 1.2px at 20% 85%, rgba(209,74,97,.38), transparent),
+    radial-gradient(1.4px 1.4px at 65% 90%, rgba(209,74,97,.42), transparent),
+    radial-gradient(1.3px 1.3px at 42% 32%, rgba(209,74,97,.35), transparent);
   background-size:60px 60px;
 }
 .pcard .pthumb,.pcard .pbody{position:relative;z-index:1}
@@ -642,8 +642,8 @@ body{padding-top:var(--header-h,127px)}
 .nudge.show{opacity:1;pointer-events:auto}
 .nudge-box{
   position:relative;max-width:420px;width:100%;padding:36px 30px 30px;border-radius:20px;text-align:center;color:#fff;
-  background:radial-gradient(130% 150% at 50% -10%,#F26AA8 0%,#E4127D 45%,#3D0620 100%);
-  box-shadow:0 30px 60px rgba(61,6,32,.4);border:1px solid rgba(240,201,135,.35);
+  background:radial-gradient(130% 150% at 50% -10%,#E8738A 0%,#D14A61 45%,#6E0D1D 100%);
+  box-shadow:0 30px 60px rgba(110,13,29,.4);border:1px solid rgba(240,201,135,.35);
   transform:translateY(14px) scale(.97);transition:transform .35s var(--ease);
 }
 .nudge.show .nudge-box{transform:translateY(0) scale(1)}
@@ -690,9 +690,9 @@ body{padding-top:var(--header-h,127px)}
    holds contrast against both the white page and the pink breaker
    sections it now scrolls over (birthstone, coins) */
 .pin-bar-cta{
-  pointer-events:auto;display:inline-flex;align-items:center;gap:10px;background:#3D0620;color:#fff;
+  pointer-events:auto;display:inline-flex;align-items:center;gap:10px;background:#6E0D1D;color:#fff;
   padding:13px 24px;border-radius:100px;font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.02em;
-  box-shadow:0 12px 28px rgba(61,6,32,.4);opacity:0;visibility:hidden;
+  box-shadow:0 12px 28px rgba(110,13,29,.4);opacity:0;visibility:hidden;
   transform:translateY(calc(100% + 24px));transition:transform .35s cubic-bezier(.16,1,.3,1),opacity .35s,background .2s;
 }
 .pin-sticky.show .pin-bar-cta{opacity:1;visibility:visible;transform:none}
@@ -737,7 +737,7 @@ body{padding-top:var(--header-h,127px)}
 .pcard .ppills{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:10px}
 /* quieter — a plain soft pill, no gold border/text, no infinite shine
    sweep running on every card in every rail at once */
-.pcard .ppill{background:var(--blush-2);border:1px solid rgba(168,14,94,.22);color:var(--pink);padding:4px 9px;border-radius:6px;font-size:10px;font-weight:700;white-space:nowrap}
+.pcard .ppill{background:var(--blush-2);border:1px solid rgba(168,56,80,.22);color:var(--pink);padding:4px 9px;border-radius:6px;font-size:10px;font-weight:700;white-space:nowrap}
 .pcard .padd{position:relative;overflow:hidden;width:100%;background:var(--pink);color:#fff;padding:10px 14px;border-radius:100px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;text-align:center;transition:background .3s ease,color .3s ease}
 .pcard .padd::before{
   content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
@@ -755,8 +755,8 @@ body{padding-top:var(--header-h,127px)}
    (Mia Difference / modals) for consistency — one line always, never wraps:
    uses the full available width first, shrinks type only if it must */
 .trust-ticker{
-  background:radial-gradient(130% 150% at 50% -10%,#F26AA8 0%,#E4127D 45%,#3D0620 100%);
-  box-shadow:0 12px 28px rgba(61,6,32,.24);
+  background:radial-gradient(130% 150% at 50% -10%,#E8738A 0%,#D14A61 45%,#6E0D1D 100%);
+  box-shadow:0 12px 28px rgba(110,13,29,.24);
   padding:29px 20px;
   width:var(--vw,100vw);position:relative;left:50%;margin-left:calc(var(--vw,100vw) * -0.5);
 }
@@ -886,7 +886,7 @@ body{padding-top:var(--header-h,127px)}
   content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
   background:
     radial-gradient(70% 90% at 20% 0%, rgba(255,255,255,.16), transparent 60%),
-    radial-gradient(145% 165% at 65% 15%, #F26AA8 0%, #E4127D 32%, #A80E5E 62%, #3D0620 100%);
+    radial-gradient(145% 165% at 65% 15%, #E8738A 0%, #D14A61 32%, #A83850 62%, #6E0D1D 100%);
 }
 #recipient .section-head,#recipient .recip-panels{position:relative;z-index:1}
 #recipient .eyebrow{color:var(--gold)}
@@ -904,7 +904,7 @@ body{padding-top:var(--header-h,127px)}
 .recip-label{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin:0 0 4px;text-align:center}
 /* a pink tint, not plain white/grey — the pill was reading as
    colourless and disconnected from the rest of the brand's pink */
-.recip-price-pill{background:var(--blush-2);border:1px solid rgba(168,14,94,.22);color:var(--pink-deep);font-size:11.5px;font-weight:700;padding:10px 8px;cursor:pointer;transition:background .18s,border-color .18s;font-family:inherit;text-align:center;width:100%}
+.recip-price-pill{background:var(--blush-2);border:1px solid rgba(168,56,80,.22);color:var(--pink-deep);font-size:11.5px;font-weight:700;padding:10px 8px;cursor:pointer;transition:background .18s,border-color .18s;font-family:inherit;text-align:center;width:100%}
 .recip-price-pill:hover{background:var(--blush);border-color:var(--pink-deep)}
 
 /* ============ Collections rail — its own section, split out from the
@@ -972,7 +972,7 @@ body{padding-top:var(--header-h,127px)}
   content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
   background:
     radial-gradient(70% 90% at 20% 0%, rgba(255,255,255,.16), transparent 60%),
-    radial-gradient(145% 165% at 65% 15%, #F26AA8 0%, #E4127D 32%, #A80E5E 62%, #3D0620 100%);
+    radial-gradient(145% 165% at 65% 15%, #E8738A 0%, #D14A61 32%, #A83850 62%, #6E0D1D 100%);
 }
 /* gold dust glitter texture — every pink breaker band gets this, not just
    the coin/gift-card section */
@@ -1008,7 +1008,7 @@ body{padding-top:var(--header-h,127px)}
 @media(min-width:760px){.coin-grid{grid-template-columns:1fr 1fr 1fr}}
 .coin-card{position:relative;border-radius:var(--radius-lg);padding:20px;display:flex;align-items:center;justify-content:space-between;gap:14px;overflow:hidden;isolation:isolate;text-align:left;transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
 /* same hover lift + visual zoom language as the product cards */
-.coin-card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(61,6,32,.28)}
+.coin-card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(110,13,29,.28)}
 .coin-card .cc-visual{transition:transform .4s var(--ease)}
 .coin-card:hover .cc-visual{transform:scale(1.06)}
 .coin-card .cc-copy{flex:1;min-width:0}
@@ -1021,7 +1021,11 @@ body{padding-top:var(--header-h,127px)}
 .cc-silver p{color:#454b53}
 .cc-silver .cc-btn{background:#20242b;color:#fff}
 
-.cc-giftcard{background:linear-gradient(155deg,#7A0A3A 0%,#3D0620 100%);color:#fff}
+/* was #7A0A3A -> #6E0D1D — the old stop sat at the magenta hue (~334°)
+   while the new deep stop is the corrected rose hue (~350°), so the
+   gradient visibly clashed with itself. Replaced with --rose-dark
+   (#A83850), matching the same rose family used everywhere else now. */
+.cc-giftcard{background:linear-gradient(155deg,#A83850 0%,#6E0D1D 100%);color:#fff}
 .cc-giftcard .cc-btn{background:var(--gold);color:#3a2410}
 
 .cc-gold{background:linear-gradient(155deg,#FCEBB0 0%,#E8C15A 55%,#B8860B 100%);color:#3a2410}
@@ -1056,7 +1060,7 @@ body{padding-top:var(--header-h,127px)}
 /* No jewellery illustration — just the real Mia by Tanishq logo (fetched
    from their own site, recolored white via filter) centered on the card,
    with the tagline beneath it. */
-.giftcard-pack{width:152px;aspect-ratio:1.55/1;border-radius:10px;background:linear-gradient(135deg,#F26AA8,#A80E5E 55%,#3D0620 100%);position:relative;overflow:hidden;--tilt:-9deg;transform:rotate(var(--tilt));box-shadow:0 16px 20px -4px rgba(0,0,0,.4),0 6px 10px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.3);animation:packFloat 4.8s ease-in-out infinite;animation-delay:.3s}
+.giftcard-pack{width:152px;aspect-ratio:1.55/1;border-radius:10px;background:linear-gradient(135deg,#E8738A,#A83850 55%,#6E0D1D 100%);position:relative;overflow:hidden;--tilt:-9deg;transform:rotate(var(--tilt));box-shadow:0 16px 20px -4px rgba(0,0,0,.4),0 6px 10px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.3);animation:packFloat 4.8s ease-in-out infinite;animation-delay:.3s}
 .giftcard-pack::after{
   content:"";position:absolute;top:0;left:-60%;width:35%;height:100%;
   background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.4) 50%,transparent 100%);
@@ -1069,7 +1073,7 @@ body{padding-top:var(--header-h,127px)}
 @media(prefers-reduced-motion:reduce){.giftcard-pack,.giftcard-pack::after{animation:none}}
 
 /* ============ gift card mock (shared with the gift card modal) ============ */
-.gift-card-mock{width:100%;max-width:360px;aspect-ratio:1.6/1;border-radius:16px;background:linear-gradient(135deg,#3D0620 0%,#E4127D 55%,#F26AA8 100%);position:relative;box-shadow:0 22px 46px rgba(61,6,32,.24);padding:24px;color:#fff;overflow:hidden}
+.gift-card-mock{width:100%;max-width:360px;aspect-ratio:1.6/1;border-radius:16px;background:linear-gradient(135deg,#6E0D1D 0%,#D14A61 55%,#E8738A 100%);position:relative;box-shadow:0 22px 46px rgba(110,13,29,.24);padding:24px;color:#fff;overflow:hidden}
 .gift-card-mock::before{content:"";position:absolute;width:200px;height:200px;border-radius:50%;border:1px solid rgba(255,255,255,.18);top:-80px;right:-60px}
 .gcm-top{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1}
 .gcm-value{font-family:'Fraunces',serif;font-size:24px;margin-top:30px;position:relative;z-index:1}
@@ -1084,7 +1088,7 @@ body{padding-top:var(--header-h,127px)}
 .gcmodal-close:hover{background:var(--blush)}
 .gcmodal-grid{display:grid;grid-template-columns:1fr}
 @media(min-width:760px){.gcmodal-grid{grid-template-columns:1fr 1.15fr}}
-.gcmodal-preview{background:radial-gradient(120% 140% at 30% 0%,#F7A0C6,#E4127D 55%,#A80E5E 100%);display:flex;align-items:center;justify-content:center;padding:44px 30px}
+.gcmodal-preview{background:radial-gradient(120% 140% at 30% 0%,#F0A0B0,#D14A61 55%,#A83850 100%);display:flex;align-items:center;justify-content:center;padding:44px 30px}
 /* a real fixed ratio, sized with enough headroom that the logo, amount,
    name and message never get clipped by the card's own overflow:hidden */
 .gcmodal-card{width:100%;max-width:300px;aspect-ratio:1.15/1;animation:gcmCardFloat 4.5s ease-in-out infinite}
@@ -1146,9 +1150,9 @@ body{padding-top:var(--header-h,127px)}
 .cselect-btn .cselect-val.placeholder{color:var(--muted-2)}
 .cselect-btn:hover{border-color:var(--pink)}
 .cselect-chevron{flex-shrink:0;color:var(--muted);transition:transform .2s,color .2s}
-.cselect.open .cselect-btn{border-color:var(--pink);box-shadow:0 0 0 4px rgba(228,18,125,.1)}
+.cselect.open .cselect-btn{border-color:var(--pink);box-shadow:0 0 0 4px rgba(209,74,97,.1)}
 .cselect.open .cselect-chevron{transform:rotate(180deg);color:var(--pink)}
-.cselect-menu{position:absolute;top:calc(100% + 8px);left:0;right:0;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 40px rgba(168,14,94,.14);padding:6px;z-index:30;max-height:240px;overflow-y:auto;opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .18s,transform .18s}
+.cselect-menu{position:absolute;top:calc(100% + 8px);left:0;right:0;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 40px rgba(168,56,80,.14);padding:6px;z-index:30;max-height:240px;overflow-y:auto;opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .18s,transform .18s}
 .cselect.open .cselect-menu{opacity:1;transform:none;pointer-events:auto}
 .cselect-opt{display:block;width:100%;text-align:left;padding:10px 12px;border-radius:8px;font-family:'Manrope',sans-serif;font-size:13.5px;font-weight:500;color:var(--ink-2);cursor:pointer;transition:background .15s,color .15s}
 .cselect-opt:hover{background:var(--blush-2);color:var(--pink-deep)}
@@ -1175,8 +1179,8 @@ body{padding-top:var(--header-h,127px)}
 .tf-div{width:1px;align-self:stretch;background:var(--gold-line);flex-shrink:0}
 /* pink family throughout — inactive chips are a muted/lighter pink, the
    active one is the full solid pink and visibly "lifted" above the rest */
-.tf-chip{padding:9px 18px;border-radius:100px;font-size:12px;font-weight:700;color:#fff;background:rgba(228,18,125,.42);border:none;transition:all .18s;white-space:nowrap;flex-shrink:0}
-.tf-chip:hover{background:rgba(228,18,125,.6)}
+.tf-chip{padding:9px 18px;border-radius:100px;font-size:12px;font-weight:700;color:#fff;background:rgba(209,74,97,.42);border:none;transition:all .18s;white-space:nowrap;flex-shrink:0}
+.tf-chip:hover{background:rgba(209,74,97,.6)}
 /* no shadow here — the tabs row scrolls horizontally on mobile, which was
    clipping the shadow unevenly (visible on the sides, cut off top/bottom) */
 .tf-chip.active{background:var(--pink);transform:translateY(-1px)}
@@ -1204,7 +1208,7 @@ body{padding-top:var(--header-h,127px)}
    card, not inside it. */
 .gf-embed{width:100%;max-width:480px;margin:0 auto}
 .gf-shell{position:relative;border-radius:28px;overflow:hidden;isolation:isolate;
-  box-shadow:0 30px 70px rgba(61,6,32,.14);background:#fff;display:flex;flex-direction:column;
+  box-shadow:0 30px 70px rgba(110,13,29,.14);background:#fff;display:flex;flex-direction:column;
   padding:18px 18px 16px;height:600px}
 @media(max-width:639px){.gf-shell{height:580px}}
 
@@ -1217,11 +1221,11 @@ body{padding-top:var(--header-h,127px)}
 .gf-stack{flex:1;position:relative;min-height:0}
 .gf-peek{position:absolute;border-radius:22px;pointer-events:none}
 .gf-peek-2{inset:18px -8px -14px 8px;background:rgba(240,201,135,.3);transform:rotate(-2.2deg)}
-.gf-peek-1{inset:9px -4px -7px 4px;background:rgba(228,18,125,.22);transform:rotate(-1.1deg)}
+.gf-peek-1{inset:9px -4px -7px 4px;background:rgba(209,74,97,.22);transform:rotate(-1.1deg)}
 
 .gf-card{position:absolute;inset:0;border-radius:22px;overflow:hidden;display:flex;flex-direction:column}
 .gf-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0}
-.gf-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(175deg,rgba(228,18,125,.88) 0%,rgba(168,14,94,.93) 55%,rgba(61,6,32,.97) 100%);z-index:1}
+.gf-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(175deg,rgba(209,74,97,.88) 0%,rgba(168,56,80,.93) 55%,rgba(110,13,29,.97) 100%);z-index:1}
 
 /* everything centered — text, step number, question, the chip grid —
    not left-aligned; also scrolls internally (overflow-y) so a question
@@ -1260,25 +1264,25 @@ body{padding-top:var(--header-h,127px)}
 .gf-surprise,.gf-notsure{flex:1;font-family:inherit;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;padding:12px 10px;border-radius:100px;cursor:pointer;transition:all .15s;white-space:nowrap;border:none}
 .gf-surprise{background:var(--pink);color:#fff}
 .gf-surprise:hover{transform:translateY(-2px);background:var(--pink-hover)}
-.gf-notsure{background:none;color:var(--pink-deep);border:1.5px solid rgba(228,18,125,.35)}
-.gf-notsure:hover{border-color:var(--pink);background:rgba(228,18,125,.06)}
+.gf-notsure{background:none;color:var(--pink-deep);border:1.5px solid rgba(209,74,97,.35)}
+.gf-notsure:hover{border-color:var(--pink);background:rgba(209,74,97,.06)}
 @media(max-width:639px){.gf-cta-row{flex-direction:column;gap:6px}}
 
 /* ---- the slot machine ---- */
 .slot-wrap{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;min-height:0;align-items:center;justify-content:center;padding:6px 4px}
-.slot-cabinet{position:relative;width:100%;max-width:340px;background:linear-gradient(180deg,#F26AA8 0%,var(--pink) 40%,var(--pink-deep) 100%);
+.slot-cabinet{position:relative;width:100%;max-width:340px;background:linear-gradient(180deg,#E8738A 0%,var(--pink) 40%,var(--pink-deep) 100%);
   border:3px solid var(--gold);border-radius:20px;padding:16px 14px 14px;
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.25),0 14px 30px rgba(61,6,32,.35)}
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.25),0 14px 30px rgba(110,13,29,.35)}
 .slot-cabinet::before,.slot-cabinet::after{content:'';position:absolute;top:8px;bottom:8px;width:6px;
   background:repeating-linear-gradient(180deg,var(--gold) 0 6px,rgba(240,201,135,.35) 6px 12px);border-radius:3px}
 .slot-cabinet::before{left:6px}
 .slot-cabinet::after{right:6px}
 .slot-crest{width:52px;height:52px;margin:-38px auto 8px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff8ea,var(--gold) 70%);
-  border:3px solid #fff;box-shadow:0 6px 14px rgba(61,6,32,.35);display:flex;align-items:center;justify-content:center;position:relative;z-index:3}
+  border:3px solid #fff;box-shadow:0 6px 14px rgba(110,13,29,.35);display:flex;align-items:center;justify-content:center;position:relative;z-index:3}
 .slot-crest svg{width:24px;height:24px;color:var(--pink-deep)}
 .slot-banner{text-align:center;font-family:'Fraunces',serif;font-weight:700;font-size:15px;color:#fff;
-  text-shadow:0 2px 4px rgba(61,6,32,.4);letter-spacing:.02em;margin:0 0 12px;text-transform:uppercase}
-.slot-reels{display:flex;gap:8px;background:rgba(61,6,32,.3);border-radius:12px;padding:8px;
+  text-shadow:0 2px 4px rgba(110,13,29,.4);letter-spacing:.02em;margin:0 0 12px;text-transform:uppercase}
+.slot-reels{display:flex;gap:8px;background:rgba(110,13,29,.3);border-radius:12px;padding:8px;
   border:1.5px solid rgba(255,255,255,.3);box-shadow:inset 0 3px 10px rgba(0,0,0,.35)}
 .reel{position:relative;flex:1;height:92px;border-radius:8px;overflow:hidden;background:var(--cream);box-shadow:inset 0 3px 8px rgba(0,0,0,.25)}
 .reel::before,.reel::after{content:'';position:absolute;left:0;right:0;height:26px;z-index:2;pointer-events:none}
@@ -1360,7 +1364,7 @@ body{padding-top:var(--header-h,127px)}
    as the coin/gift-card breaker above it, not its own destination section */
 /* this is the page's actual section breaker (same role as the coin/gift-card
    band) — pink full-bleed gradient, cream cards floating on top */
-.touches-section{background:radial-gradient(130% 150% at 50% -10%,#F26AA8 0%,#E4127D 45%,#3D0620 100%);position:relative;overflow:hidden}
+.touches-section{background:radial-gradient(130% 150% at 50% -10%,#E8738A 0%,#D14A61 45%,#6E0D1D 100%);position:relative;overflow:hidden}
 .touches-section .eyebrow{color:var(--gold)}
 .touches-section h2{color:#fff}
 .touch-strip{display:flex;gap:14px;overflow-x:auto;padding:4px 4px 10px;-ms-overflow-style:none;scrollbar-width:none}
@@ -1368,8 +1372,8 @@ body{padding-top:var(--header-h,127px)}
 .touch-card{flex:0 0 190px;scroll-snap-align:start;background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:18px 16px;position:relative;overflow:hidden;cursor:pointer;
   transform:scale(.94);opacity:.6;transition:transform .5s var(--ease),opacity .5s var(--ease),border-color .2s}
 .touch-card.active{transform:scale(1);opacity:1;border-color:var(--gold-line)}
-.touch-num{position:absolute;top:-6px;right:8px;font-family:'Fraunces',serif;font-size:52px;font-weight:600;color:rgba(228,18,125,.08);line-height:1;pointer-events:none}
-.touch-icon{width:40px;height:40px;border-radius:11px;background:#3D0620;display:flex;align-items:center;justify-content:center;color:var(--gold);margin-bottom:12px;position:relative;overflow:hidden}
+.touch-num{position:absolute;top:-6px;right:8px;font-family:'Fraunces',serif;font-size:52px;font-weight:600;color:rgba(209,74,97,.08);line-height:1;pointer-events:none}
+.touch-icon{width:40px;height:40px;border-radius:11px;background:#6E0D1D;display:flex;align-items:center;justify-content:center;color:var(--gold);margin-bottom:12px;position:relative;overflow:hidden}
 .touch-card h4{font-size:14px;font-weight:700;margin:0 0 6px;color:var(--ink);position:relative}
 .touch-card h4 em{font-style:normal;color:var(--pink-deep)}
 .touch-card p{font-size:11.5px;color:var(--muted);line-height:1.5;margin:0 0 10px;position:relative}
@@ -1471,7 +1475,7 @@ body{padding-top:var(--header-h,127px)}
 .tm-track{position:relative;height:400px;margin:0 auto}
 .tm-portrait{width:150px;height:310px;border-radius:20px;position:absolute;left:50%;top:50%;margin-left:-75px;margin-top:-155px;overflow:hidden;cursor:pointer;box-shadow:0 24px 50px rgba(0,0,0,.4);transition:transform .6s cubic-bezier(.16,1,.3,1),width .6s cubic-bezier(.16,1,.3,1),height .6s cubic-bezier(.16,1,.3,1),margin .6s cubic-bezier(.16,1,.3,1),opacity .5s,z-index 0s .3s}
 .tm-portrait img{width:100%;height:100%;object-fit:cover;display:block}
-.tm-portrait::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 34%,rgba(61,6,32,.94) 100%)}
+.tm-portrait::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 34%,rgba(110,13,29,.94) 100%)}
 .tm-cv0{transform:translateX(0) scale(1) translateY(0) rotate(0);z-index:6;opacity:1}
 .tm-cv1{transform:translateX(150px) scale(.84) translateY(16px) rotate(7deg);z-index:5;opacity:.9}
 .tm-cvn1{transform:translateX(-150px) scale(.84) translateY(16px) rotate(-7deg);z-index:5;opacity:.9}
@@ -1499,14 +1503,14 @@ body{padding-top:var(--header-h,127px)}
 .mp-section{display:none}
 @media(max-width:899px){
   .tm-carousel-wrap{display:none}
-  .mp-section{display:block;background:radial-gradient(130% 150% at 50% -10%,var(--pink-hover) 0%,var(--pink) 45%,#3D0620 100%);
+  .mp-section{display:block;background:radial-gradient(130% 150% at 50% -10%,var(--pink-hover) 0%,var(--pink) 45%,#6E0D1D 100%);
     border-radius:18px;padding:26px 0 22px;position:relative;overflow:hidden}
   .mp-stage{position:relative;height:300px}
   .mp-card{position:absolute;top:50%;left:50%;width:190px;height:270px;margin-left:-95px;margin-top:-135px;
-    border-radius:16px;overflow:hidden;cursor:pointer;box-shadow:0 20px 40px rgba(61,6,32,.35);
+    border-radius:16px;overflow:hidden;cursor:pointer;box-shadow:0 20px 40px rgba(110,13,29,.35);
     transition:transform .5s var(--ease),filter .5s var(--ease),opacity .5s var(--ease)}
   .mp-card img{width:100%;height:100%;object-fit:cover;display:block}
-  .mp-card::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(61,6,32,.92) 100%)}
+  .mp-card::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(110,13,29,.92) 100%)}
   .mp-cat{position:absolute;top:10px;left:10px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:#fff;background:rgba(255,255,255,.4);border-radius:100px;padding:4px 10px;z-index:2}
   .mp-quote{position:absolute;left:14px;right:14px;bottom:14px;z-index:2;font-family:'Fraunces',serif;font-style:italic;font-size:12.5px;line-height:1.4;color:#fff;margin:0}
   .mp-c0{transform:translateX(0) scale(1);z-index:5;opacity:1;filter:none}
@@ -1546,7 +1550,7 @@ body{padding-top:var(--header-h,127px)}
 /* margin-bottom so it doesn't butt straight into the footer's own solid
    pink — the dark-maroon-to-bright-pink jump with zero gap read as a
    layout bug rather than two intentionally different bands */
-.newsletter{background:radial-gradient(130% 150% at 50% -10%,var(--pink-hover) 0%,var(--pink) 45%,#3D0620 100%);color:#fff;text-align:center;padding:62px 24px;margin-bottom:36px;position:relative;overflow:hidden}
+.newsletter{background:radial-gradient(130% 150% at 50% -10%,var(--pink-hover) 0%,var(--pink) 45%,#6E0D1D 100%);color:#fff;text-align:center;padding:62px 24px;margin-bottom:36px;position:relative;overflow:hidden}
 .newsletter h2{color:#fff;font-size:clamp(21px,2.8vw,28px);margin-bottom:9px}
 .newsletter p{color:rgba(255,255,255,.6);max-width:420px;margin:0 auto 24px;font-size:13.5px}
 .nl-form{display:flex;max-width:400px;margin:0 auto;border-radius:100px;overflow:hidden;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2)}
@@ -1612,7 +1616,7 @@ footer .socials svg{width:14px;height:14px}
 .qv-date-trigger:hover,.qv-date-trigger.open{border-color:var(--pink)}
 .qv-date-trigger svg{color:var(--pink-deep);flex-shrink:0}
 .qv-date-trigger.has-value span{color:var(--ink);font-weight:600}
-.qv-cal{display:none;position:absolute;top:calc(100% + 8px);left:0;z-index:20;width:270px;background:#fff;border-radius:14px;box-shadow:0 20px 45px rgba(61,6,32,.22);border:1px solid var(--line);padding:16px}
+.qv-cal{display:none;position:absolute;top:calc(100% + 8px);left:0;z-index:20;width:270px;background:#fff;border-radius:14px;box-shadow:0 20px 45px rgba(110,13,29,.22);border:1px solid var(--line);padding:16px}
 .qv-cal.show{display:block}
 .qv-cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .qv-cal-head span{font-family:'Fraunces',serif;font-size:14px;font-weight:600;color:var(--ink)}
@@ -1666,7 +1670,7 @@ footer .socials svg{width:14px;height:14px}
 .qv-gallery-item:hover img{transform:scale(1.04)}
 .qv-gallery-item + .qv-gallery-item{border-top:1px solid var(--line)}
 .qv-gallery-item::after{content:'';position:absolute;top:12px;right:12px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.85);opacity:0;transition:opacity .2s;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A80E5E' stroke-width='2'%3E%3Ccircle cx='10' cy='10' r='6.5'/%3E%3Cpath d='m20 20-4.4-4.4'/%3E%3C/svg%3E");
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A83850' stroke-width='2'%3E%3Ccircle cx='10' cy='10' r='6.5'/%3E%3Cpath d='m20 20-4.4-4.4'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:center;background-size:14px}
 .qv-gallery-item:hover::after{opacity:1}
 @media(min-width:680px){
@@ -1748,7 +1752,7 @@ footer .socials svg{width:14px;height:14px}
 .qv-sticker-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
 /* the real sticker artwork, as provided */
 .sticker-btn{width:54px;height:54px;border-radius:50%;border:2px solid transparent;overflow:hidden;padding:0;position:relative;cursor:pointer;
-  box-shadow:0 3px 8px rgba(168,14,94,.3);transition:transform .15s,border-color .15s}
+  box-shadow:0 3px 8px rgba(168,56,80,.3);transition:transform .15s,border-color .15s}
 .sticker-btn img{width:100%;height:100%;object-fit:cover;display:block}
 .sticker-btn:hover{transform:translateY(-1px)}
 .sticker-btn.active{border-color:var(--gold)}
@@ -2338,7 +2342,7 @@ footer .socials svg{width:14px;height:14px}
   <svg class="msparkle" style="top:15%;left:8%" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6l2 6-2 6-2-6z"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
   <svg class="msparkle" style="top:65%;right:10%;animation-delay:1s" width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6l2 6-2 6-2-6z"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
   <svg class="msparkle" style="top:25%;right:25%;animation-delay:1.8s" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6l2 6-2 6-2-6z"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-  <p class="eyebrow" style="color:#F5A8C8;margin-bottom:14px">Join The World Of Mia</p>
+  <p class="eyebrow" style="color:#F0A0B0;margin-bottom:14px">Join The World Of Mia</p>
   <h2>Gifting ideas, delivered.</h2>
   <p>Sign up for early access to new collections and gift edits picked for the occasions on your calendar.</p>
   <form class="nl-form" id="nl-form">

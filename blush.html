@@ -843,22 +843,30 @@ body{padding-top:var(--header-h,127px)}
    actually landing slightly off-center instead of dead center */
 /* fades the peeking neighbours toward transparent at the outer edges
    instead of a hard crop, so they blend into the white page */
-.feat-banner-scroll{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scroll-padding:0 14%;scrollbar-width:none;-ms-overflow-style:none;
-  -webkit-mask-image:linear-gradient(to right,rgba(0,0,0,0) 0%,rgba(0,0,0,1) 9%,rgba(0,0,0,1) 91%,rgba(0,0,0,0) 100%);
-  mask-image:linear-gradient(to right,rgba(0,0,0,0) 0%,rgba(0,0,0,1) 9%,rgba(0,0,0,1) 91%,rgba(0,0,0,0) 100%);
+/* collection selector: cards are the coin cards scaled up 30%
+   (385x147 -> 500x191). The centred card is the selected one; its
+   neighbours sit smaller and faded so they read as "tap to pick",
+   the same selected-vs-rest language as the birthstone strip */
+.feat-banner-scroll{display:flex;align-items:center;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;padding-block:16px 18px;
+  -webkit-mask-image:linear-gradient(to right,rgba(0,0,0,0) 0%,rgba(0,0,0,1) 6%,rgba(0,0,0,1) 94%,rgba(0,0,0,0) 100%);
+  mask-image:linear-gradient(to right,rgba(0,0,0,0) 0%,rgba(0,0,0,1) 6%,rgba(0,0,0,1) 94%,rgba(0,0,0,0) 100%);
 }
 .feat-banner-scroll::-webkit-scrollbar{display:none}
-/* narrowed back down (was 80%/84%) so a real slice of BOTH neighbouring
-   collections peeks in at once, instead of one banner dominating the
-   whole row — height trimmed to match so the slide stays proportionate
-   rather than turning into a short, overly wide strip */
-.feat-banner-slide{position:relative;flex:0 0 72%;scroll-snap-align:center;border-radius:var(--radius-lg);overflow:hidden;height:190px;background-size:cover;background-position:center;isolation:isolate}
-@media(min-width:640px){.feat-banner-slide{height:240px;flex-basis:58%}}
-.feat-banner-slide::after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(0deg,rgba(20,14,15,.8) 0%,rgba(20,14,15,.22) 48%,rgba(20,14,15,0) 70%)}
-.feat-caption{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:20px;gap:8px}
-.feat-eyebrow{font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin:0}
-.feat-name{font-family:'Fraunces',serif;font-size:clamp(19px,2.6vw,26px);color:#fff;margin:0;font-weight:600}
-.feat-cta{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;color:#fff;text-decoration:none;display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.18);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:8px 15px;border-radius:100px}
+.feat-banner-slide{position:relative;flex:0 0 72%;height:191px;scroll-snap-align:center;border-radius:var(--radius-lg);overflow:hidden;background-size:cover;background-position:center;isolation:isolate;cursor:pointer;
+  transform:scale(.88);opacity:.5;filter:saturate(.75);transition:transform .4s var(--ease),opacity .4s var(--ease),filter .4s var(--ease),box-shadow .4s var(--ease)}
+@media(min-width:640px){.feat-banner-slide{flex-basis:500px}}
+.feat-banner-slide:hover{opacity:.78}
+.feat-banner-slide.active{transform:scale(1);opacity:1;filter:none;cursor:default;box-shadow:0 14px 30px rgba(110,13,29,.24)}
+.feat-banner-slide:focus-visible{outline:2px solid var(--pink-deep);outline-offset:3px}
+.feat-banner-slide::after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(0deg,rgba(20,14,15,.72) 0%,rgba(20,14,15,.18) 45%,rgba(20,14,15,0) 65%)}
+.feat-caption{position:relative;z-index:1;height:100%;display:flex;align-items:flex-end;padding:18px 20px}
+.feat-name{font-family:'Fraunces',serif;font-size:clamp(19px,2.2vw,24px);color:#fff;margin:0;font-weight:600;text-wrap:balance}
+.feat-viewall{margin-top:22px}
+/* this banner has its own "Rhapsody of Colours" lettering baked into the
+   bottom quarter — framed above it so it never doubles up with the name */
+.feat-rhapsody{background-position:center 30%}
+@media(max-width:639px){.feat-rhapsody{background-size:125%;background-position:center 20%}}
+@media(prefers-reduced-motion:reduce){.feat-banner-slide{transition:none}}
 .feat-arrows{position:absolute;z-index:1;top:50%;left:0;right:0;transform:translateY(-50%);display:flex;align-items:center;justify-content:space-between;padding:0 4px;pointer-events:none}
 .feat-arrow{pointer-events:auto;flex-shrink:0;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.85);border:none;color:var(--pink-deep);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,opacity .2s}
 .feat-arrow:hover{background:#fff}
@@ -2060,6 +2068,7 @@ footer .socials svg{width:14px;height:14px}
         </div>
         <div class="feat-dots" id="feat-dots"></div>
         <div class="feat-products pcard-rail" id="feat-products"></div>
+        <div class="rec-viewall-wrap feat-viewall"><a href="#" class="section-link" id="feat-viewall">View Rhapsody Of Colours Collection <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
       </div>
     </div>
   </div>
@@ -3137,43 +3146,52 @@ footer .socials svg{width:14px;height:14px}
   }
   const updateRecTrack = wireRail(recGrid, document.getElementById('rec-track-fill'), document.getElementById('rec-prev'), document.getElementById('rec-next'));
 
-  // Featured collection module — a real peek carousel: all 3 banners
-  // sit in a native horizontal scroller, neighbours show a real slice
-  // at each edge, arrows scroll one slide at a time, and the product
-  // rail below re-syncs to whichever collection lands centered
+  // Collections selector: cards scroll in a native snap row, the centred
+  // one is the selected collection (tap a neighbour, swipe, or use the
+  // arrows to bring another to centre), and the product rail plus the
+  // "View ... Collection" link below follow whichever is selected
   (function(){
+    // products for the five added collections are catalogue placeholders,
+    // same as the original three, until real collection data is wired in
     const FEAT_COLLECTIONS = [
-      {name:'Rhapsody Of Colours', img:'assets/collections/rhapsody-nav.webp', codes:['3025CHD','M5I2SEA','M5I2FEZ','M5I2SDP','M5I2FDW','M5I2GEZ']},
+      {name:'Rhapsody Of Colours', img:'assets/collections/rhapsody-nav.webp', cls:'feat-rhapsody', codes:['3025CHD','M5I2SEA','M5I2FEZ','M5I2SDP','M5I2FDW','M5I2GEZ']},
       {name:'Aurum', img:'assets/collections/aurum-desktop.webp', codes:['3826CEL','3826CDX','3826CEM','3826CEF','3826CEH','2822CXQ']},
       {name:'Sunkissed', img:'assets/collections/sunkissed-nav.webp', codes:['3025PKI','3026HMH','IKD5BDG','3025DJV','3026PCV','3025BJV']},
+      {name:'Fiora', img:'assets/collections/fiora-desktop.webp', codes:['3025DJV','3025BJV','3026NFU','5924FUG','3026HDW','3025PKI']},
+      {name:'Lovestruck', img:'assets/collections/lovestruck-desktop.webp', codes:['5924FUG','3026FGC','3025FJI','M5I2FDW','M5I2GDY','3026NEG']},
+      {name:'Homecoming', img:'assets/collections/homecoming-desktop.webp', codes:['3026NEG','3024NFA','M5I2GDY','3026HDW','3025SOC','3026PCV']},
+      {name:'Zen', img:'assets/collections/zen-nav.webp', codes:['D6H4CCH','3026BLZ','3025SOC','3026HMH','3025FJI','3826CDT']},
+      {name:'Romani', img:'assets/collections/romani-desktop.webp', codes:['M5I2SDU','M5I2SEB_N','M5I2SEC_N','M5I2GAP','IKD5BBT','IKD5BAM']},
     ];
     const featScroll = document.getElementById('feat-banner-scroll');
     const featProducts = document.getElementById('feat-products');
     const featDots = document.getElementById('feat-dots');
     const featPrev = document.getElementById('feat-prev');
     const featNext = document.getElementById('feat-next');
+    const featViewAll = document.getElementById('feat-viewall');
     const N = FEAT_COLLECTIONS.length;
-    let featIdx = 0;
+    // two wrap-around clones each side: with only one, the end clone can't
+    // be centred on wide screens (it would need a negative scroll), so a
+    // step past either end had nowhere to land
+    const CL = 2;
+    let featIdx = 0, featDom = CL;
 
-    // a real infinite loop: clone of the LAST collection prepended, clone
-    // of the FIRST appended, so DOM position 1..N are the real slides and
-    // 0/N+1 are the wrap-around clones — every real slide (including the
-    // first and last) always has something to peek at on both sides,
-    // instead of sitting flush against an empty edge
-    function slideHTML(c){
-      return `<div class="feat-banner-slide" style="background-image:url('${c.img}')">
-        <div class="feat-caption">
-          <p class="feat-eyebrow">Collection</p>
-          <h4 class="feat-name">${c.name}</h4>
-          <a href="#" class="feat-cta">Shop Now <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        </div>
+    // infinite loop: the last CL collections are cloned in front and the
+    // first CL behind, so DOM CL..CL+N-1 are the real cards; clones are
+    // kept out of the tab order
+    function slideHTML(c, dom){
+      const clone = dom < CL || dom >= CL + N;
+      return `<div class="feat-banner-slide ${c.cls || ''}" data-dom="${dom}" style="background-image:url('${c.img}')" ${clone ? 'aria-hidden="true" tabindex="-1"' : `role="button" tabindex="0" aria-label="${c.name}"`}>
+        <div class="feat-caption"><h4 class="feat-name">${c.name}</h4></div>
       </div>`;
     }
-    featScroll.innerHTML = [FEAT_COLLECTIONS[N-1], ...FEAT_COLLECTIONS, FEAT_COLLECTIONS[0]].map(slideHTML).join('');
+    featScroll.innerHTML = [...FEAT_COLLECTIONS.slice(-CL), ...FEAT_COLLECTIONS, ...FEAT_COLLECTIONS.slice(0, CL)].map(slideHTML).join('');
     featDots.innerHTML = FEAT_COLLECTIONS.map((_,idx)=>`<span class="${idx===0?'on':''}"></span>`).join('');
-    // arrows never hide now — the carousel loops in both directions
     featPrev.classList.remove('hide');
     featNext.classList.remove('hide');
+    const slides = [...featScroll.querySelectorAll('.feat-banner-slide')];
+    const realIdx = dom => (((dom - CL) % N) + N) % N;
+    const isClone = dom => dom < CL || dom >= CL + N;
 
     function syncProducts(i){
       featIdx = i;
@@ -3183,15 +3201,21 @@ footer .socials svg{width:14px;height:14px}
       featProducts.scrollLeft = 0;
       wireCards(featProducts);
       featDots.querySelectorAll('span').forEach((d,idx)=> d.classList.toggle('on', idx===i));
+      featViewAll.firstChild.textContent = `View ${c.name} Collection `;
       requestAnimationFrame(()=> featProducts.classList.toggle('centered', featProducts.scrollWidth <= featProducts.clientWidth + 1));
     }
-
-    // geometry-based, not a naive "index * pitch" multiplication — a
-    // slide's mandatory-snap centered position doesn't always land on a
-    // clean multiple of the nominal pitch, so dividing scrollLeft by a
-    // fixed pitch could round to the wrong neighbour
+    // highlight = what's under the centre right now (follows a swipe live);
+    // markActive also records it as the card the arrows step from
+    function highlight(dom){
+      slides.forEach((s, idx)=> s.classList.toggle('active', idx === dom));
+    }
+    function markActive(dom){
+      featDom = dom;
+      highlight(dom);
+    }
+    // geometry-based: snapped positions don't always land on a clean
+    // multiple of the card pitch, so find the card nearest the centre
     function nearestDomIndex(){
-      const slides = [...featScroll.querySelectorAll('.feat-banner-slide')];
       const center = featScroll.scrollLeft + featScroll.clientWidth / 2;
       let best = 0, bestDist = Infinity;
       slides.forEach((s, idx) => {
@@ -3200,45 +3224,57 @@ footer .socials svg{width:14px;height:14px}
       });
       return best;
     }
-    function centerOn(domIdx, smooth){
-      const slide = featScroll.querySelectorAll('.feat-banner-slide')[domIdx];
-      featScroll.scrollTo({left: slide.offsetLeft - (featScroll.clientWidth - slide.offsetWidth) / 2, behavior: smooth ? 'smooth' : 'auto'});
+    // 'instant' (not 'auto') for the silent jumps: 'auto' defers to the
+    // CSS scroll-behavior:smooth and would animate the clone wrap-around
+    function centerOn(dom, smooth){
+      const s = slides[dom];
+      featScroll.scrollTo({left: s.offsetLeft - (featScroll.clientWidth - s.offsetWidth) / 2, behavior: smooth ? 'smooth' : 'instant'});
     }
-    function goTo(i){
-      centerOn(((i % N) + N) % N + 1, true);
+    function select(dom){
+      markActive(dom);
+      const i = realIdx(dom);
+      if(i !== featIdx) syncProducts(i);
+      centerOn(dom, true);
     }
-    featPrev.addEventListener('click', ()=> goTo(featIdx - 1));
-    featNext.addEventListener('click', ()=> goTo(featIdx + 1));
+    // arrows always move ONE card: past either end they step onto the
+    // wrap-around clone (a short slide), and the scroll-settle handler
+    // then swaps to the real card instantly — never a long scroll back
+    // across the whole row
+    function step(d){
+      let dom = featDom;
+      if(isClone(dom)){ dom = CL + realIdx(dom); centerOn(dom, false); }
+      select(dom + d);
+    }
+    featPrev.addEventListener('click', ()=> step(-1));
+    featNext.addEventListener('click', ()=> step(1));
+    featScroll.addEventListener('click', (e)=>{
+      const s = e.target.closest('.feat-banner-slide');
+      if(s && !s.classList.contains('active')) select(+s.dataset.dom);
+    });
+    featScroll.addEventListener('keydown', (e)=>{
+      const s = e.target.closest('.feat-banner-slide');
+      if(s && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); select(+s.dataset.dom); }
+    });
 
-    // native swipe/manual scroll also re-syncs the product rail — snap
-    // settles on a slide, then a short debounce reads which one it is.
-    // Landing on one of the two wrap-around clones (dom index 0 or N+1)
-    // silently re-centers on the matching real slide with no animation,
-    // so the loop feels continuous instead of snapping back visibly.
-    let featScrollTimer;
+    // swiping: highlight follows the card under the centre live, and the
+    // products re-sync once the snap settles; landing on a clone silently
+    // re-centres on the matching real card so the loop feels continuous
+    let featScrollTimer, featRaf;
     featScroll.addEventListener('scroll', ()=>{
+      if(!featRaf) featRaf = requestAnimationFrame(()=>{ featRaf = null; highlight(nearestDomIndex()); });
       clearTimeout(featScrollTimer);
       featScrollTimer = setTimeout(()=>{
         const dom = nearestDomIndex();
-        if(dom === 0){
-          syncProducts(N - 1);
-          centerOn(N, false);
-        } else if(dom === N + 1){
-          syncProducts(0);
-          centerOn(1, false);
-        } else {
-          const i = dom - 1;
-          if(i !== featIdx) syncProducts(i);
-        }
-      }, 120);
+        const i = realIdx(dom);
+        if(i !== featIdx) syncProducts(i);
+        if(isClone(dom)){ centerOn(CL + i, false); markActive(CL + i); }
+        else markActive(dom);
+      }, 140);
     }, {passive:true});
 
-    // land on the real first slide (dom index 1), not the prepended
-    // clone at index 0, before anything is visible
     syncProducts(0);
-    centerOn(1, false);
-
-    syncProducts(0);
+    markActive(CL);
+    centerOn(CL, false);
   })();
 
   // Birthstone filter strip — all 12 months shown, each matched against

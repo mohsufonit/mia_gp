@@ -2184,7 +2184,7 @@ footer .socials svg{width:14px;height:14px}
     <div class="section-head rv">
       <div>
         <p class="eyebrow">The Mia Difference</p>
-        <h2>Every Gift, From Us To Them, In Six Touches</h2>
+        <h2>Every Gift, From Us To Them, In Five Touches</h2>
       </div>
     </div>
     <!-- "Living Icons" direction, confirmed from the animation-directions
@@ -3496,8 +3496,28 @@ footer .socials svg{width:14px;height:14px}
     w_under2:'Under 2g', w_2to5:'2g – 5g', k_18:'18 Karat', k_22:'22 Karat'
   };
   const tfViewAll = document.getElementById('tf-viewall');
+  // every tab shows TF_COUNT cards: real matches first, then placeholder
+  // fill-ins from the rest of the catalogue (rotated per tab so tabs don't
+  // repeat the same pieces), relabelled to the tab so the ribbon/karat
+  // pill read consistently. Replace with real tagged products before launch.
+  const TF_COUNT = 10;
+  const TF_TAG = {
+    most:'MOST GIFTED', best:'BEST SELLER', new:'NEW ARRIVAL',
+    w_under2:'UNDER 2G', w_2to5:'2G – 5G', k_18:'18 KARAT', k_22:'22 KARAT'
+  };
+  function favItems(key){
+    const real = PRODUCTS.filter(p=>favMatch(p,key));
+    const pool = PRODUCTS.filter(p=>!favMatch(p,key));
+    const start = (Object.keys(TF_TAG).indexOf(key) * 5) % pool.length;
+    const fill = [];
+    for(let k = 0; real.length + fill.length < TF_COUNT && k < pool.length; k++){
+      const p = pool[(start + k) % pool.length];
+      fill.push({...p, tag: TF_TAG[key], kt: key === 'k_18' ? '18 KT' : key === 'k_22' ? '22 KT' : p.kt});
+    }
+    return real.concat(fill);
+  }
   function renderFav(key){
-    const items = PRODUCTS.filter(p=>favMatch(p,key)).slice(0,8);
+    const items = favItems(key);
     tfGrid.innerHTML = items.map(productCardHTML).join('');
     wireCards(tfGrid);
     resetRailScroll(tfGrid, updateTfTrack);

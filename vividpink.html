@@ -847,21 +847,24 @@ body{padding-top:var(--header-h,127px)}
    (385x147 -> 500x191). The centred card is the selected one; its
    neighbours sit smaller and faded so they read as "tap to pick",
    the same selected-vs-rest language as the birthstone strip */
-.feat-banner-scroll{display:flex;align-items:center;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;padding-block:16px 18px;
+.feat-banner-scroll{display:flex;align-items:center;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none;padding-block:6px;
   -webkit-mask-image:linear-gradient(to right,rgba(0,0,0,0) 0%,rgba(0,0,0,1) 6%,rgba(0,0,0,1) 94%,rgba(0,0,0,0) 100%);
   mask-image:linear-gradient(to right,rgba(0,0,0,0) 0%,rgba(0,0,0,1) 6%,rgba(0,0,0,1) 94%,rgba(0,0,0,0) 100%);
 }
 .feat-banner-scroll::-webkit-scrollbar{display:none}
 .feat-banner-slide{position:relative;flex:0 0 72%;height:191px;scroll-snap-align:center;border-radius:var(--radius-lg);overflow:hidden;background-size:cover;background-position:center;isolation:isolate;cursor:pointer;
-  transform:scale(.88);opacity:.5;filter:saturate(.75);transition:transform .4s var(--ease),opacity .4s var(--ease),filter .4s var(--ease),box-shadow .4s var(--ease)}
+  transform:scale(.9);transition:transform .4s var(--ease),outline-color .3s}
 @media(min-width:640px){.feat-banner-slide{flex-basis:500px}}
-.feat-banner-slide:hover{opacity:.78}
-.feat-banner-slide.active{transform:scale(1);opacity:1;filter:none;cursor:default;box-shadow:0 14px 30px rgba(110,13,29,.24)}
+.feat-banner-slide:hover{transform:scale(.92)}
+/* selected = full size + pink outline; no shadow, no dimming on the rest */
+.feat-banner-slide.active{transform:scale(1);cursor:default;outline:2px solid var(--pink-deep);outline-offset:3px}
 .feat-banner-slide:focus-visible{outline:2px solid var(--pink-deep);outline-offset:3px}
-.feat-banner-slide::after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(0deg,rgba(20,14,15,.72) 0%,rgba(20,14,15,.18) 45%,rgba(20,14,15,0) 65%)}
 .feat-caption{position:relative;z-index:1;height:100%;display:flex;align-items:flex-end;padding:18px 20px}
-.feat-name{font-family:'Fraunces',serif;font-size:clamp(19px,2.2vw,24px);color:#fff;margin:0;font-weight:600;text-wrap:balance}
+/* no scrim over the photo, so the name carries its own soft shadow to
+   stay legible on the lighter banners (Aurum, Zen, Lovestruck) */
+.feat-name{font-family:'Fraunces',serif;font-size:clamp(19px,2.2vw,24px);color:#fff;margin:0;font-weight:600;text-wrap:balance;text-shadow:0 1px 3px rgba(20,14,15,.55),0 0 14px rgba(20,14,15,.35)}
 .feat-viewall{margin-top:22px}
+#collections .section-head{margin-bottom:14px}
 /* this banner has its own "Rhapsody of Colours" lettering baked into the
    bottom quarter — framed above it so it never doubles up with the name */
 .feat-rhapsody{background-position:center 30%}
@@ -871,7 +874,7 @@ body{padding-top:var(--header-h,127px)}
 .feat-arrow{pointer-events:auto;flex-shrink:0;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.85);border:none;color:var(--pink-deep);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,opacity .2s}
 .feat-arrow:hover{background:#fff}
 .feat-arrow.hide{opacity:0;pointer-events:none}
-.feat-dots{display:flex;gap:5px;justify-content:center;padding:12px 0 4px}
+.feat-dots{display:flex;gap:5px;justify-content:center;padding:10px 0 14px}
 .feat-dots span{width:5px;height:5px;border-radius:50%;background:var(--line-2)}
 .feat-dots span.on{background:var(--pink-deep);width:14px;border-radius:3px;transition:all .2s}
 .feat-products{flex:1}

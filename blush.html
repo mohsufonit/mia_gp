@@ -284,6 +284,10 @@ body{padding-top:var(--header-h,127px)}
 .hero-ctas{display:flex;flex-wrap:wrap;gap:16px}
 .hero-card .btn-outline{border-color:rgba(255,255,255,.7);color:#fff}
 .btn-gold{background:#F0C987;color:#B30D4A;box-shadow:0 10px 24px rgba(0,0,0,.18)}
+/* on the pink hero both buttons are solid white with pink text, so neither
+   reads as see-through or disabled against the banner */
+.hero-card .btn-white{background:#fff;color:var(--pink-deep);border:1.5px solid #fff;box-shadow:0 10px 24px rgba(0,0,0,.14)}
+.hero-card .btn-white:hover{background:var(--blush-2);transform:translateY(-1px)}
 .btn-gold:hover{background:#ecbd72}
 /* looping shine sweep on both hero CTAs, mobile and desktop alike */
 .hero-ctas .btn{position:relative;overflow:hidden}
@@ -377,8 +381,8 @@ body{padding-top:var(--header-h,127px)}
 .cat-strip::-webkit-scrollbar{display:none}
 /* exactly 3 per row on mobile, not whatever the gap happens to fit (was 4) */
 @media(max-width:639px){
-  .cat-strip{display:grid;grid-template-columns:repeat(3,1fr);justify-items:center;gap:18px 8px}
-  .cat-chip{width:100%}
+  .cat-strip{display:flex;flex-wrap:wrap;justify-content:center;gap:18px 0}
+  .cat-chip{flex:0 0 33.333%;width:auto}
 }
 .cat-chip{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:9px;cursor:pointer;opacity:.75;transition:opacity .2s}
 .cat-chip:hover,.cat-chip.active{opacity:1}
@@ -987,8 +991,10 @@ body{padding-top:var(--header-h,127px)}
   content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
   background:
     radial-gradient(70% 90% at 20% 0%, rgba(255,255,255,.16), transparent 60%),
-    radial-gradient(75% 85% at 65% 15%, #FF6FA8 0%, #EC1664 28%, #D1115A 55%, #B30D4A 100%);
+    radial-gradient(75% 85% at 65% 15%, #FF9EC2 0%, #F67AA6 30%, #EA5C8F 62%, #DC4A80 100%);
 }
+/* Coins & Cards sits on a lighter pink than the other breakers so the three
+   cards stand out from the band behind them */
 /* gold dust glitter texture — every pink breaker band gets this, not just
    the coin/gift-card section */
 /* exact same white dot texture as the hero card — every pink breaker band
@@ -1009,7 +1015,9 @@ body{padding-top:var(--header-h,127px)}
 }
 .meaning-section .section-head,.meaning-section .coin-grid{position:relative;z-index:1}
 .touches-section .container{position:relative;z-index:1}
-.meaning-section .eyebrow{color:var(--gold)}
+/* hidden while Mia confirms which gifting promises can be shown */
+.touches-section{display:none}
+.meaning-section .eyebrow{color:#fff}
 .meaning-section .section-head h2{color:#fff}
 /* gold sparkle decoration — shared by every pink breaker band, not just
    the coin/gift-card section */
@@ -1074,12 +1082,13 @@ body{padding-top:var(--header-h,127px)}
 /* No jewellery illustration — just the real Mia by Tanishq logo (fetched
    from their own site, recolored white via filter) centered on the card,
    with the tagline beneath it. */
-.giftcard-pack{width:152px;aspect-ratio:1.55/1;border-radius:10px;background:linear-gradient(135deg,#E8738A,#A83850 55%,#6E0D1D 100%);position:relative;overflow:hidden;--tilt:-9deg;transform:rotate(var(--tilt));box-shadow:0 16px 20px -4px rgba(0,0,0,.4),0 6px 10px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.3);animation:packFloat 4.8s ease-in-out infinite;animation-delay:.3s}
+.giftcard-pack{width:152px;aspect-ratio:1.586/1;border-radius:7px;background:none;position:relative;overflow:hidden;--tilt:-9deg;transform:rotate(var(--tilt));box-shadow:0 16px 20px -4px rgba(0,0,0,.4),0 6px 10px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.3);animation:packFloat 4.8s ease-in-out infinite;animation-delay:.3s}
 .giftcard-pack::after{
   content:"";position:absolute;top:0;left:-60%;width:35%;height:100%;
   background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.4) 50%,transparent 100%);
   transform:skewX(-20deg);animation:packShine 4.8s ease-in-out infinite;animation-delay:2s;pointer-events:none;
 }
+.giftcard-pack .gp-card{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .giftcard-pack .gp-text{position:relative;z-index:1;height:100%;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10px}
 .giftcard-pack .gp-logo{width:60px;height:auto;filter:brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0,0,0,.25))}
 .giftcard-pack .gp-tag{font-family:'Fraunces',serif;font-size:7px;color:#fff;line-height:1.5;display:flex;align-items:center;gap:5px;margin-top:6px}
@@ -1142,6 +1151,36 @@ body{padding-top:var(--header-h,127px)}
 .gcmodal-form input:focus,.gcmodal-form textarea:focus{outline:none;border-color:var(--pink)}
 .gcmodal-form textarea{resize:vertical;min-height:64px}
 .gcmodal-form .btn{margin-top:20px;width:100%}
+/* gift card window: the real card (front/back flip), Mia's amounts, pincode
+   check, Buy Now + Add To Bag, and the full terms */
+.gcmodal-preview{flex-direction:column;gap:18px;background:var(--blush-2)}
+.gcm-flip{width:100%;max-width:340px;aspect-ratio:1.586/1;perspective:1200px;animation:gcmCardFloat 4.5s ease-in-out infinite}
+.gcm-flip-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .7s var(--ease)}
+.gcm-flip.flipped .gcm-flip-inner{transform:rotateY(180deg)}
+.gcm-face{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4% / 6.3%;backface-visibility:hidden;-webkit-backface-visibility:hidden;box-shadow:0 20px 38px rgba(110,13,29,.28)}
+.gcm-back{transform:rotateY(180deg)}
+.gcm-flip-btn{background:#fff;color:var(--pink-deep);border:1.5px solid var(--pink);border-radius:100px;padding:8px 16px;font-family:inherit;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;cursor:pointer}
+.gcm-flip-btn:hover{background:var(--blush)}
+@media(prefers-reduced-motion:reduce){.gcm-flip{animation:none}.gcm-flip-inner{transition:none}}
+.gcmodal-price{font-family:'Fraunces',serif;font-size:26px;font-weight:600;color:var(--pink-deep);margin:0 0 4px}
+.gcmodal-amt{padding:8px 13px}
+.gcmodal-label label{font:inherit;color:inherit}
+.pin-row{display:flex;gap:8px}
+.pin-row input{flex:1;min-width:0;padding:11px 13px;border:1.5px solid var(--line-2);border-radius:8px;font-family:inherit;font-size:13px}
+.pin-row input:focus{outline:none;border-color:var(--pink)}
+.pin-btn{flex-shrink:0;padding:0 16px;border-radius:8px;border:1.5px solid var(--pink);background:#fff;color:var(--pink-deep);font-family:inherit;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;cursor:pointer;white-space:nowrap}
+.pin-btn:hover{background:var(--blush-2)}
+.pin-msg{font-size:12px;font-weight:600;margin:6px 0 0;min-height:0}
+.pin-msg.ok{color:#2E7D32}
+.pin-msg.err{color:#C62828}
+.gcm-actions{display:flex;gap:10px;margin-top:20px}
+.gcmodal-form .gcm-actions .btn{margin-top:0;flex:1;padding-inline:12px}
+.btn-ghost-pink{background:#fff;color:var(--pink-deep);border:1.5px solid var(--pink)}
+.btn-ghost-pink:hover{background:var(--blush-2)}
+.gcm-terms{margin-top:18px;border-top:1px solid var(--line);padding-top:12px}
+.gcm-terms summary{cursor:pointer;font-size:12.5px;font-weight:700;color:var(--ink)}
+.gcm-terms ul{margin:10px 0 0;padding-left:18px;font-size:11.5px;line-height:1.6;color:var(--ink-2);max-height:200px;overflow-y:auto}
+@media(max-width:759px){.gcm-flip{max-width:260px}}
 
 /* ============ gift finder — centered, boxed fields ============ */
 .finder-wrap{display:flex;flex-direction:column;align-items:center;text-align:center}
@@ -1198,6 +1237,37 @@ body{padding-top:var(--header-h,127px)}
 /* no shadow here — the tabs row scrolls horizontally on mobile, which was
    clipping the shadow unevenly (visible on the sides, cut off top/bottom) */
 .tf-chip.active{background:var(--pink);transform:translateY(-1px)}
+
+/* fanned photo cards (Timeless Favourites) */
+.tf-fan-wrap{position:relative;margin-top:4px}
+.tf-fan{--card:260px;display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none;
+  padding:30px calc(50% - var(--card) / 2) 52px}
+.tf-fan::-webkit-scrollbar{display:none}
+.tfc{flex:0 0 var(--card);height:calc(var(--card) * 1.42);scroll-snap-align:center;position:relative;border:none;padding:0;cursor:pointer;
+  border-radius:22px;overflow:hidden;background:var(--blush);text-align:center;transform-origin:50% 120%;
+  box-shadow:0 14px 30px rgba(110,13,29,.16);transition:transform .14s linear,box-shadow .3s}
+.tfc img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s var(--ease)}
+.tfc:hover img{transform:scale(1.04)}
+.tfc::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(58,10,26,.78) 0%,rgba(58,10,26,.38) 30%,rgba(58,10,26,0) 54%);pointer-events:none}
+.tfc.is-center{box-shadow:0 22px 44px rgba(110,13,29,.26)}
+.tfc-tag{position:absolute;top:14px;left:14px;z-index:1;background:#fff;color:var(--pink-deep);font-size:9.5px;font-weight:800;letter-spacing:.05em;padding:5px 10px;border-radius:100px}
+.tfc-body{position:absolute;left:0;right:0;bottom:0;z-index:1;padding:0 18px 20px;color:#fff;display:flex;flex-direction:column;gap:6px}
+.tfc-name{font-size:13.5px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tfc-price{font-family:'Fraunces',serif;font-size:24px;font-weight:600;line-height:1}
+.tf-fan-arrow{position:absolute;top:calc(50% - 10px);transform:translateY(-50%);z-index:3;width:58px;height:42px;border-radius:100px;border:none;background:#fff;color:var(--ink);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.14);transition:transform .2s,opacity .2s}
+.tf-fan-arrow:hover{transform:translateY(-50%) scale(1.06)}
+.tf-fan-arrow.prev{left:6%}
+.tf-fan-arrow.next{right:6%}
+.tf-fan-arrow.hide{opacity:0;pointer-events:none}
+@media(max-width:639px){
+  .tf-fan{--card:206px;gap:14px;padding:24px calc(50% - var(--card) / 2) 40px}
+  .tfc-price{font-size:20px}
+  .tf-fan-arrow{width:44px;height:34px}
+  .tf-fan-arrow.prev{left:2px}
+  .tf-fan-arrow.next{right:2px}
+}
+@media(prefers-reduced-motion:reduce){.tfc{transition:none}}
 @media(max-width:639px){
   .tf-tabs{flex-wrap:wrap;overflow-x:visible;gap:8px 10px;max-width:340px}
   .tf-group{flex-wrap:wrap;justify-content:center;gap:8px}
@@ -1260,11 +1330,13 @@ body{padding-top:var(--header-h,127px)}
 /* wraps to 2 lines instead of nowrap+ellipsis — at the smaller chip
    width, a long label like "Show Me Everything" was getting truncated
    to "Show Me Everyt…" */
-.gf-chip{flex:0 0 calc(45% - 4.5px);border:1.5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.08);color:#fff;
+/* solid white answers on the pink card (they were faint see-through
+   outlines); the picked answer flips to deep wine */
+.gf-chip{flex:0 0 calc(45% - 4.5px);border:1.5px solid #fff;background:#fff;color:var(--pink-deep);
   font-family:inherit;font-size:12.5px;font-weight:700;line-height:1.25;padding:9px 12px;border-radius:100px;cursor:pointer;
   transition:all .18s var(--ease);text-align:center}
-.gf-chip:hover{border-color:#fff;background:rgba(255,255,255,.16)}
-.gf-chip.sel{background:#fff;color:var(--pink-deep);border-color:#fff}
+.gf-chip:hover{border-color:#fff;background:var(--blush-2)}
+.gf-chip.sel{background:#6E0D1D;color:#fff;border-color:#fff}
 
 .gf-step-anim{animation:gfIn .35s var(--ease)}
 @keyframes gfIn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}
@@ -1713,6 +1785,24 @@ footer .socials svg{width:14px;height:14px}
 .qv-pdp-link:hover{background:var(--blush)}
 .qv-eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pink-deep);margin-bottom:8px}
 .qv-price{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:18px}
+/* size / gross-weight pickers, mirroring what Mia's own product pages ask for */
+.qv-opts{display:flex;flex-direction:column;gap:14px;margin-bottom:18px}
+.qv-opts:empty{display:none}
+.qv-opt-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--ink)}
+.qv-opt-row{display:flex;flex-wrap:wrap;gap:8px}
+.qv-chip{padding:8px 12px;border-radius:100px;border:1.5px solid var(--line-2);background:#fff;font-family:inherit;font-size:12px;font-weight:700;color:var(--ink);cursor:pointer;transition:all .15s}
+.qv-chip:hover{border-color:var(--pink)}
+.qv-chip.active{background:var(--pink);border-color:var(--pink);color:#fff}
+.qv-guide-btn{background:none;border:none;padding:0;font-family:inherit;font-size:11px;font-weight:700;color:var(--pink-deep);text-decoration:underline;text-underline-offset:3px;cursor:pointer;text-transform:none;letter-spacing:0}
+.qv-guide{margin-top:10px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.qv-guide table{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums}
+.qv-guide th,.qv-guide td{padding:7px 10px;text-align:left;border-bottom:1px solid var(--line)}
+.qv-guide th{background:var(--cream);font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.qv-guide tr:last-child td{border-bottom:none}
+.qv-guide p{margin:0;padding:8px 10px;font-size:11px;color:var(--muted);background:var(--cream)}
+.qv-opt-note{font-weight:500;color:var(--muted);font-size:11px;margin-left:4px}
+.qv-gm-msg{width:100%;margin-top:8px;padding:10px 12px;border:1.5px solid var(--line-2);border-radius:8px;font-family:inherit;font-size:13px;resize:vertical;min-height:58px}
+.qv-gm-msg:focus{outline:none;border-color:var(--pink)}
 .qv-note{font-size:12.5px;color:var(--muted);background:var(--cream);border-radius:8px;padding:10px 12px;margin-bottom:18px;display:flex;gap:8px;align-items:flex-start}
 .qv-note svg{flex-shrink:0;margin-top:1px;color:var(--pink)}
 
@@ -1867,8 +1957,8 @@ footer .socials svg{width:14px;height:14px}
           <p class="hero-tagline hero-tagline-full">Find theirs in a few taps, wrapped in Mia's signature box, finished with a handwritten note, and at their door in days.</p>
           <p class="hero-tagline hero-tagline-short">Wrapped in Mia's box, finished with a handwritten note.</p>
           <div class="hero-ctas">
-            <a href="#finder" class="btn btn-outline">Help Me Choose</a>
-            <a href="#catrec" class="btn btn-gold">Shop Gold Coins</a>
+            <a href="#finder" class="btn btn-white">Help Me Choose</a>
+            <a href="#catrec" class="btn btn-white" id="hero-coins">Shop Gold Coins</a>
           </div>
         </div>
         <div class="hero-visual rv">
@@ -1906,10 +1996,10 @@ footer .socials svg{width:14px;height:14px}
     <div class="rv finder-head">
       <div class="finder-eyebrow">
         <span class="finder-eyebrow-line"></span>
-        <span>Confused? Find Yours In 30 Seconds</span>
+        <span>Find Your Perfect Gift In 30 Seconds</span>
         <span class="finder-eyebrow-line"></span>
       </div>
-      <h2 class="finder-title">Tell Us Three Things. We'll Curate The Rest.</h2>
+      <h2 class="finder-title">Tell Us Three Things<br>We'll Curate The Rest</h2>
     </div>
     <div class="rv gf-embed">
       <div class="gf-shell" data-w="desktop" id="gf-shell"></div>
@@ -2104,15 +2194,12 @@ footer .socials svg{width:14px;height:14px}
       <a href="#" class="coin-card cc-giftcard">
         <div class="cc-copy">
           <h3>Mia Gift Card</h3>
-          <p>Personalised with a name and a note, sent instantly.</p>
+          <p>₹1,000 to ₹1,00,000, redeemable in store and online.</p>
           <span class="cc-btn">Buy Gift Cards</span>
         </div>
         <div class="cc-visual">
           <div class="giftcard-pack">
-            <div class="gp-text">
-              <img class="gp-logo" src="assets/logo/mia-logo-pink.png" alt="Mia by Tanishq">
-              <div class="gp-tag">Joy Of Gifting</div>
-            </div>
+            <img class="gp-card" src="assets/giftcard/mia-gift-card-front.webp" alt="Mia gift card">
           </div>
         </div>
       </a>
@@ -2152,8 +2239,8 @@ footer .socials svg{width:14px;height:14px}
       </div>
       <span class="tf-div tf-div-1"></span>
       <div class="tf-group">
-        <button type="button" class="tf-chip shine-fx" data-filter="w_under2">Under 2g</button>
-        <button type="button" class="tf-chip shine-fx" data-filter="w_2to5">2g – 5g</button>
+        <button type="button" class="tf-chip shine-fx" data-filter="diamond">Diamond</button>
+        <button type="button" class="tf-chip shine-fx" data-filter="silver">Silver</button>
       </div>
       <span class="tf-div tf-div-2"></span>
       <div class="tf-group">
@@ -2161,14 +2248,13 @@ footer .socials svg{width:14px;height:14px}
         <button type="button" class="tf-chip shine-fx" data-filter="k_22">22 Karat</button>
       </div>
     </div>
-    <!-- same carousel as Shop By Category — horizontal scroll, never stacks
-         vertically on mobile -->
-    <div class="rec-rail">
-      <button type="button" class="rec-arrow rec-arrow-prev" id="tf-prev" aria-label="Scroll left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg></button>
-      <div class="pcard-rail rv" id="tf-grid"></div>
-      <button type="button" class="rec-arrow rec-arrow-next" id="tf-next" aria-label="Scroll right"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg></button>
+    <!-- fanned photo cards: the centred card sits upright, neighbours tilt
+         outward and drop a little, and the tilt follows the scroll -->
+    <div class="tf-fan-wrap">
+      <button type="button" class="tf-fan-arrow prev" id="tf-prev" aria-label="Previous"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>
+      <div class="tf-fan" id="tf-grid"></div>
+      <button type="button" class="tf-fan-arrow next" id="tf-next" aria-label="Next"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
     </div>
-    <div class="rec-track"><div class="rec-track-fill" id="tf-track-fill"></div></div>
     <div class="rec-viewall-wrap"><a href="#catrec" class="section-link" id="tf-viewall">Shop Most Gifted <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
   </div>
 </section>
@@ -2402,6 +2488,7 @@ footer .socials svg{width:14px;height:14px}
       <p class="qv-eyebrow">Quick View · Gifting Details</p>
       <h3 id="qv-name-row"><span id="qv-name"></span><a href="#" class="qv-pdp-link" id="qv-pdp" title="View full product details"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 4h6v6M10 14 20 4M18 14v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"/></svg></a></h3>
       <div class="qv-price" id="qv-price"></div>
+      <div class="qv-opts" id="qv-opts"></div>
 
       <div class="qv-note">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V8H6a2 2 0 0 0-2 2v10h16v-4"/><path d="M2 12h20"/></svg>
@@ -2409,6 +2496,22 @@ footer .socials svg{width:14px;height:14px}
       </div>
 
       <div class="qv-block" style="border-top:none;margin-top:0;padding-top:0">
+        <div class="qv-block-head"><label for="qv-pin">Delivery Details</label></div>
+        <div class="pin-row">
+          <input type="text" id="qv-pin" inputmode="numeric" maxlength="6" placeholder="Enter pincode" autocomplete="postal-code">
+          <button type="button" class="pin-btn" id="qv-pin-check">Check</button>
+        </div>
+        <p class="pin-msg" id="qv-pin-msg" role="status"></p>
+      </div>
+
+      <div class="qv-block">
+        <div class="qv-block-head"><label for="qv-gm-name">Gift Message <span class="qv-opt-note">Optional, printed on the gift card</span></label></div>
+        <input type="text" class="qv-phone" id="qv-gm-name" maxlength="40" placeholder="Recipient's name" autocomplete="off">
+        <textarea class="qv-gm-msg" id="qv-gm-msg" maxlength="150" rows="2" placeholder="Write your message"></textarea>
+        <div class="qv-wa-count"><span id="qv-gm-count">0</span>/150</div>
+      </div>
+
+      <div class="qv-block">
         <div class="qv-block-head"><label>Scheduled delivery</label></div>
         <div class="qv-date-row">
           <button type="button" class="qv-date-trigger" id="qv-date-trigger">
@@ -2498,33 +2601,64 @@ footer .socials svg{width:14px;height:14px}
     <button type="button" class="gcmodal-close" id="gcmodal-close" aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
     <div class="gcmodal-grid">
       <div class="gcmodal-preview">
-        <div class="gift-card-mock gcmodal-card">
-          <div class="gcm-top">
-            <img class="gcm-logo" src="assets/logo/mia-logo-pink.png" alt="Mia by Tanishq">
+        <div class="gcm-flip" id="gcm-flip">
+          <div class="gcm-flip-inner">
+            <img class="gcm-face" src="assets/giftcard/mia-gift-card-front.webp" alt="Mia gift card, front">
+            <img class="gcm-face gcm-back" src="assets/giftcard/mia-gift-card-back.webp" alt="Mia gift card, back, with terms and conditions">
           </div>
-          <div class="gcm-card-label">Gift Card</div>
-          <div class="gcm-value" id="gcmodal-value">₹5,000</div>
-          <div class="gcm-to">For <strong id="gcmodal-to">Priya Sharma</strong></div>
-          <div class="gcm-msg" id="gcmodal-msg-preview">"Happy anniversary, my love. Here's to more forevers."</div>
         </div>
+        <button type="button" class="gcm-flip-btn" id="gcm-flip-btn" aria-pressed="false">See The Back</button>
       </div>
       <div class="gcmodal-form">
-        <span class="gcmodal-badge">Instant Delivery</span>
-        <h2>Design Their Gift Card</h2>
-        <p>Preview updates live as you type.</p>
-        <div class="gcmodal-label">Amount</div>
+        <span class="gcmodal-badge">Valid 6 Months From Activation</span>
+        <h2>Mia Gift Card</h2>
+        <div class="gcmodal-price" id="gcmodal-value">₹1,000</div>
+        <div class="gcmodal-label">Choose Amount</div>
         <div class="gcmodal-amounts" id="gcmodal-amounts">
-          <button type="button" class="gcmodal-amt" data-amt="1000">₹1,000</button>
+          <button type="button" class="gcmodal-amt active" data-amt="1000">₹1,000</button>
           <button type="button" class="gcmodal-amt" data-amt="2000">₹2,000</button>
-          <button type="button" class="gcmodal-amt active" data-amt="5000">₹5,000</button>
+          <button type="button" class="gcmodal-amt" data-amt="3000">₹3,000</button>
+          <button type="button" class="gcmodal-amt" data-amt="5000">₹5,000</button>
+          <button type="button" class="gcmodal-amt" data-amt="7000">₹7,000</button>
           <button type="button" class="gcmodal-amt" data-amt="10000">₹10,000</button>
+          <button type="button" class="gcmodal-amt" data-amt="15000">₹15,000</button>
+          <button type="button" class="gcmodal-amt" data-amt="20000">₹20,000</button>
           <button type="button" class="gcmodal-amt" data-amt="25000">₹25,000</button>
+          <button type="button" class="gcmodal-amt" data-amt="30000">₹30,000</button>
+          <button type="button" class="gcmodal-amt" data-amt="50000">₹50,000</button>
+          <button type="button" class="gcmodal-amt" data-amt="100000">₹1,00,000</button>
         </div>
-        <div class="gcmodal-label">Recipient Name</div>
-        <input type="text" id="gcmodal-name" value="Priya Sharma">
-        <div class="gcmodal-label">Your Message</div>
-        <textarea id="gcmodal-msg">Happy anniversary, my love. Here's to more forevers.</textarea>
-        <button type="button" class="btn btn-primary" id="gcmodal-buy">Buy Gift Card</button>
+        <div class="gcmodal-label"><label for="gcm-pin">Delivery Details</label></div>
+        <div class="pin-row">
+          <input type="text" id="gcm-pin" inputmode="numeric" maxlength="6" placeholder="Enter pincode" autocomplete="postal-code">
+          <button type="button" class="pin-btn" id="gcm-pin-check">Check Availability</button>
+        </div>
+        <p class="pin-msg" id="gcm-pin-msg" role="status"></p>
+        <div class="gcm-actions">
+          <button type="button" class="btn btn-primary" id="gcmodal-buy">Buy Now</button>
+          <button type="button" class="btn btn-ghost-pink" id="gcmodal-add">Add To Bag</button>
+        </div>
+        <details class="gcm-terms">
+          <summary>Terms &amp; Conditions</summary>
+          <ul>
+            <li>This Gift card can be redeemed at Mia by Tanishq outlets and on miabytanishq.com and Mia App</li>
+            <li>This Gift card is one-time redeemable and partial redemption is not allowed.</li>
+            <li>Once the value of the card is used up, it cannot be reloaded.</li>
+            <li>The Card gets activated immediately on receiving the payment and is valid for use for a 6 months from the date of activation.</li>
+            <li>In case, during a transaction, the bill amount is more than the remaining card value, the balance amount will have to borne by the Customer.</li>
+            <li>The Mia Gift card cannot be redeemed for cash. Balance on the Mia Gift card can be checked at any Mia Store.</li>
+            <li>Alternately, the customer can send an SMS To 57575577 by simply typing the 16 digit card number to know the card balance &amp; expiry date. No returns accepted.</li>
+            <li>The Mia Gift cards can be redeemed against jewellery products only and not coins.</li>
+            <li>The Mia Gift cards purchased from or Mia Boutique are redeemable only on the home website or Mia stores. It cannot be redeemed on other partner outlets such as Caratlane.</li>
+            <li>This is a Bearer Card and is not valid until activated.</li>
+            <li>This Gift card cannot be purchased using other Gift cards or Encircle points.</li>
+            <li>Multiple Gift cards are allowed for redemption for an order.</li>
+            <li>Mia by Tanishq will not replace or reimburse the value of your Gift card if it is lost, stolen, or expired.</li>
+            <li>This Gift Card is non-encashable and Bearer is responsible if a Gift Card is lost, stolen, destroyed, or used without permission.</li>
+            <li>If the value of the purchase is less than the value of the Gift card, the balance is non-refundable.</li>
+            <li>These terms &amp; conditions are subject to change at any time by the brand, without any prior notice.</li>
+          </ul>
+        </details>
       </div>
     </div>
   </div>
@@ -2874,8 +3008,34 @@ footer .socials svg{width:14px;height:14px}
     {code:'3826CEH', name:'Classic Figaro Link Gold Chain', price:45867, cat:'chains', tag:'BEST SELLER', kt:'14 KT', metal:'Yellow Gold', r:4.7, c:233},
     {code:'D6H4CCH', name:'Ethereal Spark Gold Chain', price:7352, cat:'chains', tag:'9 KARAT', kt:'9 KT', metal:'Yellow Gold', r:4.5, c:96},
     {code:'2822CXQ', name:'Gleam Pop Gold Chain', price:40911, cat:'chains', tag:'14 KARAT', kt:'14 KT', metal:'Yellow Gold', r:4.6, c:161},
+    // coins, silver jewellery and three more diamond pieces: real Mia
+    // products (names, prices, photos from miabytanishq.com); ratings are
+    // placeholders like the rest of this catalogue
+    {code:'602923ZPZAAW00', name:'0.5 gm 24 Karat Lotus Gold Coin', price:8214, cat:'coins', tag:'24 KARAT', kt:'24 KT', metal:'Yellow Gold', r:4.9, c:312},
+    {code:'602820ZIBAAW00', name:'2 gm 24 Karat Lotus Gold Coin', price:32858, cat:'coins', tag:'24 KARAT', kt:'24 KT', metal:'Yellow Gold', r:4.9, c:188},
+    {code:'602923ZQBAAW00', name:'0.5 gm 24 Karat Tulsi Leaf Gold Coin', price:8214, cat:'coins', tag:'24 KARAT', kt:'24 KT', metal:'Yellow Gold', r:4.8, c:141},
+    {code:'602923ZQAAAW00', name:'0.5 gm 24 Karat Mango Leaf Gold Coin', price:8214, cat:'coins', tag:'24 KARAT', kt:'24 KT', metal:'Yellow Gold', r:4.8, c:126},
+    {code:'60MQ26ZAPAAW00', name:'1 gm 24 Karat Divine Krishna Gold Coin', price:16820, cat:'coins', tag:'24 KARAT', kt:'24 KT', metal:'Yellow Gold', r:4.9, c:97},
+    {code:'802820ZIGAAA00', name:'5 gm 999 Lotus Silver Coin', price:1650, cat:'coins', tag:'999 SILVER', kt:'999', metal:'Silver', r:4.8, c:205},
+    {code:'802820ZIHAAA00', name:'10 gm 999 Lotus Silver Coin', price:3300, cat:'coins', tag:'999 SILVER', kt:'999', metal:'Silver', r:4.8, c:164},
+    {code:'802821ZWTAAA00', name:'10 gm 999 Mango Leaf Silver Coin', price:3300, cat:'coins', tag:'999 SILVER', kt:'999', metal:'Silver', r:4.7, c:88},
+    {code:'A14125HHPAAA00', name:'Twisted Beam Silver Hoop Earrings', price:2699, cat:'earrings', tag:'925 SILVER', kt:'925', metal:'Silver', r:4.7, c:64},
+    {code:'A14020HLYAAAP1', name:'Verdant Glow Silver Hoop Earrings', price:2999, cat:'earrings', tag:'925 SILVER', kt:'925', metal:'Silver', r:4.6, c:51},
+    {code:'A14125HJGAAACZ', name:'Linear Spark Silver Hoop Earrings', price:3499, cat:'earrings', tag:'925 SILVER', kt:'925', metal:'Silver', r:4.7, c:43},
+    {code:'A14125POIAAA88', name:'Melodic Charm Silver Pendant', price:2599, cat:'necklaces', tag:'925 SILVER', kt:'925', metal:'Silver', r:4.6, c:38},
+    {code:'A14026PAIAAACZ', name:'Soft Flow Silver Pendant', price:1799, cat:'necklaces', tag:'925 SILVER', kt:'925', metal:'Silver', r:4.7, c:72},
+    {code:'A14026GCNLA00', name:'Petal Outline Silver Necklace', price:4599, cat:'necklaces', tag:'925 SILVER', kt:'925', metal:'Silver', r:4.8, c:29},
+    {code:'A14020FOVAACZ', name:'Dazzling Wave Silver Ring', price:1399, cat:'rings', tag:'925 SILVER', kt:'925', metal:'Silver', r:4.6, c:57},
+    {code:'A14020FPFAACZ', name:'Dual Glam Silver Ring', price:1199, cat:'rings', tag:'925 SILVER', kt:'925', metal:'Silver', r:4.5, c:44},
+    {code:'A14025FDXAA00', name:'Cute Heart Silver Ring', price:1899, cat:'rings', tag:'925 SILVER', kt:'925', metal:'Silver', r:4.8, c:83},
+    {code:'A14025BANAAP1', name:'Dreamy Dainty Silver Bracelet', price:2399, cat:'bracelets', tag:'925 SILVER', kt:'925', metal:'Silver', r:4.7, c:46},
+    {code:'A14025BAHLA00', name:'Playful Peace Silver Bracelet', price:1999, cat:'bracelets', tag:'925 SILVER', kt:'925', metal:'Silver', r:4.6, c:39},
+    {code:'A14025BAMAA00', name:'Cheeky Bloom Silver Bracelet', price:1899, cat:'bracelets', tag:'925 SILVER', kt:'925', metal:'Silver', r:4.7, c:52},
+    {code:'55M5I2SDGAFA09', name:'Soft Frame Diamond Stud Earrings', price:24930, cat:'earrings', tag:'14 KARAT', kt:'14 KT', metal:'Yellow Gold', r:4.8, c:61},
+    {code:'552820PBVAAA09', name:'Dual Tone Gold & Diamond Pendant', price:25392, cat:'necklaces', tag:'14 KARAT', kt:'14 KT', metal:'Yellow & White Gold', r:4.7, c:34},
+    {code:'533825FBKAA09', name:'Curvy Shine Diamond Ring', price:14660, cat:'rings', tag:'9 KARAT', kt:'9 KT', metal:'Yellow Gold', r:4.7, c:58},
   ];
-  const imgSrc = p => `assets/products/${p.code}.webp`;
+  const imgSrc = p => p.img || `assets/products/${p.code}.webp`;
   // real second/third angles pulled from the live site for every product
   const imgSrcList = p => [imgSrc(p), `assets/products/${p.code}_2.webp`, `assets/products/${p.code}_3.webp`];
 
@@ -2995,13 +3155,14 @@ footer .socials svg{width:14px;height:14px}
     if(cmpModalOverlay.classList.contains('open')){ cmpModalOverlay.classList.remove('open'); document.body.classList.remove('locked'); }
   });
 
+  // order agreed with Mia: Earrings, Rings, Bracelets, Pendants, Coins.
+  // "Pendants" browses the necklaces catalogue (Mia files them together)
   const CATS = [
-    {key:'all', label:'All Gifts', icon:'<img src="assets/icons/cat-all.png" alt="" width="26" height="26">'},
-    {key:'rings', label:'Rings', icon:'<img src="assets/icons/cat-rings.png" alt="" width="26" height="26">'},
     {key:'earrings', label:'Earrings', icon:'<img src="assets/icons/cat-earrings.png" alt="" width="26" height="26">'},
-    {key:'necklaces', label:'Necklaces', icon:'<img src="assets/icons/cat-necklaces.png" alt="" width="26" height="26">'},
+    {key:'rings', label:'Rings', icon:'<img src="assets/icons/cat-rings.png" alt="" width="26" height="26">'},
     {key:'bracelets', label:'Bracelets', icon:'<img src="assets/icons/cat-bracelets.png" alt="" width="26" height="26">'},
-    {key:'chains', label:'Chains', icon:'<img src="assets/icons/cat-chains.png" alt="" width="26" height="26">'},
+    {key:'pendants', cat:'necklaces', label:'Pendants', icon:'<img src="assets/icons/cat-pendants.png" alt="" width="26" height="26">'},
+    {key:'coins', label:'Coins', icon:'<img src="assets/icons/cat-coins.png" alt="" width="26" height="26">'},
   ];
 
   const catStrip = document.getElementById('cat-strip');
@@ -3453,16 +3614,17 @@ footer .socials svg{width:14px;height:14px}
   const recViewAll = document.getElementById('rec-viewall');
   const renderRecCards = makeProgressiveRail(recGrid, 6);
   function renderRec(catKey){
-    const items = catKey==='all' ? PRODUCTS : PRODUCTS.filter(p=>p.cat===catKey);
+    const c = CATS.find(c=>c.key===catKey);
+    const items = PRODUCTS.filter(p=>p.cat===(c.cat || c.key));
     renderRecCards(items);
     recGrid.classList.remove('centered');
     resetRailScroll(recGrid, updateRecTrack);
     // "View All" reflects whichever category chip is active — "View All
     // Rings", "View All Earrings", etc., not a generic link
     const label = CATS.find(c=>c.key===catKey)?.label;
-    recViewAll.firstChild.textContent = catKey==='all' ? 'View All ' : `View All ${label} `;
+    recViewAll.firstChild.textContent = `View All ${label} `;
   }
-  renderRec('all');
+  renderRec(CATS[0].key);
 
   catStrip.querySelectorAll('.cat-chip').forEach(chip=>{
     chip.addEventListener('click', ()=>{
@@ -3484,16 +3646,15 @@ footer .socials svg{width:14px;height:14px}
     if(key==='most') return p.tag==='MOST GIFTED';
     if(key==='best') return p.tag==='BEST SELLER';
     if(key==='new') return p.tag==='NEW ARRIVAL';
-    if(key==='w_under2') return p.tag==='UNDER 2G';
-    if(key==='w_2to5') return p.tag==='2G – 5G';
+    if(key==='diamond') return /diamond/i.test(p.name);
+    if(key==='silver') return p.metal==='Silver' && p.cat!=='coins';
     if(key==='k_18') return p.kt==='18 KT';
     if(key==='k_22') return p.kt==='22 KT';
     return false;
   }
-  const updateTfTrack = wireRail(tfGrid, document.getElementById('tf-track-fill'), document.getElementById('tf-prev'), document.getElementById('tf-next'));
   const TF_LABELS = {
     most:'Most Gifted', best:'Best Sellers', new:'New Arrivals',
-    w_under2:'Under 2g', w_2to5:'2g – 5g', k_18:'18 Karat', k_22:'22 Karat'
+    diamond:'Diamond', silver:'Silver', k_18:'18 Karat', k_22:'22 Karat'
   };
   const tfViewAll = document.getElementById('tf-viewall');
   // every tab shows TF_COUNT cards: real matches first, then placeholder
@@ -3503,11 +3664,13 @@ footer .socials svg{width:14px;height:14px}
   const TF_COUNT = 10;
   const TF_TAG = {
     most:'MOST GIFTED', best:'BEST SELLER', new:'NEW ARRIVAL',
-    w_under2:'UNDER 2G', w_2to5:'2G – 5G', k_18:'18 KARAT', k_22:'22 KARAT'
+    diamond:'DIAMOND', silver:'925 SILVER', k_18:'18 KARAT', k_22:'22 KARAT'
   };
   function favItems(key){
-    const real = PRODUCTS.filter(p=>favMatch(p,key));
-    const pool = PRODUCTS.filter(p=>!favMatch(p,key));
+    const real = PRODUCTS.filter(p=>favMatch(p,key)).slice(0, TF_COUNT);
+    // fill-ins come from gold jewellery only — a coin or a silver piece
+    // relabelled "18 KARAT" would contradict its own photo
+    const pool = PRODUCTS.filter(p=>!favMatch(p,key) && p.cat!=='coins' && p.metal!=='Silver');
     const start = (Object.keys(TF_TAG).indexOf(key) * 5) % pool.length;
     const fill = [];
     for(let k = 0; real.length + fill.length < TF_COUNT && k < pool.length; k++){
@@ -3516,12 +3679,54 @@ footer .socials svg{width:14px;height:14px}
     }
     return real.concat(fill);
   }
+  const tfPrev = document.getElementById('tf-prev'), tfNext = document.getElementById('tf-next');
+  function tfCardHTML(p){
+    return `<button type="button" class="tfc" data-code="${p.code}" aria-label="${p.name}, ₹${p.price.toLocaleString('en-IN')}">
+      <img src="${imgSrc(p)}" alt="" loading="lazy" decoding="async">
+      <span class="tfc-tag">${p.tag}</span>
+      <span class="tfc-body"><span class="tfc-name">${p.name}</span><span class="tfc-price">₹${p.price.toLocaleString('en-IN')}</span></span>
+    </button>`;
+  }
+  // each card tilts by how far it sits from the centre: left ones lean left,
+  // right ones lean right, and both drop and shrink slightly
+  function tfFan(){
+    const cards = tfGrid.children;
+    if(!cards.length) return;
+    const centre = tfGrid.scrollLeft + tfGrid.clientWidth / 2;
+    const pitch = cards[0].offsetWidth + parseFloat(getComputedStyle(tfGrid).columnGap || 18);
+    for(const c of cards){
+      const d = Math.max(-2.4, Math.min(2.4, (c.offsetLeft + c.offsetWidth / 2 - centre) / pitch));
+      const a = Math.abs(d);
+      c.style.transform = `translateY(${(a * 14).toFixed(1)}px) rotate(${(d * 4.5).toFixed(2)}deg) scale(${(1 - Math.min(a, 2) * .05).toFixed(3)})`;
+      c.classList.toggle('is-center', a < .5);
+    }
+    const max = tfGrid.scrollWidth - tfGrid.clientWidth;
+    tfPrev.classList.toggle('hide', tfGrid.scrollLeft <= 2);
+    tfNext.classList.toggle('hide', tfGrid.scrollLeft >= max - 2);
+  }
+  let tfRaf = 0;
+  tfGrid.addEventListener('scroll', ()=>{ if(!tfRaf) tfRaf = requestAnimationFrame(()=>{ tfRaf = 0; tfFan(); }); }, {passive:true});
+  window.addEventListener('resize', tfFan);
+  function tfStep(dir){
+    const c = tfGrid.children[0]; if(!c) return;
+    tfGrid.scrollBy({left: dir * (c.offsetWidth + parseFloat(getComputedStyle(tfGrid).columnGap || 18)), behavior:'smooth'});
+  }
+  tfPrev.addEventListener('click', ()=> tfStep(-1));
+  tfNext.addEventListener('click', ()=> tfStep(1));
+  tfGrid.addEventListener('click', (e)=>{
+    const card = e.target.closest('.tfc');
+    if(card) openQuickView(card.dataset.code);
+  });
+  function tfCentreOn(i){
+    const c = tfGrid.children[i]; if(!c) return;
+    tfGrid.scrollTo({left: c.offsetLeft - (tfGrid.clientWidth - c.offsetWidth) / 2, behavior:'instant'});
+    tfFan();
+  }
   function renderFav(key){
     const items = favItems(key);
-    tfGrid.innerHTML = items.map(productCardHTML).join('');
-    wireCards(tfGrid);
-    resetRailScroll(tfGrid, updateTfTrack);
-    requestAnimationFrame(()=> tfGrid.classList.toggle('centered', tfGrid.scrollWidth <= tfGrid.clientWidth + 1));
+    tfGrid.innerHTML = items.map(tfCardHTML).join('');
+    // open on the third card so the fan shows on both sides
+    requestAnimationFrame(()=> tfCentreOn(Math.min(2, items.length - 1)));
     // "Shop Most Gifted" / "Shop Best Sellers" / etc. — reflects whichever
     // pill is active, not a generic "View All Products"
     tfViewAll.firstChild.textContent = `Shop ${TF_LABELS[key]} `;
@@ -3558,13 +3763,16 @@ footer .socials svg{width:14px;height:14px}
         <div class="bi-info">
           <h5>${item.product.name}</h5>
           <div class="bi-meta">
+            ${item.size ? `<span class="bi-tag">Size ${item.size}</span>` : ''}
+            ${item.weight ? `<span class="bi-tag">${item.weight} g</span>` : ''}
+            ${item.giftMessage ? '<span class="bi-tag">Gift Message</span>' : ''}
             ${item.date ? `<span class="bi-tag">Arrives ${item.date}</span>` : ''}
             ${item.notify ? '<span class="bi-tag">WhatsApp Notify</span>' : ''}
           </div>
-          <div class="bi-price">₹${item.product.price.toLocaleString('en-IN')}</div>
+          <div class="bi-price">₹${(item.price || item.product.price).toLocaleString('en-IN')}</div>
         </div>
       </div>`).join('');
-    const total = bag.reduce((s,i)=>s+i.product.price,0);
+    const total = bag.reduce((s,i)=>s+(i.price || i.product.price),0);
     drawerTotal.textContent = '₹' + total.toLocaleString('en-IN');
   }
 
@@ -3829,6 +4037,86 @@ footer .socials svg{width:14px;height:14px}
   }
   resetCal();
 
+  // pincode check shared by Quick View and the gift card window. Placeholder:
+  // any valid 6-digit Indian pincode reads as serviceable until it's wired
+  // to Mia's real serviceability check
+  function wirePinCheck(inputId, btnId, msgId){
+    const input = document.getElementById(inputId), msg = document.getElementById(msgId);
+    function check(){
+      const v = input.value.trim();
+      const ok = /^[1-9]\d{5}$/.test(v);
+      msg.className = 'pin-msg ' + (ok ? 'ok' : 'err');
+      msg.textContent = ok ? `Delivery available to ${v}.` : 'Enter a valid 6-digit pincode.';
+    }
+    document.getElementById(btnId).addEventListener('click', check);
+    input.addEventListener('keydown', e=>{ if(e.key === 'Enter'){ e.preventDefault(); check(); } });
+    input.addEventListener('input', ()=>{ input.value = input.value.replace(/\D/g, ''); msg.textContent = ''; msg.className = 'pin-msg'; });
+  }
+  wirePinCheck('qv-pin', 'qv-pin-check', 'qv-pin-msg');
+  const qvGmName = document.getElementById('qv-gm-name');
+  const qvGmMsg = document.getElementById('qv-gm-msg');
+  qvGmMsg.addEventListener('input', ()=>{ document.getElementById('qv-gm-count').textContent = qvGmMsg.value.length; });
+
+  // what Mia's product pages ask you to pick before adding to bag:
+  // rings, necklaces, chains and bracelets need a size; every jewellery piece
+  // needs a gross weight (price follows the weight); coins need neither.
+  // Size lists are the ones Mia's own pages show; weights are placeholder
+  // variants around a typical weight until real per-product data is wired in
+  const QV_SIZES = {
+    rings:    ['16.40 MM', '16.80 MM', '17.20 MM', '17.60 MM', '18.00 MM', '18.40 MM'],
+    bracelets:['17.50 CMS', '18.00 CMS'],
+    chains:   ['18 INCHES'],
+    necklace: ['17 INCHES'],
+  };
+  function qvSizeList(p){
+    if(p.cat === 'necklaces') return /pendant/i.test(p.name) ? null : QV_SIZES.necklace;
+    return QV_SIZES[p.cat] || null;
+  }
+  function qvWeights(p){
+    if(p.cat === 'coins') return null;
+    let base = p.tag === 'UNDER 2G' ? 1.62 : p.tag === '2G – 5G' ? 3.18
+      : ({rings:2.35, earrings:2.1, necklaces:3.6, bracelets:3.2, chains:4.38})[p.cat] || 2.5;
+    if(p.metal === 'Silver') base *= 1.4;
+    return [.96, 1, 1.03, 1.07].map(f => +(base * f).toFixed(3));
+  }
+  let qvSel = {size:null, weight:null, price:0};
+  const qvOpts = document.getElementById('qv-opts');
+  function renderQvOptions(p){
+    const sizes = qvSizeList(p), weights = qvWeights(p);
+    qvSel = {size: sizes ? sizes[p.cat === 'rings' ? 1 : 0] : null, weight: weights ? weights[1] : null, price: p.price};
+    let html = '';
+    if(sizes){
+      const guide = p.cat === 'rings';
+      html += `<div class="qv-opt"><div class="qv-opt-head"><span>Choose Size</span>${guide ? '<button type="button" class="qv-guide-btn" id="qv-guide-btn" aria-expanded="false">Size Guide</button>' : ''}</div>
+        <div class="qv-opt-row">${sizes.map(s=>`<button type="button" class="qv-chip ${s===qvSel.size?'active':''}" data-k="size" data-v="${s}">${s}</button>`).join('')}</div>
+        ${guide ? `<div class="qv-guide" id="qv-guide" hidden><table><thead><tr><th>Size</th><th>Inner diameter</th><th>Circumference</th></tr></thead><tbody>${sizes.map(s=>{ const d = parseFloat(s); return `<tr><td>${s}</td><td>${d.toFixed(2)} mm</td><td>${(Math.PI*d).toFixed(1)} mm</td></tr>`; }).join('')}</tbody></table><p>Measure the inside of a ring that fits, edge to edge, and pick the closest size.</p></div>` : ''}</div>`;
+    }
+    if(weights){
+      html += `<div class="qv-opt"><div class="qv-opt-head"><span>Choose Gross Weight</span></div>
+        <div class="qv-opt-row">${weights.map(w=>`<button type="button" class="qv-chip ${w===qvSel.weight?'active':''}" data-k="weight" data-v="${w}">${w} g</button>`).join('')}</div></div>`;
+    }
+    qvOpts.innerHTML = html;
+    const base = weights ? weights[1] : 1;
+    qvOpts.querySelectorAll('.qv-chip').forEach(chip=>{
+      chip.addEventListener('click', ()=>{
+        const k = chip.dataset.k;
+        qvOpts.querySelectorAll(`.qv-chip[data-k="${k}"]`).forEach(c=>c.classList.toggle('active', c === chip));
+        if(k === 'size') qvSel.size = chip.dataset.v;
+        else {
+          qvSel.weight = +chip.dataset.v;
+          qvSel.price = Math.round(p.price * qvSel.weight / base);
+          document.getElementById('qv-price').textContent = '₹' + qvSel.price.toLocaleString('en-IN');
+        }
+      });
+    });
+    const gb = document.getElementById('qv-guide-btn');
+    if(gb) gb.addEventListener('click', ()=>{
+      const g = document.getElementById('qv-guide');
+      g.hidden = !g.hidden;
+      gb.setAttribute('aria-expanded', String(!g.hidden));
+    });
+  }
+
   function openQuickView(code){
     const p = PRODUCTS.find(x=>x.code===code);
     if(!p) return;
@@ -3854,6 +4142,13 @@ footer .socials svg{width:14px;height:14px}
     });
     document.getElementById('qv-name').textContent = p.name;
     document.getElementById('qv-price').textContent = '₹' + p.price.toLocaleString('en-IN');
+    renderQvOptions(p);
+    document.getElementById('qv-pin').value = '';
+    document.getElementById('qv-pin-msg').textContent = '';
+    document.getElementById('qv-pin-msg').className = 'pin-msg';
+    qvGmName.value = '';
+    qvGmMsg.value = '';
+    document.getElementById('qv-gm-count').textContent = '0';
     resetCal();
     qvNotify.checked = false;
     qvWhatsappWrap.classList.remove('show');
@@ -3891,6 +4186,12 @@ footer .socials svg{width:14px;height:14px}
     }
     bag.push({
       product: currentProduct,
+      size: qvSel.size,
+      weight: qvSel.weight,
+      price: qvSel.price,
+      giftName: qvGmName.value.trim(),
+      giftMessage: qvGmMsg.value.trim(),
+      pincode: document.getElementById('qv-pin').value.trim(),
       date: document.getElementById('qv-date').value,
       notify: qvNotify.checked,
       notifyAudience: qvNotify.checked ? notifyAudience : null,
@@ -4157,7 +4458,7 @@ footer .socials svg{width:14px;height:14px}
       const products = gfPickMulti(answers);
       root.innerHTML = `
         <div class="gf-results gf-r-reveal">
-          <p class="gf-r-eyebrow">Jackpot!</p>
+          <p class="gf-r-eyebrow">Picked For You</p>
           <h3 class="gf-r-title">${products.length} gifts matched for your ${who}</h3>
           <div class="gf-result-rail-wrap">
             <button type="button" class="rec-arrow rec-arrow-prev" id="gf-result-prev" aria-label="Previous"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg></button>
@@ -4251,17 +4552,20 @@ footer .socials svg{width:14px;height:14px}
 
   // ---- gift card modal: opened from "Buy Gift Cards" in the coin section ----
   const gcmOverlay = document.getElementById('gcmodal-overlay');
-  const gcmNameInput = document.getElementById('gcmodal-name');
-  const gcmMsgInput = document.getElementById('gcmodal-msg');
   const gcmAmountBtns = document.querySelectorAll('.gcmodal-amt');
-  let gcmActiveAmount = 5000;
+  let gcmActiveAmount = 1000;
 
   function syncGcModalCard(){
-    document.getElementById('gcmodal-to').textContent = gcmNameInput.value || 'Someone Special';
     document.getElementById('gcmodal-value').textContent = '₹' + gcmActiveAmount.toLocaleString('en-IN');
-    document.getElementById('gcmodal-msg-preview').textContent = gcmMsgInput.value ? `"${gcmMsgInput.value}"` : '';
   }
-  [gcmNameInput, gcmMsgInput].forEach(el=>el.addEventListener('input', syncGcModalCard));
+  const gcmFlip = document.getElementById('gcm-flip');
+  const gcmFlipBtn = document.getElementById('gcm-flip-btn');
+  gcmFlipBtn.addEventListener('click', ()=>{
+    const flipped = gcmFlip.classList.toggle('flipped');
+    gcmFlipBtn.textContent = flipped ? 'See The Front' : 'See The Back';
+    gcmFlipBtn.setAttribute('aria-pressed', String(flipped));
+  });
+  wirePinCheck('gcm-pin', 'gcm-pin-check', 'gcm-pin-msg');
   gcmAmountBtns.forEach(btn=>{
     btn.addEventListener('click', ()=>{
       gcmAmountBtns.forEach(b=>b.classList.remove('active'));
@@ -4291,10 +4595,16 @@ footer .socials svg{width:14px;height:14px}
   document.getElementById('gcmodal-close').addEventListener('click', closeGcModal);
   gcmOverlay.addEventListener('click', (e)=>{ if(e.target === gcmOverlay) closeGcModal(); });
   document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && gcmOverlay.classList.contains('open')) closeGcModal(); });
-  document.getElementById('gcmodal-buy').addEventListener('click', ()=>{
+  function addGiftCardToBag(){
+    bag.push({
+      product: {code:'GCMIA', name:'Mia Gift Card', price:gcmActiveAmount, img:'assets/giftcard/mia-gift-card-front.webp'},
+      pincode: document.getElementById('gcm-pin').value.trim()
+    });
+    renderDrawer();
     closeGcModal();
-    showToast('Gift card added to bag ✨');
-  });
+  }
+  document.getElementById('gcmodal-buy').addEventListener('click', ()=>{ addGiftCardToBag(); openDrawer(); });
+  document.getElementById('gcmodal-add').addEventListener('click', ()=>{ addGiftCardToBag(); showToast('Gift card added to bag ✨'); });
 
   // rAF-throttle a scroll handler so its layout-reading work (getBoundingClientRect
   // etc.) runs at most once per animation frame instead of once per raw scroll

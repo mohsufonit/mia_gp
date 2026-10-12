@@ -964,10 +964,10 @@ body{padding-top:var(--header-h,127px)}
 .bs-chip.active::before{opacity:.6;animation:bsPulseGlow 2.2s ease-in-out infinite}
 @keyframes bsPulseGlow{0%,100%{transform:translateX(-50%) scale(.85);opacity:.4}50%{transform:translateX(-50%) scale(1.3);opacity:.7}}
 @media(prefers-reduced-motion:reduce){.bs-chip.active::before{animation:none;opacity:.5}}
-.bs-gem{position:relative;z-index:1;width:23px;height:auto;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));transition:transform .3s var(--ease),width .25s var(--ease),filter .3s var(--ease)}
+.bs-gem{position:relative;z-index:1;width:30px;height:auto;aspect-ratio:1;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));transition:transform .3s var(--ease),width .25s var(--ease),filter .3s var(--ease)}
 .bs-chip-label{position:relative;z-index:1;font-size:8px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-2);transition:color .2s;white-space:nowrap}
 .bs-chip:hover .bs-gem{transform:scale(1.15) rotate(-6deg) translateY(-3px)}
-.bs-chip.active .bs-gem{width:36px;transform:translateY(-5px);filter:drop-shadow(0 8px 14px rgba(0,0,0,.28))}
+.bs-chip.active .bs-gem{width:46px;transform:translateY(-5px);filter:drop-shadow(0 8px 14px rgba(0,0,0,.28))}
 .bs-chip.active:hover .bs-gem{transform:translateY(-8px) rotate(-4deg)}
 .bs-chip.active .bs-chip-label{color:var(--pink-deep);font-weight:800}
 .bs-chip.soon{opacity:.55}
@@ -3478,26 +3478,17 @@ footer .socials svg{width:14px;height:14px}
       }
     }
 
-    // a faceted gem silhouette (not a plain rotated square) — a kite-cut
-    // top face with a table facet and crown lines, tinted per stone
-    function bsGemSvg(color){
-      // a thin dark outline on the outer facet — without it, any pale
-      // stone (pearl, moonstone-ish tones) nearly disappears against the
-      // white section background instead of just being naturally subtle
-      return `<svg class="bs-gem" viewBox="0 0 32 34" fill="none">
-        <polygon points="16,1 30,11 24,33 8,33 2,11" fill="${color}" stroke="rgba(0,0,0,.22)" stroke-width="1" stroke-linejoin="round"/>
-        <polygon points="16,1 30,11 16,15 2,11" fill="#fff" opacity=".32"/>
-        <polygon points="2,11 16,15 8,33" fill="#000" opacity=".08"/>
-        <polygon points="30,11 16,15 24,33" fill="#000" opacity=".16"/>
-        <path d="M2 11h28M16 1v14M16 15 8 33M16 15l8 18" stroke="#fff" stroke-opacity=".55" stroke-width=".9" stroke-linejoin="round"/>
-      </svg>`;
+    // real photographs of each cut stone (cut out, transparent background),
+    // not drawn shapes; credits are in assets/gems/CREDITS.md
+    function bsGemSvg(color, b){
+      return `<img class="bs-gem" src="assets/gems/${b.stone.toLowerCase().replace(/^blue /, '')}.png" alt="" width="64" height="64" loading="lazy" decoding="async">`;
     }
 
     function renderChips(){
       bsStrip.innerHTML = BIRTHSTONES.map((b,i)=>{
         const has = bsMatches(b).length > 0;
         return `<button type="button" class="bs-chip ${i===bsActive?'active':''} ${has?'':'soon'}" data-i="${i}" style="--glow:${b.color}">
-          ${bsGemSvg(b.color)}
+          ${bsGemSvg(b.color, b)}
           <span class="bs-chip-label">${b.short}</span>
         </button>`;
       }).join('');

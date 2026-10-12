@@ -978,7 +978,6 @@ body{padding-top:var(--header-h,127px)}
 .bs-chip.active .bs-gem{width:46px;transform:translateY(-5px);filter:drop-shadow(0 8px 14px rgba(0,0,0,.28))}
 .bs-chip.active:hover .bs-gem{transform:translateY(-8px) rotate(-4deg)}
 .bs-chip.active .bs-chip-label{color:var(--pink-deep);font-weight:800}
-.bs-chip.soon{opacity:.55}
 .bs-result-wrap{position:relative}
 .bs-result-wrap .rec-arrow:not(.hide){display:flex!important;width:32px;height:32px}
 @media(min-width:1024px){.bs-result-wrap .rec-arrow:not(.hide){width:38px;height:38px}}
@@ -1267,6 +1266,7 @@ body{padding-top:var(--header-h,127px)}
 .tf-fan-arrow.next{right:14px}
 .tf-fan-arrow.hide{opacity:0;pointer-events:none}
 @media(max-width:639px){
+  .tf-fan-arrow{display:none}
   .tf-fan-wrap{--card:206px;--pt:24px}
   .tf-fan{gap:14px;padding:var(--pt) calc(50% - var(--card) / 2) 40px}
   .tfc-price{font-size:20px}
@@ -1895,6 +1895,37 @@ footer .socials svg{width:14px;height:14px}
 .co-identity{display:flex;align-items:center;justify-content:space-between;background:var(--cream);border-radius:10px;padding:12px 14px;margin-bottom:16px}
 .co-identity div{font-size:12px;color:var(--ink-2);max-width:230px}
 .co-identity strong{display:block;font-size:12.5px;margin-bottom:2px}
+
+/* ============ page spacing system ============
+   One set of values for every section, so the rhythm is the same all the
+   way down the page:
+     --sec-y     top/bottom padding of a normal (white) section
+     --band-y    top/bottom padding of a coloured breaker band (its edges
+                 are visible, so it can be a little tighter)
+     --head-gap  section heading -> the content under it
+     --sub-gap   heading -> a chip row, and chip row -> its content
+     --foot-gap  content -> a "View All" link
+   Declared last so they win over the older one-off overrides above. */
+:root{--sec-y:56px;--band-y:48px;--head-gap:28px;--sub-gap:20px;--foot-gap:24px}
+@media(max-width:639px){:root{--sec-y:44px;--band-y:36px;--head-gap:22px;--sub-gap:16px;--foot-gap:20px}}
+.band{padding-top:var(--sec-y);padding-bottom:var(--sec-y)}
+#catrec,#birthstone,#collections,#favorites,#faq,.reviews-section{padding-top:var(--sec-y);padding-bottom:var(--sec-y)}
+#finder{padding-top:15px;padding-bottom:var(--sec-y)}
+#recipient,.meaning-section,.touches-section{padding-top:var(--band-y);padding-bottom:var(--band-y)}
+.section-head,.meaning-section .section-head,#recipient .section-head,#faq .section-head{margin-bottom:var(--head-gap)}
+#catrec .section-head,#favorites .section-head{margin-bottom:var(--sub-gap)}
+#collections .section-head{margin-bottom:calc(var(--head-gap) - 6px)}
+#birthstone .section-head{margin-bottom:0}
+#catrec .cat-strip{padding:0 0 var(--sub-gap)}
+#favorites .tf-tabs,.tf-tabs{margin-bottom:var(--sub-gap)}
+.rec-rail + .rec-track,#catrec .rec-rail + .rec-track,#favorites .rec-rail + .rec-track{margin-top:14px}
+.rec-viewall-wrap,#catrec .rec-viewall-wrap,#favorites .rec-viewall-wrap,.feat-viewall{margin-top:var(--foot-gap)}
+.tf-fan-wrap{margin-top:0}
+.rv-sub{margin:calc(var(--sub-gap) - var(--head-gap)) 0 var(--head-gap)}
+.rv-score{margin-bottom:var(--head-gap)}
+.faq-item:last-child{margin-bottom:0}
+.section-head h2,.finder-title{text-wrap:balance}
+.finder-head{margin-bottom:var(--head-gap)}
 </style>
 </head>
 <body>
@@ -2185,7 +2216,7 @@ footer .socials svg{width:14px;height:14px}
     <div class="section-head rv">
       <div>
         <p class="eyebrow">Last-Minute Gifting</p>
-        <h2>Coins &amp; Cards, Ready When You're Not</h2>
+        <h2>Coins &amp; Cards, Ready When You Are</h2>
       </div>
     </div>
     <div class="coin-grid rv">
@@ -2206,7 +2237,7 @@ footer .socials svg{width:14px;height:14px}
       <a href="#" class="coin-card cc-giftcard">
         <div class="cc-copy">
           <h3>Mia Gift Card</h3>
-          <p>₹1,000 to ₹1,00,000, redeemable in store and online.</p>
+          <p>From ₹1,000 up to ₹1,00,000.</p>
           <span class="cc-btn">Buy Gift Cards</span>
         </div>
         <div class="cc-visual">
@@ -3746,53 +3777,92 @@ footer .socials svg{width:14px;height:14px}
     return real.concat(fill);
   }
   const tfPrev = document.getElementById('tf-prev'), tfNext = document.getElementById('tf-next');
-  function tfCardHTML(p){
-    return `<button type="button" class="tfc" data-code="${p.code}" aria-label="${p.name}, ₹${p.price.toLocaleString('en-IN')}">
+  function tfCardHTML(p, clone){
+    return `<button type="button" class="tfc" data-code="${p.code}" ${clone ? 'data-clone="1" aria-hidden="true" tabindex="-1"' : ''} aria-label="${p.name}, ₹${p.price.toLocaleString('en-IN')}">
       <img src="${imgSrc(p)}" alt="" loading="lazy" decoding="async">
       <span class="tfc-tag">${p.tag}</span>
       <span class="tfc-body"><span class="tfc-name">${p.name}</span><span class="tfc-price">₹${p.price.toLocaleString('en-IN')}</span></span>
     </button>`;
   }
-  // each card tilts by how far it sits from the centre: left ones lean left,
-  // right ones lean right, and both drop and shrink slightly
+  // an endless loop: the first and last few cards are cloned onto the
+  // opposite ends, and once a scroll settles inside a clone the row jumps by
+  // exactly one full set of cards, which looks identical, so it never ends
+  let tfN = 0, tfCl = 0;
+  const tfPitch = ()=> tfGrid.children.length > 1 ? tfGrid.children[1].offsetLeft - tfGrid.children[0].offsetLeft : 0;
   function tfFan(){
     const cards = tfGrid.children;
     if(!cards.length) return;
     const centre = tfGrid.scrollLeft + tfGrid.clientWidth / 2;
-    const pitch = cards[0].offsetWidth + parseFloat(getComputedStyle(tfGrid).columnGap || 18);
+    const pitch = tfPitch() || 1;
     for(const c of cards){
       const d = Math.max(-2.4, Math.min(2.4, (c.offsetLeft + c.offsetWidth / 2 - centre) / pitch));
       const a = Math.abs(d);
       c.style.transform = `translateY(${(a * 14).toFixed(1)}px) rotate(${(d * 4.5).toFixed(2)}deg) scale(${(1 - Math.min(a, 2) * .05).toFixed(3)})`;
       c.classList.toggle('is-center', a < .5);
     }
-    const max = tfGrid.scrollWidth - tfGrid.clientWidth;
-    tfPrev.classList.toggle('hide', tfGrid.scrollLeft <= 2);
-    tfNext.classList.toggle('hide', tfGrid.scrollLeft >= max - 2);
   }
-  let tfRaf = 0;
-  tfGrid.addEventListener('scroll', ()=>{ if(!tfRaf) tfRaf = requestAnimationFrame(()=>{ tfRaf = 0; tfFan(); }); }, {passive:true});
+  function tfNearest(){
+    const centre = tfGrid.scrollLeft + tfGrid.clientWidth / 2;
+    let best = 0, bd = Infinity;
+    [...tfGrid.children].forEach((c,i)=>{ const dd = Math.abs(c.offsetLeft + c.offsetWidth / 2 - centre); if(dd < bd){ bd = dd; best = i; } });
+    return best;
+  }
+  function tfWrap(){
+    if(!tfCl) return;
+    const i = tfNearest(), pitch = tfPitch();
+    if(i < tfCl) tfGrid.scrollTo({left: tfGrid.scrollLeft + tfN * pitch, behavior:'instant'});
+    else if(i >= tfCl + tfN) tfGrid.scrollTo({left: tfGrid.scrollLeft - tfN * pitch, behavior:'instant'});
+    tfFan();
+  }
+  let tfRaf = 0, tfSettle = 0;
+  tfGrid.addEventListener('scroll', ()=>{
+    if(!tfRaf) tfRaf = requestAnimationFrame(()=>{ tfRaf = 0; tfFan(); });
+    clearTimeout(tfSettle); tfSettle = setTimeout(tfWrap, 110);
+  }, {passive:true});
   window.addEventListener('resize', tfFan);
   function tfStep(dir){
-    const c = tfGrid.children[0]; if(!c) return;
-    tfGrid.scrollBy({left: dir * (c.offsetWidth + parseFloat(getComputedStyle(tfGrid).columnGap || 18)), behavior:'smooth'});
+    const pitch = tfPitch(); if(!pitch) return;
+    tfGrid.scrollBy({left: dir * pitch, behavior:'smooth'});
   }
-  tfPrev.addEventListener('click', ()=> tfStep(-1));
-  tfNext.addEventListener('click', ()=> tfStep(1));
+  // it keeps moving on its own, one card every few seconds, and stops while
+  // someone is hovering, touching or focused on it, while a window is open
+  // over it, when the section is off screen, and for anyone who has asked
+  // their device to reduce motion
+  const TF_EVERY = 3200;
+  const tfReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let tfHold = 0, tfOnScreen = false;
+  const tfPause = (ms)=>{ tfHold = Math.max(tfHold, performance.now() + ms); };
+  const tfWrapEl = tfGrid.closest('.tf-fan-wrap');
+  tfWrapEl.addEventListener('pointerenter', e=>{ if(e.pointerType === 'mouse') tfHold = Infinity; });
+  tfWrapEl.addEventListener('pointerleave', e=>{ if(e.pointerType === 'mouse') tfHold = performance.now() + 800; });
+  tfWrapEl.addEventListener('touchstart', ()=> tfPause(6000), {passive:true});
+  tfWrapEl.addEventListener('focusin', ()=> tfPause(6000));
+  new IntersectionObserver(es => es.forEach(e => { tfOnScreen = e.isIntersecting; }), {threshold:.25}).observe(tfWrapEl);
+  setInterval(()=>{
+    if(tfReduce.matches || !tfOnScreen || document.hidden || document.body.classList.contains('locked')) return;
+    if(performance.now() < tfHold) return;
+    tfStep(1);
+  }, TF_EVERY);
+  tfPrev.addEventListener('click', ()=>{ tfPause(6000); tfStep(-1); });
+  tfNext.addEventListener('click', ()=>{ tfPause(6000); tfStep(1); });
   tfGrid.addEventListener('click', (e)=>{
     const card = e.target.closest('.tfc');
     if(card) openQuickView(card.dataset.code);
   });
   function tfCentreOn(i){
-    const c = tfGrid.children[i]; if(!c) return;
+    const c = tfGrid.children[tfCl + i]; if(!c) return;
     tfGrid.scrollTo({left: c.offsetLeft - (tfGrid.clientWidth - c.offsetWidth) / 2, behavior:'instant'});
     tfFan();
   }
   function renderFav(key){
     const items = favItems(key);
-    tfGrid.innerHTML = items.map(tfCardHTML).join('');
+    tfN = items.length;
+    tfCl = tfN > 3 ? Math.min(3, tfN) : 0;
+    const list = [...items.slice(tfN - tfCl).map(p=>tfCardHTML(p, true)), ...items.map(p=>tfCardHTML(p)), ...items.slice(0, tfCl).map(p=>tfCardHTML(p, true))];
+    tfGrid.innerHTML = list.join('');
     // open on the third card so the fan shows on both sides
-    requestAnimationFrame(()=> tfCentreOn(Math.min(2, items.length - 1)));
+    requestAnimationFrame(()=> tfCentreOn(Math.min(2, tfN - 1)));
+    tfPause(2500);
     // "Shop Most Gifted" / "Shop Best Sellers" / etc. — reflects whichever
     // pill is active, not a generic "View All Products"
     tfViewAll.firstChild.textContent = `Shop ${TF_LABELS[key]} `;

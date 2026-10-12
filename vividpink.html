@@ -966,6 +966,8 @@ body{padding-top:var(--header-h,127px)}
 @media(prefers-reduced-motion:reduce){.bs-chip.active::before{animation:none;opacity:.5}}
 .bs-gem{position:relative;z-index:1;width:30px;height:auto;aspect-ratio:1;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));transition:transform .3s var(--ease),width .25s var(--ease),filter .3s var(--ease)}
 .bs-chip-label{position:relative;z-index:1;font-size:8px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-2);transition:color .2s;white-space:nowrap}
+/* the pearl is near-white on a white page: a soft grey rim keeps it visible */
+.bs-gem[src$="pearl.png"]{filter:drop-shadow(0 0 1px rgba(60,40,50,.55)) drop-shadow(0 2px 4px rgba(0,0,0,.2))}
 .bs-chip:hover .bs-gem{transform:scale(1.15) rotate(-6deg) translateY(-3px)}
 .bs-chip.active .bs-gem{width:46px;transform:translateY(-5px);filter:drop-shadow(0 8px 14px rgba(0,0,0,.28))}
 .bs-chip.active:hover .bs-gem{transform:translateY(-8px) rotate(-4deg)}

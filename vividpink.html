@@ -382,7 +382,7 @@ body{padding-top:var(--header-h,127px)}
 /* exactly 3 per row on mobile, not whatever the gap happens to fit (was 4) */
 @media(max-width:639px){
   .cat-strip{display:flex;flex-wrap:wrap;justify-content:center;gap:18px 0}
-  .cat-chip{flex:0 0 33.333%;width:auto}
+  .cat-strip .cat-chip{flex:0 0 33.333%;width:auto}
 }
 .cat-chip{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:9px;cursor:pointer;opacity:.75;transition:opacity .2s}
 .cat-chip:hover,.cat-chip.active{opacity:1}
@@ -3157,13 +3157,15 @@ footer .socials svg{width:14px;height:14px}
     if(cmpModalOverlay.classList.contains('open')){ cmpModalOverlay.classList.remove('open'); document.body.classList.remove('locked'); }
   });
 
-  // order agreed with Mia: Earrings, Rings, Bracelets, Pendants, Coins.
+  // order agreed with Mia: Earrings, Rings, Bracelets, Pendants, Coins, with
+  // Chains kept in (between Pendants and Coins).
   // "Pendants" browses the necklaces catalogue (Mia files them together)
   const CATS = [
     {key:'earrings', label:'Earrings', icon:'<img src="assets/icons/cat-earrings.png" alt="" width="26" height="26">'},
     {key:'rings', label:'Rings', icon:'<img src="assets/icons/cat-rings.png" alt="" width="26" height="26">'},
     {key:'bracelets', label:'Bracelets', icon:'<img src="assets/icons/cat-bracelets.png" alt="" width="26" height="26">'},
     {key:'pendants', cat:'necklaces', label:'Pendants', icon:'<img src="assets/icons/cat-pendants.png" alt="" width="26" height="26">'},
+    {key:'chains', label:'Chains', icon:'<img src="assets/icons/cat-chains.png" alt="" width="26" height="26">'},
     {key:'coins', label:'Coins', icon:'<img src="assets/icons/cat-coins.png" alt="" width="26" height="26">'},
   ];
 

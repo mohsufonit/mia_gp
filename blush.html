@@ -421,9 +421,9 @@ body{padding-top:var(--header-h,127px)}
   /* soft fade at the crop line instead of a hard cut — mask is fixed to
      this box's own edge, so it stays put on whichever card is at the
      boundary as the row scrolls underneath it */
-  -webkit-mask-image:linear-gradient(to right,#000 0,#000 calc(100% - var(--rail-fade,60px)),rgba(0,0,0,.75) 100%);
-  mask-image:linear-gradient(to right,#000 0,#000 calc(100% - var(--rail-fade,60px)),rgba(0,0,0,.75) 100%);
+  -webkit-mask-image:var(--edge-mask);mask-image:var(--edge-mask);
 }
+.pcard-rail,.tf-fan,.mp-strip{--fl:0px;--fr:0px;--edge-mask:linear-gradient(to right,transparent 0,#000 var(--fl),#000 calc(100% - var(--fr)),transparent 100%);-webkit-mask-image:var(--edge-mask);mask-image:var(--edge-mask)}
 /* centers the row when it fits (e.g. filtered to one category with few
    results) — set by JS after render, since CSS justify-content:center
    on an overflowing scroll container breaks start-padding/scroll-to-start */
@@ -905,10 +905,10 @@ body{padding-top:var(--header-h,127px)}
   content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
   background:
     radial-gradient(70% 90% at 20% 0%, rgba(255,255,255,.16), transparent 60%),
-    radial-gradient(75% 85% at 65% 15%, #FF6FA8 0%, #EC1664 28%, #D1115A 55%, #B30D4A 100%);
+    radial-gradient(75% 85% at 65% 15%, #FF9EC2 0%, #F67AA6 30%, #EA5C8F 62%, #DC4A80 100%);
 }
 #recipient .section-head,#recipient .recip-panels{position:relative;z-index:1}
-#recipient .eyebrow{color:var(--gold)}
+#recipient .eyebrow{color:#fff}
 #recipient .section-head h2{color:#fff}
 .recip-panels{display:flex;flex-direction:column;gap:16px}
 @media(min-width:900px){.recip-panels{flex-direction:row;gap:20px}}
@@ -1239,9 +1239,11 @@ body{padding-top:var(--header-h,127px)}
 .tf-chip.active{background:var(--pink);transform:translateY(-1px)}
 
 /* fanned photo cards (Timeless Favourites) */
-.tf-fan-wrap{position:relative;margin-top:4px}
-.tf-fan{--card:260px;display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none;
-  padding:30px calc(50% - var(--card) / 2) 52px}
+/* the row runs wider than the content column: its side inset is half of what
+   the container + page margins left, so more of the fan is on screen */
+.tf-fan-wrap{--card:260px;--pt:30px;position:relative;margin-top:4px;margin-inline:calc((100% - var(--vw,100vw)) / 4)}
+.tf-fan{display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none;
+  padding:var(--pt) calc(50% - var(--card) / 2) 52px}
 .tf-fan::-webkit-scrollbar{display:none}
 .tfc{flex:0 0 var(--card);height:calc(var(--card) * 1.42);scroll-snap-align:center;position:relative;border:none;padding:0;cursor:pointer;
   border-radius:22px;overflow:hidden;background:var(--blush);text-align:center;transform-origin:50% 120%;
@@ -1254,14 +1256,15 @@ body{padding-top:var(--header-h,127px)}
 .tfc-body{position:absolute;left:0;right:0;bottom:0;z-index:1;padding:0 18px 20px;color:#fff;display:flex;flex-direction:column;gap:6px}
 .tfc-name{font-size:13.5px;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .tfc-price{font-family:'Fraunces',serif;font-size:24px;font-weight:600;line-height:1}
-.tf-fan-arrow{position:absolute;top:calc(50% - 10px);transform:translateY(-50%);z-index:3;width:58px;height:42px;border-radius:100px;border:none;background:#fff;color:var(--ink);
+.tf-fan-arrow{position:absolute;top:calc(var(--pt) + var(--card) * .71);transform:translateY(-50%);z-index:3;width:58px;height:42px;border-radius:100px;border:none;background:#fff;color:var(--ink);
   display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.14);transition:transform .2s,opacity .2s}
 .tf-fan-arrow:hover{transform:translateY(-50%) scale(1.06)}
-.tf-fan-arrow.prev{left:6%}
-.tf-fan-arrow.next{right:6%}
+.tf-fan-arrow.prev{left:14px}
+.tf-fan-arrow.next{right:14px}
 .tf-fan-arrow.hide{opacity:0;pointer-events:none}
 @media(max-width:639px){
-  .tf-fan{--card:206px;gap:14px;padding:24px calc(50% - var(--card) / 2) 40px}
+  .tf-fan-wrap{--card:206px;--pt:24px}
+  .tf-fan{gap:14px;padding:var(--pt) calc(50% - var(--card) / 2) 40px}
   .tfc-price{font-size:20px}
   .tf-fan-arrow{width:44px;height:34px}
   .tf-fan-arrow.prev{left:2px}
@@ -1452,8 +1455,8 @@ body{padding-top:var(--header-h,127px)}
    as the coin/gift-card breaker above it, not its own destination section */
 /* this is the page's actual section breaker (same role as the coin/gift-card
    band) — pink full-bleed gradient, cream cards floating on top */
-.touches-section{background:radial-gradient(130% 150% at 50% -10%,#FF6FA8 0%,#EC1664 45%,#B30D4A 100%);position:relative;overflow:hidden}
-.touches-section .eyebrow{color:var(--gold)}
+.touches-section{background:radial-gradient(130% 150% at 50% -10%,#FF9EC2 0%,#F67AA6 45%,#DC4A80 100%);position:relative;overflow:hidden}
+.touches-section .eyebrow{color:#fff}
 .touches-section h2{color:#fff}
 .touch-strip{display:flex;gap:14px;overflow-x:auto;padding:4px 4px 10px;-ms-overflow-style:none;scrollbar-width:none}
 .touch-strip::-webkit-scrollbar{display:none}
@@ -1560,24 +1563,26 @@ body{padding-top:var(--header-h,127px)}
    sharp, neighbors peek in blurred on either side, arrows sit on the
    sides of the stage, not a separate row. */
 .tm-carousel-wrap{position:relative}
-.tm-track{position:relative;height:400px;margin:0 auto}
-.tm-portrait{width:150px;height:310px;border-radius:20px;position:absolute;left:50%;top:50%;margin-left:-75px;margin-top:-155px;overflow:hidden;cursor:pointer;box-shadow:0 24px 50px rgba(0,0,0,.4);transition:transform .6s cubic-bezier(.16,1,.3,1),width .6s cubic-bezier(.16,1,.3,1),height .6s cubic-bezier(.16,1,.3,1),margin .6s cubic-bezier(.16,1,.3,1),opacity .5s,z-index 0s .3s}
+.tm-track{position:relative;height:420px;margin:0 auto}
+/* every card is the same size and moves ONLY by transform/opacity (the old
+   version also animated width, height and margin, which forced layout on
+   every frame and is what made it stutter). Position comes from per-slot
+   custom properties set in JS. */
+.tm-portrait{width:220px;height:380px;border-radius:20px;position:absolute;left:50%;top:50%;margin:-190px 0 0 -110px;overflow:hidden;cursor:pointer;
+  box-shadow:0 24px 50px rgba(110,13,29,.32);
+  transform:translateX(var(--x,0px)) translateY(var(--y,0px)) scale(var(--s,1)) rotate(var(--r,0deg));
+  opacity:var(--o,1);z-index:var(--z,1);will-change:transform,opacity;
+  transition:transform .6s cubic-bezier(.16,1,.3,1),opacity .5s ease}
+.tm-portrait.tm-jump{transition:none}
 .tm-portrait img{width:100%;height:100%;object-fit:cover;display:block}
 .tm-portrait::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 34%,rgba(110,13,29,.94) 100%)}
-.tm-cv0{transform:translateX(0) scale(1) translateY(0) rotate(0);z-index:6;opacity:1}
-.tm-cv1{transform:translateX(150px) scale(.84) translateY(16px) rotate(7deg);z-index:5;opacity:.9}
-.tm-cvn1{transform:translateX(-150px) scale(.84) translateY(16px) rotate(-7deg);z-index:5;opacity:.9}
-.tm-cv2{transform:translateX(268px) scale(.68) translateY(30px) rotate(12deg);z-index:4;opacity:.7}
-.tm-cvn2{transform:translateX(-268px) scale(.68) translateY(30px) rotate(-12deg);z-index:4;opacity:.7}
-.tm-cv3{transform:translateX(354px) scale(.54) translateY(40px) rotate(16deg);z-index:3;opacity:.45}
-.tm-cvn3{transform:translateX(-354px) scale(.54) translateY(40px) rotate(-16deg);z-index:3;opacity:.45}
-.tm-portrait.tm-cv0{width:220px;height:380px;margin-left:-110px;margin-top:-190px}
-.tm-cv0 .tm-cat-pill{display:block}
-.tm-cat-pill{display:none;position:absolute;top:14px;left:14px;font-size:9.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;background:rgba(255,255,255,.4);border-radius:100px;padding:5px 11px;z-index:2}
-.tm-portrait-body{position:absolute;left:0;right:0;bottom:0;padding:14px;z-index:2}
+.tm-cat-pill{position:absolute;top:14px;left:14px;font-size:9.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:#fff;background:rgba(110,13,29,.62);border-radius:100px;padding:5px 11px;z-index:2;opacity:0;transition:opacity .3s}
+.tm-portrait.is-c .tm-cat-pill{opacity:1}
+.tm-portrait-body{position:absolute;left:0;right:0;bottom:0;padding:16px;z-index:2}
 .tm-portrait-name{display:block;font-size:9.5px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
-.tm-portrait-quote{font-family:'Fraunces',serif;font-style:italic;font-size:11.5px;line-height:1.45;color:#fff;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;opacity:.95}
-.tm-cv0 .tm-portrait-quote{font-size:15px;-webkit-line-clamp:4;line-clamp:4;opacity:1;transition:opacity .3s .2s}
+.tm-portrait-quote{font-family:'Fraunces',serif;font-style:italic;font-size:15px;line-height:1.45;color:#fff;display:-webkit-box;-webkit-line-clamp:4;line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;margin:0}
+.tm-portrait:not(.is-c) .tm-portrait-quote{-webkit-line-clamp:2;line-clamp:2}
+@media(prefers-reduced-motion:reduce){.tm-portrait{transition:none}}
 .tm-nav{display:flex;align-items:center;justify-content:center;gap:18px;margin-top:24px}
 .tm-nav button{width:46px;height:46px;border-radius:50%;background:#fff;border:1.5px solid var(--line-2);color:var(--ink-2);display:flex;align-items:center;justify-content:center;transition:all .2s}
 .tm-nav button:hover{border-color:var(--pink)}
@@ -1591,21 +1596,24 @@ body{padding-top:var(--header-h,127px)}
 .mp-section{display:none}
 @media(max-width:899px){
   .tm-carousel-wrap{display:none}
-  .mp-section{display:block;background:radial-gradient(130% 150% at 50% -10%,var(--pink-hover) 0%,var(--pink) 45%,#B30D4A 100%);
+  .mp-section{display:block;background:radial-gradient(130% 150% at 50% -10%,#FF9EC2 0%,#F67AA6 45%,#DC4A80 100%);
     border-radius:18px;padding:26px 0 22px;position:relative;overflow:hidden}
-  .mp-stage{position:relative;height:300px}
-  .mp-card{position:absolute;top:50%;left:50%;width:190px;height:270px;margin-left:-95px;margin-top:-135px;
-    border-radius:16px;overflow:hidden;cursor:pointer;box-shadow:0 20px 40px rgba(110,13,29,.35);
-    transition:transform .5s var(--ease),filter .5s var(--ease),opacity .5s var(--ease)}
+  .mp-stage{position:relative}
+  /* a real swipeable strip: native horizontal scroll-snap, the card nearest
+     the centre is the active one. Cards take ~78% of the screen so the main
+     review fills the space, with the neighbours peeking in either side */
+  .mp-strip{--mw:min(78vw,330px);display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none;
+    padding:8px calc(50% - var(--mw) / 2) 16px;-webkit-overflow-scrolling:touch}
+  .mp-strip::-webkit-scrollbar{display:none}
+  .mp-card{position:relative;flex:0 0 var(--mw);height:calc(var(--mw) * 1.36);scroll-snap-align:center;scroll-snap-stop:always;
+    border-radius:18px;overflow:hidden;cursor:pointer;box-shadow:0 20px 40px rgba(110,13,29,.28);
+    transform:scale(.9);opacity:.6;transition:transform .35s var(--ease),opacity .35s var(--ease)}
+  .mp-card.is-a{transform:scale(1);opacity:1}
   .mp-card img{width:100%;height:100%;object-fit:cover;display:block}
-  .mp-card::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(110,13,29,.92) 100%)}
-  .mp-cat{position:absolute;top:10px;left:10px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:#fff;background:rgba(255,255,255,.4);border-radius:100px;padding:4px 10px;z-index:2}
-  .mp-quote{position:absolute;left:14px;right:14px;bottom:14px;z-index:2;font-family:'Fraunces',serif;font-style:italic;font-size:12.5px;line-height:1.4;color:#fff;margin:0}
-  .mp-c0{transform:translateX(0) scale(1);z-index:5;opacity:1;filter:none}
-  .mp-c1{transform:translateX(150px) scale(.78);z-index:4;opacity:.55;filter:blur(1.5px) brightness(.85)}
-  .mp-cn1{transform:translateX(-150px) scale(.78);z-index:4;opacity:.55;filter:blur(1.5px) brightness(.85)}
-  .mp-c1 .mp-quote,.mp-c1 .mp-cat,.mp-cn1 .mp-quote,.mp-cn1 .mp-cat{display:none}
-  .mp-hidden{opacity:0;pointer-events:none}
+  .mp-card::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 42%,rgba(110,13,29,.92) 100%)}
+  .mp-cat{position:absolute;top:12px;left:12px;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:#fff;background:rgba(110,13,29,.62);border-radius:100px;padding:5px 11px;z-index:2}
+  .mp-name{position:absolute;left:16px;right:16px;bottom:78px;z-index:2;font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--gold);margin:0}
+  .mp-quote{position:absolute;left:16px;right:16px;bottom:16px;z-index:2;font-family:'Fraunces',serif;font-style:italic;font-size:15px;line-height:1.4;color:#fff;margin:0;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
   .mp-arrow{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;
     background:rgba(255,255,255,.16);border:1.5px solid rgba(255,255,255,.4);color:#fff;display:flex;align-items:center;
     justify-content:center;z-index:6;cursor:pointer}
@@ -2877,8 +2885,16 @@ footer .socials svg{width:14px;height:14px}
     ];
     const total = reviews.length;
 
-    // ---- desktop: true circular conveyor — every card stays visible and
-    // wraps endlessly, spread/shrunk/faded by distance from center ----
+    // ---- desktop: circular conveyor. Cards never change size; each slot is a
+    // transform + opacity, so moving is cheap. A card that wraps from one end
+    // to the other is moved with no transition while invisible and faded in,
+    // instead of flying across the stage in front of the others ----
+    const SLOT = {
+      0:{x:0,y:0,s:1,r:0,o:1,z:6},
+      1:{x:160,y:16,s:.72,r:7,o:.92,z:5},
+      2:{x:278,y:30,s:.58,r:12,o:.72,z:4},
+      3:{x:368,y:40,s:.46,r:16,o:.45,z:3},
+    };
     let activeIdx = 2;
     track.innerHTML = reviews.map((r,i)=>`
       <div class="tm-portrait shine-fx-b" data-i="${i}">
@@ -2893,60 +2909,113 @@ footer .socials svg{width:14px;height:14px}
     const curEl = document.getElementById('tm-current');
     const totEl = document.getElementById('tm-total');
     totEl.textContent = String(total).padStart(2,'0');
-    function offsetClass(d){
-      return d===0 ? 'tm-cv0' : (d<0 ? 'tm-cvn'+(-d) : 'tm-cv'+d);
+    function put(c, d){
+      const k = Math.min(3, Math.abs(d)), sl = SLOT[k], sg = d < 0 ? -1 : 1;
+      c.style.setProperty('--x', (sg * sl.x) + 'px');
+      c.style.setProperty('--y', sl.y + 'px');
+      c.style.setProperty('--s', sl.s);
+      c.style.setProperty('--r', (sg * sl.r) + 'deg');
+      c.style.setProperty('--o', sl.o);
+      c.style.setProperty('--z', sl.z);
+      c.classList.toggle('is-c', d === 0);
     }
-    function updateDesktop(){
+    function updateDesktop(first){
       cards.forEach((c,i)=>{
         let d = i - activeIdx;
         if(d > total/2) d -= total;
         if(d < -total/2) d += total;
-        c.className = 'tm-portrait shine-fx-b ' + offsetClass(d);
+        const wraps = !first && c._d !== undefined && Math.abs(d - c._d) > total/2;
+        if(wraps){
+          c.classList.add('tm-jump');
+          c.style.setProperty('--o', 0);
+          put(c, d);
+          c.style.setProperty('--o', 0);
+          void c.offsetWidth;
+          c.classList.remove('tm-jump');
+          requestAnimationFrame(()=> c.style.setProperty('--o', SLOT[Math.min(3, Math.abs(d))].o));
+        } else {
+          put(c, d);
+        }
+        c._d = d;
       });
       curEl.textContent = String(activeIdx+1).padStart(2,'0');
     }
     cards.forEach((c,i)=> c.addEventListener('click', ()=>{ activeIdx = i; updateDesktop(); }));
-    document.getElementById('tm-prev').addEventListener('click', ()=>{ activeIdx = (activeIdx - 1 + total) % total; updateDesktop(); });
-    document.getElementById('tm-next').addEventListener('click', ()=>{ activeIdx = (activeIdx + 1) % total; updateDesktop(); });
-    updateDesktop();
+    const tmPrev = ()=>{ activeIdx = (activeIdx - 1 + total) % total; updateDesktop(); };
+    const tmNext = ()=>{ activeIdx = (activeIdx + 1) % total; updateDesktop(); };
+    document.getElementById('tm-prev').addEventListener('click', tmPrev);
+    document.getElementById('tm-next').addEventListener('click', tmNext);
+    // swipe on touch screens wide enough to get the desktop layout (tablets)
+    let sx = null;
+    track.addEventListener('touchstart', e=>{ sx = e.touches[0].clientX; }, {passive:true});
+    track.addEventListener('touchend', e=>{
+      if(sx === null) return;
+      const dx = e.changedTouches[0].clientX - sx; sx = null;
+      if(Math.abs(dx) > 40) (dx < 0 ? tmNext : tmPrev)();
+    }, {passive:true});
+    updateDesktop(true);
 
-    // ---- mobile: 3-card peek carousel ----
+    // ---- mobile: a native swipeable strip. The active card is whichever sits
+    // nearest the centre; arrows and dots just scroll the strip ----
     const mpStage = document.getElementById('mp-stage');
     const mpDots = document.getElementById('mp-dots');
     const mpPrevBtn = document.getElementById('mp-prev');
     const mpNextBtn = document.getElementById('mp-next');
-    mpStage.insertAdjacentHTML('afterbegin', reviews.map((r,i)=>`
+    mpStage.insertAdjacentHTML('afterbegin', `<div class="mp-strip" id="mp-strip">${reviews.map((r,i)=>`
       <div class="mp-card" data-i="${i}">
         <span class="mp-cat">${r.cat}</span>
         <img loading="lazy" decoding="async" src="${r.img}" alt="${r.name}">
+        <p class="mp-name">${r.name}</p>
         <p class="mp-quote">"${r.quote}"</p>
-      </div>`).join(''));
-    const mpCards = [...mpStage.querySelectorAll('.mp-card')];
+      </div>`).join('')}</div>`);
+    const mpStrip = document.getElementById('mp-strip');
+    const mpCards = [...mpStrip.querySelectorAll('.mp-card')];
     mpDots.innerHTML = reviews.map((_,i)=>`<span class="${i===0?'active':''}" data-i="${i}"></span>`).join('');
     let mIdx = 0;
-    function mpOffsetClass(d){
-      if(d===0) return 'mp-c0';
-      if(d===1) return 'mp-c1';
-      if(d===-1) return 'mp-cn1';
-      return 'mp-hidden';
+    function mpNearest(){
+      const centre = mpStrip.scrollLeft + mpStrip.clientWidth / 2;
+      let best = 0, bd = Infinity;
+      mpCards.forEach((c,i)=>{ const dd = Math.abs(c.offsetLeft + c.offsetWidth / 2 - centre); if(dd < bd){ bd = dd; best = i; } });
+      return best;
     }
-    function updateMobile(){
-      mpCards.forEach((c,i)=>{
-        let d = i - mIdx;
-        if(d > total/2) d -= total;
-        if(d < -total/2) d += total;
-        c.className = 'mp-card ' + mpOffsetClass(d);
-      });
-      mpDots.querySelectorAll('span').forEach((dot,i)=>dot.classList.toggle('active', i===mIdx));
+    function mpMark(i){
+      mIdx = i;
+      mpCards.forEach((c,k)=> c.classList.toggle('is-a', k === i));
+      mpDots.querySelectorAll('span').forEach((dot,k)=> dot.classList.toggle('active', k === i));
     }
-    mpCards.forEach((c,i)=> c.addEventListener('click', ()=>{ mIdx = i; updateMobile(); }));
-    mpPrevBtn.addEventListener('click', ()=>{ mIdx = (mIdx-1+total)%total; updateMobile(); });
-    mpNextBtn.addEventListener('click', ()=>{ mIdx = (mIdx+1)%total; updateMobile(); });
-    mpDots.addEventListener('click', (e)=>{
-      const dot = e.target.closest('span'); if(!dot) return;
-      mIdx = +dot.dataset.i; updateMobile();
-    });
-    updateMobile();
+    function mpGo(i){
+      i = Math.max(0, Math.min(total - 1, i));
+      const c = mpCards[i];
+      mpStrip.scrollTo({left: c.offsetLeft - (mpStrip.clientWidth - c.offsetWidth) / 2, behavior:'smooth'});
+      mpMark(i);
+    }
+    let mpRaf = 0;
+    mpStrip.addEventListener('scroll', ()=>{ if(!mpRaf) mpRaf = requestAnimationFrame(()=>{ mpRaf = 0; const n = mpNearest(); if(n !== mIdx) mpMark(n); }); }, {passive:true});
+    mpCards.forEach((c,i)=> c.addEventListener('click', ()=>{ if(i !== mIdx) mpGo(i); }));
+    mpPrevBtn.addEventListener('click', ()=> mpGo(mIdx - 1));
+    mpNextBtn.addEventListener('click', ()=> mpGo(mIdx + 1));
+    mpDots.addEventListener('click', (e)=>{ const dot = e.target.closest('span'); if(dot) mpGo(+dot.dataset.i); });
+    mpMark(0);
+    window.addEventListener('resize', ()=> mpGo(mIdx));
+  })();
+
+  // soft fade at the edges of every scrolling row, only on a side that has
+  // more content to scroll to (so the first card at rest is never dimmed)
+  (function(){
+    const SEL = '.pcard-rail, .tf-fan, .mp-strip';
+    function update(el){
+      const max = el.scrollWidth - el.clientWidth;
+      const f = (el.classList.contains('tf-fan') ? 90 : innerWidth < 640 ? 28 : 56) + 'px';
+      el.style.setProperty('--fl', max > 4 && el.scrollLeft > 4 ? f : '0px');
+      el.style.setProperty('--fr', max > 4 && el.scrollLeft < max - 4 ? f : '0px');
+    }
+    const all = () => document.querySelectorAll(SEL);
+    document.addEventListener('scroll', e=>{ if(e.target.matches && e.target.matches(SEL)) update(e.target); }, {capture:true, passive:true});
+    const ro = new ResizeObserver(entries => entries.forEach(en => update(en.target)));
+    const mo = new MutationObserver(muts => muts.forEach(m => { if(m.target.matches && m.target.matches(SEL)) update(m.target); }));
+    all().forEach(el => { ro.observe(el); mo.observe(el, {childList:true}); update(el); });
+    window.addEventListener('load', ()=> all().forEach(update));
+    window.addEventListener('resize', ()=> all().forEach(update));
   })();
 
   // ---- FAQ: single-open accordion (opening one closes the rest) ----
